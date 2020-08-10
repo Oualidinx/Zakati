@@ -1,0 +1,53 @@
+{% extends 'c_criteres.html' %}
+{% block content_for_criteres %}
+
+    <form method="POST">
+	    {{form_m.hidden_tag()}}
+		<fieldset class="form-group">
+		    <div class="form-group">
+                {{ form_m.categorie.label(class="form-control-label") }}
+                {% if form_m.categorie.errors %}
+                    {{ form_m.categorie(class="form-control from-control-lg is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form_m.categorie.errors %}                            
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form_m.categorie(class="form-control from-control-md") }}
+                {% endif %}
+            </div>
+            <div class="form-group">
+                {{ form_m.label.label(class="form-control-label") }}
+                {% if form_m.label.errors %}
+                    {{ form_m.label(class="form-control from-control-lg is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form_m.label.errors %}                            
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form_m.label(class="form-control from-control-md") }}
+                {% endif %}
+            </div>
+            <div class="form-group">
+                {{ form_m.poids.label(class="form=control-label") }}
+                {% if form_m.poids.errors %}
+                    {{ form_m.poids(class="form-control from-control-lg is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form_m.poids.errors %}                           
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form_m.poids(class="form-control from-control-lg") }}
+                {% endif %}
+            </div>
+        </fieldset>
+        <div class="form-group">
+            <div class="form-group">
+                {{ form_m.submit(class="btn btn-outline-info") }}
+            </div>
+        </div>
+    </form>
+{% endblock content_for_criteres %}

@@ -1,0 +1,38 @@
+{% extends 'c_donneurs.html' %}
+
+{% block content_for_donneurs %}
+
+	<!--champs pour la recherche avec saisie automatique-->
+	{%if content['data'] %}
+		<table class="table table-bordered table-hover">
+			<thead>
+				<tr>
+					{% with columns = content['columns'] %}
+						{% if columns %}
+							{% for colonne in columns %}
+								<th>{{colonne}}</th>
+							{% endfor %}
+						{% endif %}
+					{% endwith %}
+				</tr>
+			</thead>
+			<tbody>
+				{% for line in content['data'] %}
+				<tr>
+					<td>{{line.id}}</td>
+					<td>{{line.nom}}</td>
+					<td>{{line.prenom}}</td>
+					<td>{{line.adresse}}</td>
+					<td>{{line.num_tele}}</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	{% else %}
+		<div class="alert alert-info text-center">
+			<span>لم يتم إضافــة أي متبــــــــرع . </span>
+		</div>
+	
+	{% endif %}
+
+{% endblock content_for_donneurs %}

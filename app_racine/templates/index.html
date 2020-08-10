@@ -1,0 +1,19 @@
+{% extends 'layout.html'%}
+{% block nav_bar %}
+    <nav class="navbar navbar-dark sticky-top bg-dark">
+        <a class="navbar-brand" href="#">زكـــاة</a>
+        
+            <ul class="navbar-nav navbar-right">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{url_for('login')}}">تسجيـــل الدخـــول <span class="sr-only">(current)</span></a>
+                </li>
+            </ul>
+        
+    </nav>
+{% endblock nav_bar %}
+{% block content %}
+    <h1>Page Acceuil</h1>
+{% endblock content %}
+{% block side_bar %}
+    
+{% endblock side_bar %}

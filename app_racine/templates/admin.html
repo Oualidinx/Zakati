@@ -1,0 +1,51 @@
+{% extends "layout.html" %}
+{% block nav_bar %}
+	<nav class="navbar navbar-dark sticky-top bg-dark">
+		<a class="navbar-brand mr-1" href="#">زكـــاة</a>		 
+		<ul class="navbar-nav navbar-right">
+			<li class="nav-item">
+				<a href="{{ url_for('logout') }}" class="nav-link">تسجيـــل الخروج</a>
+			</li>
+		</ul>
+	</nav>
+{% endblock nav_bar %}
+
+{% block side_bar %}
+	<nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+		<div class="sidebar-sticky pt-3">
+			<h2 class="h2">لوحــة التحكـــم</h2>
+			<ul class="navbar-nav flex-column">
+				<li class="nav-item">
+					<li class="active">
+						<a class="nav-link" href="{{ url_for('admin', arg='home')}}">احصائيـــــات</a>
+					</li>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="{{ url_for('admin', arg='Mosques') }}">المساجـــد</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="{{ url_for('admin', arg='Donneurs') }}">المتبرعين</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="{{ url_for('admin', arg='Criteres')}}">معايير تصنيف المحتاجين</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="{{ url_for('admin', arg='Projets')}}">المشاريــــع</a>
+				</li>
+			</ul>
+		</div>
+	</nav>
+	
+{% endblock side_bar %}
+{% block content %}
+	<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+		<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+			<h1 class="h1">إدارة زكـــاة</h1>
+		</div>
+		
+			<!-- le contenu, en premier temps, sera les stats en général comme 
+			le nombre des garants, la somme total des dons, le nombre des mosques,...,etc-->
+		
+	</main>
+{% endblock content %}
+

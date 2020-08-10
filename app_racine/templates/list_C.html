@@ -1,0 +1,37 @@
+{% extends 'c_criteres.html' %}
+
+{% block content_for_criteres %}
+
+	<!--champs pour la recherche avec saisie automatique-->
+	{%if content['data'] %}
+		<div class="table-responsive">
+			<table class="table  table-bordered table-hover">
+				<thead>
+					<tr>
+						{% with columns = content['columns'] %}
+							{% if columns %}
+								{% for colonne in columns %}
+									<th>{{colonne}}</th>
+								{% endfor %}
+							{% endif %}
+						{% endwith %}
+					</tr>
+				</thead>
+				<tbody>
+					{% for line in content['data'] %}
+						<tr>
+							<td>{{line.id}}</td>
+							<td>{{line.categorie}}</td>
+							<td>{{line.poids}}</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	{% else %}
+		<div class="alert alert-info text-center">
+			<span>لم يتم إضافــة أية معاييـــــــر </span>
+		</div>
+	{% endif %}
+</div>
+{%endblock content_for_criteres%}

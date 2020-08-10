@@ -1,0 +1,42 @@
+{% extends 'c_donnations.html' %}
+{% block header %}
+    {% if content %}
+        <h1 class="h2">مسجـــد {{ content.nom}} </h1>
+    {% else %}
+        <h1 class="h1">لوحة التحكــم</h1>
+    {% endif %}
+{% endblock header%}
+{% block  block_for_donations %}
+    {%if donnations['data'] %}
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        {% with columns = donnations['columns'] %}
+                            {% if columns %}
+                                {% for colonne in columns %}
+                                    <th>{{colonne}}</th>
+                                {% endfor %}
+                            {% endif %}
+                        {% endwith %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for line in donnations['data'] %}
+                    <tr>
+                        <td>{{line[0].id}}</td>
+                        <td>{{line[1]['nom']}} {{line[1]['prenom']}}</td>
+                        <td>{{line[0].montant}}</td>
+                        <td>{{line[0].date}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+	{% else %}
+		<div class="alert alert-info text-center">
+			<span>لم تتم أية عمليــــة</span>
+		</div>
+	
+	{% endif %}
+{% endblock block_for_donations %}

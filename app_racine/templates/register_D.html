@@ -1,0 +1,80 @@
+{% extends 'c_donneurs.html' %}
+{% block content_for_donneurs %}
+        <form method="POST">
+                {{ form_m.hidden_tag() }}
+                <fieldset class="form-group">
+                    <div class="form-group">
+                        {{ form_m.nom.label(class="form=control-label") }}
+                        {% if form_m.nom.errors %}
+                            {{ form_m.nom(class="form-control from-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form_m.nom.errors %}                            
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form_m.nom(class="form-control from-control-md") }}
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form_m.prenom.label(class="form=control-label") }}
+                        {% if form_m.prenom.errors %}
+                            {{ form_m.prenom(class="form-control from-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form_m.prenom.errors %}                           
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form_m.prenom(class="form-control from-control-lg") }}
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form_m.adresse.label(class="form=control-label") }}
+                        {{ form_m.adresse(class="form-control from-control-lg") }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_m.num_tele.label(class="form=control-label") }}
+                        {% if form_m.num_tele.errors %}
+                            {{ form_m.num_tele(class="form-control from-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form_m.num_tele.errors %}                          
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form_m.num_tele(class="form-control from-control-lg") }}
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form_m.password.label(class="form=control-label") }}
+                        {% if form_m.password.errors %}
+                            {{ form_m.password(class="form-control from-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form_m.password.errors %}
+                                   <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form_m.password(class="form-control from-control-lg") }}
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form_m.confirm_password.label(class="form=control-label") }}
+                        {% if form_m.confirm_password.errors %}
+                            {{ form_m.confirm_password(class="form-control from-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form_m.confirm_password.errors %}
+                                   <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form_m.confirm_password(class="form-control from-control-lg") }}
+                        {% endif %}
+                    </div>
+                </fieldset>
+                    <div class="form-group">
+                        {{ form_m.submit(class="btn btn-outline-info") }}
+                    </div>
+            </form> 
+{% endblock content_for_donneurs %}

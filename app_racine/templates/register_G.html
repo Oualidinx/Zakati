@@ -1,0 +1,223 @@
+{% extends 'mosque.html' %}
+{% block content %}
+    <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            {% if content   %}
+                <h1 class="h2">مسجـــد {{ content.nom}} </h1>
+            {% endif %}
+        </div>
+        <form method="POST">
+            {{form_m.hidden_tag()}}
+            <fieldset class="form-group" id="accordion">
+                <div class="card">
+                <div class="card-header">
+                    <a class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true">
+                        التعريــــف 
+                    </a>
+                    </div>
+                    <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+                        <div class="card-body">
+                            <div class="container">
+                                <div class="row form-group">
+                                    <div class="col-sm-3">
+                                        {{ form_m.nom.label(class="form-control-label") }}
+                                        {% if form_m.nom.errors %}
+                                            {{ form_m.nom(class="form-control from-control-lg is-invalid") }}
+                                            <div class="invalid-feedback">
+                                            {% for error in form_m.nom.errors %}                            
+                                                <span>{{ error }}</span>
+                                            {% endfor %}
+                                            </div>
+                                        {% else %}
+                                            {{ form_m.nom(class="form-control from-control-md") }}
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-sm-3">
+                                        {{ form_m.prenom.label(class="form-control-label") }}
+                                            {% if form_m.prenom.errors %}
+                                                {{ form_m.prenom(class="form-control from-control-lg is-invalid") }}
+                                                <div class="invalid-feedback">
+                                                    {% for error in form_m.prenom.errors %}                            
+                                                        <span>{{ error }}</span>
+                                                    {% endfor %}
+                                                </div>
+                                            {% else %}
+                                                {{ form_m.prenom(class="form-control from-control-md") }}
+                                            {% endif %}
+                                    </div>
+                                    <div class="col-sm-3">
+                                        {{ form_m.date_nais.label(class="form=control-label") }}
+                                        {% if form_m.date_nais.errors %}
+                                            {{ form_m.date_nais(class="form-control from-control-lg is-invalid") }}
+                                            <div class="invalid-feedback">
+                                                {% for error in form_m.date_nais.errors %}                           
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                        {% else %}
+                                            {{ form_m.date_nais(class=" form-control from-control-lg") }}
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-sm-3">
+                                        {{ form_m.num_extrait_nais.label(class="form-control-label") }}
+                                        {% if form_m.num_extrait_nais.errors %}
+                                            {{ form_m.num_extrait_nais(class="form-control from-control-lg is-invalid") }}
+                                            <div class="invalid-feedback">
+                                                {% for error in form_m.num_extrait_nais.errors %}                            
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                        {% else %}
+                                            {{ form_m.num_extrait_nais(class="form-control from-control-md") }}
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-sm-6">
+                                        {{ form_m.compte_ccp.label(class="form-control-label") }}
+                                        {% if form_m.compte_ccp.errors %}
+                                            {{ form_m.compte_ccp(class="col-sm-5 form-control from-control-lg is-invalid") }}
+                                            <div class="invalid-feedback">
+                                                {% for error in form_m.compte_ccp.errors %}                            
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                        {% else %}
+                                            {{ form_m.compte_ccp(class="col-sm-5 form-control from-control-md") }}
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-sm-6">
+                                        {{ form_m.cle_ccp.label(class="form-control-label") }}
+                                        {% if form_m.cle_ccp.errors %}
+                                            {{ form_m.cle_ccp(class="col-sm-3 form-control from-control-lg is-invalid") }}
+                                            <div class="invalid-feedback">
+                                                {% for error in form_m.cle_ccp.errors %}                            
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                        {% else %}
+                                            {{ form_m.cle_ccp(class="col-sm-3 form-control from-control-md") }}
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                        <div class="col-md-4">
+                                            {{ form_m.situation_sante.label(class="form-control-label") }}
+                                            <br>
+                                            <multi-input>
+                                                <input list="Sit-sante">
+                                                <datalist id="Sit-sante">
+                                                    {{ form_m.situation_sante(class="col-md-4 form-control from-control-md",row=20, multiple = False) }}        
+                                                </datalist>
+                                            </multi-input>
+                                        </div>
+                                </div>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            {{ form_m.situation_sociale.label(class="form-control-label") }}
+                                            <br>
+                                            <multi-input>
+                                                <input list="Garants">
+                                                    <datalist id="Garants">
+                                                        {{ form_m.situation_sociale(class="col-md-4 form-control form-control-md",row=20) }}
+                                                    </datalist>
+                                            </multi-input>                  
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-4">
+                                            {{ form_m.situation_familliale.label(class="form-control-label") }}
+                                            <br>
+                                            <multi-input>
+                                                <input list="Garants">
+                                                <datalist id="Garants">
+                                                    {{ form_m.situation_familliale(class="col-md-4 form-control form-control-md",row=20) }}
+                                                </datalist>
+                                            </multi-input>                  
+                                        </div>           
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div><br>
+                <div class="form-group">
+                    <div class="card">
+                        <div class="card-header">
+                            <a class="btn btn-link" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true">
+                                الأفراد المكفولــين
+                            </a>   
+                        </div>
+                        <div id="collapseTwo" class="collapse"  aria-labelledby="headingTwo" data-parent="#accordion">
+                            <div class="card-body ">
+                                <table id="entries" class="table table-hover">
+                                    <thead class="thead">
+                                        <tr>
+                                            <th scope = "col"><center>{{ form_m.famille[0].p_nom.label(class="form-control-label")}}</center></th>
+                                            <th scope = "col"><center>{{ form_m.famille[0].p_prenom.label(class="form-control-label")}}</center></th>
+                                            <th scope = "col"><center>{{ form_m.famille[0].p_date_nais.label(class="form-control-label")}}</center></th>
+                                            <th scope = "col"><center>{{ form_m.famille[0].education.label }}</center></th>
+                                            <th scope = "col" class="col-sm-1"><center>{{ form_m.famille[0].handicap.label }}</center></th>
+                                            <th scope = "col" class="col-sm-2"><center>{{ form_m.famille[0].malade_cronic.label }}</center></th>
+                                            <th scope = "col" class="col-sm-2"><center>{{ form_m.famille[0].p_relation_ship.label }}</center></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>     
+                                        <tr>
+                                            <td>{{ form_m.famille[0].p_nom(class="form-control form-control-sm") }}</td>
+                                            <td>{{ form_m.famille[0].p_prenom(class="form-control form-control-sm") }}</td>
+                                            <td>{{ form_m.famille[0].p_date_nais(class="form-control form-control-sm") }}</td>
+                                            <td align="center">{{ form_m.famille[0].education(class="form-check-input") }}</td>
+                                            <td align="center">{{ form_m.famille[0].handicap(class="form-check-input") }}</td>
+                                            <td align="center">{{ form_m.famille[0].malade_cronic(class="form-check-input") }}</td>
+                                            <td>{{ form_m.famille[0].p_relation_ship(class="form-control form-control-sm") }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div class="form-group">
+                                    <div align="left" class="form-group">
+                                        <input type="button" role="button" onclick ="ajoute_personne()" class = "btn btn-outline-primary" value="أضف فردا آخر">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+            <div class="form-group">
+                <div class="form-group">
+                    {{ form_m.submit(class="btn btn-outline-info") }}
+                </div>
+            </div>
+        </form>
+    </main>
+{% endblock content %}
+{% block scripts%}
+
+    <script src="{{ url_for('static' , filename='multiInput.js' ) }}"></script>
+    <script type="text/javascript">
+        var nb_entries = 2;
+        function ajoute_personne(){
+            console.log('here here here in js script');
+            var table = document.getElementById("entries");
+            var row = table.insertRow(nb_entries);
+            var cell0 = row.insertCell(0);
+            var cell1 = row.insertCell(1);
+            var cell2 = row.insertCell(2);
+            var cell3 = row.insertCell(3);
+            var cell4 = row.insertCell(4);
+            var cell5 = row.insertCell(5);
+            var cell6 = row.insertCell(6);
+            cell0.innerHTML = '<input class="form-control form-control-sm" type="text" name="p_'+nb_entries+'_nom"/>';
+            cell1.innerHTML = '<input class="form-control form-control-sm" type="text" name="p_'+nb_entries+'_prenom"/>';
+            cell2.innerHTML = '<input class="form-control form-control-sm" type="date(yyyy-mm-dd)"pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" name="p_'+nb_entries+'_date_nais"/>';
+            cell3.innerHTML = '<input class="form-check-input" type="checkbox" name="p_'+nb_entries+'_education" value="y"/>';
+            cell3.setAttribute("align","center");
+            cell4.innerHTML = '<input class="form-check-input" type="checkbox" name="p_'+nb_entries+'_handicap" value="y"/>';
+            cell4.setAttribute("align","center");
+            cell5.innerHTML = '<input class="form-check-input" type="checkbox" name="p_'+nb_entries+'_malade_cronic" value="y"/>';
+            cell5.setAttribute("align","center");
+            cell6.innerHTML = '<select class="form-control form-control-sm" name="p_'+nb_entries+'_relation_ship" ><option>اختـــر</option><option>ابن(ة)</option><option>زوجة</option><option>الأب</option><option>الأم</option><option>الجد</option><option>الجدة</option></select>';
+            nb_entries++;
+        }
+    </script>
+{% endblock scripts %}

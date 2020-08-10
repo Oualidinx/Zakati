@@ -1,0 +1,29 @@
+{%extends 'admin.html'%}
+
+{% block content %}
+<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+	<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+		<h2 class="h2">المساجـــد</h2>
+	
+		<div class="btn-toolbar mb-2 mb-md-0">
+			<a class="btn nav-link" href="{{ url_for('register_m') }}">إضــافة مسجــد</a>
+			<a class="btn nav-link" href="{{ url_for('list_mosques') }}">عرض قائمـــة المساجـــــد</a>
+		</div>
+	</div>
+    <div class="row">
+    	<div class="col-md">
+			{% with messages = get_flashed_messages(with_categories=true) %}
+				{% if messages %}
+					{% for categorie , message in messages %}
+					    <div class="alert alert-{{ categorie }}">
+					    	{{ message }}
+					    </div>
+					{% endfor %}
+				{% endif %}
+			{% endwith %}
+		</div>
+    </div>
+    {% block content_for_mosques %}
+	{% endblock content_for_mosques %}   
+</main>    	    
+{%endblock content%}
