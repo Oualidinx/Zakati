@@ -2,13 +2,14 @@
 {% block nav_bar %}
     <nav class="navbar navbar-dark sticky-top bg-dark">
         <a class="navbar-brand" href="#">زكـــاة</a>
-        
-            <ul class="navbar-nav navbar-right">
-                <li class="nav-item">
-                    <a class="nav-link" href="{{url_for('login')}}">تسجيـــل الدخـــول <span class="sr-only">(current)</span></a>
-                </li>
-            </ul>
-        
+        <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-toggle="collapse" data-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <ul class="navbar-nav navbar-right">
+            <li class="nav-item">
+                <a class="nav-link" href="{{url_for('login')}}">تسجيـــل الدخـــول <span class="sr-only">(current)</span></a>
+            </li>
+        </ul>
     </nav>
 {% endblock nav_bar %}
 {% block content %}
