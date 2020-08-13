@@ -2,6 +2,7 @@
 <html lang="ar" dir="rtl">  
   	<head>
 		<!--styles-->
+		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
 		<link rel="stylesheet" href="{{ url_for('static', filename='dashboard.css')}}">
 		<link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.css') }}">
 		<link rel="stylesheet" href="{{ url_for('static', filename='bootstrap-rtl.css') }}">
@@ -18,10 +19,14 @@
 		{% endif %}
 	</head>
 	<body>
+		<div class="header sticky-top bg-light thisFont">
+			<h3 class="h3" style="text-align: center;">وقــــف</h3>
+    		
+		</div>
 		{% block nav_bar %}
 			
 		{% endblock nav_bar %}
-		<div class="container-fluid">
+		<div class="container-fluid thisFont">
 			<div class="row">
 				{% block side_bar %}
 				{% endblock side_bar %}
