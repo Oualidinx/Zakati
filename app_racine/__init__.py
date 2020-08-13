@@ -12,7 +12,7 @@ db_parameters={
     'user' : 'oualid',
     'password': '',
     'host':'localhost',
-    'db_name':'mydb',
+    'db_name':'database',
     'charset' :'utf8'
 }
 application.config['SECRET_KEY'] = '5791628bb0b13ce0c676dfde280ba245'

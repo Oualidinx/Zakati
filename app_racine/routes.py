@@ -7,9 +7,11 @@ from flask_login import login_user, logout_user, current_user, login_required
 from app_racine import application, bcrypt, db
 from app_racine.models import Personne, situation_garant,situation_personne
 from app_racine.models import Mosque, Donneur, User, Projet, Fournit, Garant, Critere
+from app_racine.models import parametre_utils
 from app_racine.forms  import ProjectsForm,  RegisterGarantForm,register_new_donnation
 from app_racine.forms  import LoginForms, RequestResetForm,ResetPasswordForm,FormField,personnes_par_garant
 from app_racine.forms  import TokenForm, mosqueForm, donneurForm, critereForm,update_account_form
+from app_racine.forms import parameter_utils_form
 from app_racine.utils  import get_data_from_request,verify_presence,count_points
 
 @application.route('/mosque/form/<string:arg>')
@@ -385,3 +387,7 @@ def update_info(arg):
       form.nom_imam.data = mosque.imam
       form.num_tele.data = mosque.num_tele
    return render_template('update_mosque.html',content = mosque, form_m = form)
+@application.route('/admin/update', methods=['GET','POST'])
+def update_parameters():
+   form = parameter_utils_form()
+   latest_param_values = parametre_utils.query.all().order_by()

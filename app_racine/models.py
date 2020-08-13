@@ -4,12 +4,14 @@ from datetime import datetime
 from flask_login import UserMixin
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 
+class parametre_utils(db.Model):
+	id = db.Column(db.Integer, primary_key = True)
+	taux_scolaire = db.Column(db.Integer,default = -1)
+	taux_prime_m = db.Column(db.Integer, default = -1)
 class Critere(db.Model):
 	id = db.Column(db.String(40) , primary_key = True , nullable = False)
 	categorie = db.Column(db.String(50))
 	poids = db.Column(db.Float , nullable = False)
-	def __str__(self):
-		return 'Critere ( {a}, {b})'.format(a = self.id , b = str(self.poids))
 
 class Fournit(db.Model):
 	id = db.Column(db.Integer , primary_key = True , nullable=False)
@@ -37,8 +39,8 @@ class Mosque(db.Model):
 	num_tele = db.Column(db.String(10), nullable = False)
 	#email = db.Column(db.String(100))
 	user_account = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-	def __repr__(self):
-		return "Mosque ('{a}','{b}','{c}','{d}')".format(a = self.id , b = self.nom, c = self.num_tele,d = self.inscrits)
+	category = db.Column(db.String(6),nullable=False)
+	
 	
 	def print_resume(self):
 		return printPDF_resume_view()
@@ -124,13 +126,6 @@ class Projet(db.Model):
 	Description = db.Column(db.Text)
 	montant_estime = db.Column(db.Float, nullable = False, default = 0.0)
 	montant_quantise = db.Column(db.Float, default = 0.0)
-	def __str__(self):
-		return "Projet ('{a}','{title}',{b}','{c}','{d}')".format(
-			title = self.title,
-			b = self.Description,
-			c = str(self.montant_vise),
-			d = str(self.montant_quantise)
-		)
 
 @login.user_loader
 def load_user(user_id):
