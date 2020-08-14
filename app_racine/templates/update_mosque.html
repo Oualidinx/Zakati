@@ -6,6 +6,19 @@
                 <h1 class="h2">مسجـــد {{ content.nom}} </h1>
             {% endif %}
         </div>
+        <div class="row">
+            <div class="col-md">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for categorie , message in messages %}
+                            <div class="alert alert-{{ categorie }}">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+            </div>
+        </div>
         <form method="POST">
             {{ form_m.hidden_tag() }}
             <fieldset class="form-group" id="accordion">

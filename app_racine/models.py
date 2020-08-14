@@ -8,10 +8,15 @@ class parametre_utils(db.Model):
 	id = db.Column(db.Integer, primary_key = True)
 	taux_scolaire = db.Column(db.Integer,default = -1)
 	taux_prime_m = db.Column(db.Integer, default = -1)
+	def __repr__(self):
+	 return '<parametre id={}, taux_scolaire={}, taux_prime_m={}'.format(self.id, self.taux_scolaire, taux_prime_m)
+	 
 class Critere(db.Model):
 	id = db.Column(db.String(40) , primary_key = True , nullable = False)
 	categorie = db.Column(db.String(50))
 	poids = db.Column(db.Float , nullable = False)
+	def __repr(self):
+		return "<Critere id = {}, categorie={}, poids={}>".format(self.id, self.categorie, self.poids)
 
 class Fournit(db.Model):
 	id = db.Column(db.Integer , primary_key = True , nullable=False)
@@ -78,9 +83,7 @@ class Garant(db.Model):
 	actif = db.Column(db.Integer, default = 1)
 	familles = db.relationship('Personne' , backref="person", lazy = True)
 	mosque_id = db.Column(db.Integer , db.ForeignKey('mosque.id'), nullable = False)
-	def __repr__(self):
-		return "Garant('{a}' , '{b}', '{c}', {d})".format(a=self.nom , b=str(self.prenom), c = self.date_inscrit, d = str(self.Solde_points))
-
+	
 	def print_form(self):#return a response token
 		return printPDF_view(self.id)
 	
@@ -97,9 +100,7 @@ class Personne(db.Model):
 	date_naissance = db.Column(db.DateTime , nullable = False)
 	relation_ship = db.Column(db.String(6) , nullable = False, default = "")
 	garant_id = db.Column(db.String(10), db.ForeignKey('garant.id'), nullable = False) #le compte ccp
-	def __repr__(self):
-		return "Personne:{a}{b}{c}{d}".format(a=self.nom,b = self.prenom, c = self.date_naissance, d=self.garant_id )
-
+	
 participe = db.Table(
 	'participe',
 	db.Column('donneur_id',db.Integer , db.ForeignKey('donneur.id'), primary_key = True,nullable = False),
@@ -135,8 +136,6 @@ class User(db.Model, UserMixin):
 	id =  db.Column(db.Integer, primary_key = True, nullable = False )
 	username = db.Column(db.String(50), nullable = False)
 	password = db.Column(db.String(100), nullable = False)
-	def __repr__(self):
-		return "User('{a}','{b}')".format(a = str(self.id), b = self.username)
 	
 	def get_reset_token(self, expires_sec = 1800):
 		s = Serializer(application.config['SECRET_KEY'], expires_sec)

@@ -167,14 +167,15 @@ class register_new_donnation(FlaskForm):
     		raise ValidationError("قيمــــة خاطئــــة")
 
 class parameter_utils_form(FlaskForm):
-	taux_scolaire = IntegerField("قيمة المنحة للفرد الواحد")
-	taux_prime_m = IntegerField("قيمة المبلغ للفرد (خاص بالمنحة الشهرية)")
+	taux_scolaire = StringField("قيمة المنحة للفرد الواحد", validators=[DataRequired()])
+	taux_prime_m = StringField("قيمة المبلغ للفرد (خاص بالمنحة الشهرية)",validators=[DataRequired()])
+	submit = SubmitField("ارســــــال")
 	def validate_taux_scolaire(self, taux_scolaire):
-		if int(taux_scolaire)<= -1 and int(taux_prime_m) <= -1:
-			raise ValidationError('الرجــاء تعريف  قيمة واحدة على الأقل')
+		if int(taux_scolaire.data) <= 0:
+			raise ValidationError('الرجــاء تعريف  القيمة بطريقة صحيحة')
 	
 	def validate_taux_prime_m(self, taux_prime_m):
-		if int(taux_scolaire)<= -1 and int(taux_prime_m) <= -1:
-			raise ValidationError('الرجــاء تعريف  قيمة واحدة على الأقل')
+		if int(taux_prime_m.data) <= 0:
+			raise ValidationError('الرجــاء تعريف  القيمة بطريقة صحيحة')
 	
 	

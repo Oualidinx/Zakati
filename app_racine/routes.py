@@ -377,10 +377,8 @@ def update_info(arg):
    if form.validate_on_submit():
       mosque.imam = form.nom_imam.data
       mosque.num_tele = form.num_tele.data
-      print("Num_tele : {}".format(form.num_tele.data))
       db.session.add(mosque)
       db.session.commit()
-      print(mosque)
       flash("تمت عملية التعديل بنجاح", "success")
       return redirect(url_for('mosque', arg=arg))
    elif request.method == 'GET':
@@ -390,4 +388,15 @@ def update_info(arg):
 @application.route('/admin/update', methods=['GET','POST'])
 def update_parameters():
    form = parameter_utils_form()
-   latest_param_values = parametre_utils.query.all().order_by()
+   lastest_parametre = parametre_utils.query.all()[0]
+   if form.validate_on_submit():
+      lastest_parametre.taux_scolaire = int(form.taux_scolaire.data)
+      lastest_parametre.taux_prime_m = int(form.taux_prime_m.data)
+      db.session.add(lastest_parametre)
+      db.session.commit()
+      flash("تمت العملية بنجـــاح", "success")
+      return redirect(url_for('admin',arg='home'))
+   elif request.method =="GET":
+      form.taux_prime_m.data = lastest_parametre.taux_prime_m
+      form.taux_scolaire.data = lastest_parametre.taux_scolaire
+      return render_template('update_parametres.html', form_m = form)
