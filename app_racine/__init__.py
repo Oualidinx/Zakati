@@ -6,7 +6,7 @@ from flask_login.login_manager import LoginManager
 import arabic_reshaper as reshaper
 from flask_bcrypt import Bcrypt
 
-application = Flask(__name__)
+app = Flask(__name__)
 db_parameters={
     'driver' : 'mysql',
     'user' : 'oualid',
@@ -15,15 +15,15 @@ db_parameters={
     'db_name':'database',
     'charset' :'utf8'
 }
-application.config['SECRET_KEY'] = '5791628bb0b13ce0c676dfde280ba245'
+app.config['SECRET_KEY'] = '5791628bb0b13ce0c676dfde280ba245'
 
 
-application.config['SQLALCHEMY_DATABASE_URI'] = "{driver}://{user}:{password}@{host}/{db_name}?charset={charset}".format(**db_parameters)
+app.config['SQLALCHEMY_DATABASE_URI'] = "{driver}://{user}:{password}@{host}/{db_name}?charset={charset}".format(**db_parameters)
 
-application.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
-db = SQLAlchemy(application)
-bcrypt = Bcrypt(application)
-login = LoginManager(app = application)
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
+db = SQLAlchemy(app)
+bcrypt = Bcrypt(app)
+login = LoginManager(app = app)
 
 login.login_view = 'login'
 login.login_message_category = "info"

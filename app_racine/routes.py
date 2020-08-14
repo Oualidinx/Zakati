@@ -4,7 +4,7 @@ from bidi import algorithm as algo
 from flask_wtf import FlaskForm
 from flask import render_template, redirect, flash, session, url_for, request
 from flask_login import login_user, logout_user, current_user, login_required
-from app_racine import application, bcrypt, db
+from app_racine import app, bcrypt, db
 from app_racine.models import Personne, situation_garant,situation_personne
 from app_racine.models import Mosque, Donneur, User, Projet, Fournit, Garant, Critere
 from app_racine.models import parametre_utils
@@ -14,26 +14,26 @@ from app_racine.forms  import TokenForm, mosqueForm, donneurForm, critereForm,up
 from app_racine.forms import parameter_utils_form
 from app_racine.utils  import get_data_from_request,verify_presence,count_points
 
-@application.route('/mosque/form/<string:arg>')
+@app.route('/mosque/form/<string:arg>')
 def print_form(arg):
    garant = Garant.query.filter_by(id = arg).first()
    if garant:
       return garant.print_form()
    return "not Found"
 
-@application.route("/mosque/table")
+@app.route("/mosque/table")
 def print_table():
    temp = Mosque.query.filter_by(user_account = session['user_id']).first()
    if temp:
       return temp.print_resume()
    return "not found"
 
-@application.route("/")
-@application.route("/accueil")
+@app.route("/")
+@app.route("/accueil")
 def accueil():
    return render_template('index.html', today = datetime.now().date())
 
-@application.route("/admin/<string:arg>")
+@app.route("/admin/<string:arg>")
 @login_required
 def admin(arg):
     global contents
@@ -61,7 +61,7 @@ def admin(arg):
                            today = datetime.now().date()
                         )
 
-@application.route('/admin/Mosques/listing')
+@app.route('/admin/Mosques/listing')
 @login_required
 def list_mosques():
    content = {
@@ -70,7 +70,7 @@ def list_mosques():
            }
    return render_template('list_m.html', content = content)      
 
-@application.route('/admin/Donneurs/listing')
+@app.route('/admin/Donneurs/listing')
 @login_required
 def list_donneurs():
     operations = {
@@ -79,7 +79,7 @@ def list_donneurs():
             }
     return render_template('list_D.html', content = operations)
 
-@application.route('/admin/Criteres/listing')
+@app.route('/admin/Criteres/listing')
 @login_required
 def list_criteres():
     content = {
@@ -88,7 +88,7 @@ def list_criteres():
             }
     return render_template('list_C.html', content = content)
 
-@application.route('/admin/Projets/listing')
+@app.route('/admin/Projets/listing')
 def list_projects():
    content= {
            'data': [x for x in contents['Projets']['data']],
@@ -96,13 +96,13 @@ def list_projects():
    }
    return render_template('list_P.html', content= content)
 
-@application.route("/mosque/<int:arg>")
+@app.route("/mosque/<int:arg>")
 @login_required 
 def mosque(arg):
     mosque_content = Mosque.query.filter_by( id = arg).first()
     return render_template('mosque.html', mosque_name = mosque_content.nom, content = mosque_content)
 
-@application.route("/mosque/listing")
+@app.route("/mosque/listing")
 def list_garants():
     member = Mosque.query.filter_by(user_account = session['user_id']).first()
     member.tendance()
@@ -117,7 +117,7 @@ def list_garants():
     }
     return render_template('list_garants.html', content = g_content)
 
-@application.route("/donneur")
+@app.route("/donneur")
 @login_required
 def donneur():
    content = {
@@ -126,7 +126,7 @@ def donneur():
    }
    return render_template('donneur.html',contents = content, title="زكـاة : متبرع")
 
-@application.route("/login", methods=['GET', 'POST'])
+@app.route("/login", methods=['GET', 'POST'])
 def login():
    if current_user.is_authenticated:
       m = Mosque.query.filter_by(user_account=session['user_id']).first()     
@@ -153,12 +153,12 @@ def login():
           flash('خطأ في المعلومات يرجى التأكد و إعادة المحاولة', 'danger')
    return render_template('login.html', title = "زكاة : تسجيل الدخول", form = form)
 
-@application.route("/logout")
+@app.route("/logout")
 def logout():
    logout_user()
    return redirect(url_for("accueil"))
 
-@application.route('/request_token', methods=['GET', 'POST'])
+@app.route('/request_token', methods=['GET', 'POST'])
 def request_token():
    form = RequestResetForm()
    if form.validate_on_submit():
@@ -167,20 +167,20 @@ def request_token():
       return redirect('verify_token')
    return render_template('request_token.html', title  = "استعادة كلمة المرور", form = form)
 
-@application.route("/verify_token", methods=['GET', 'POST'])#E/S
+@app.route("/verify_token", methods=['GET', 'POST'])#E/S
 def verify_token():
    form = TokenForm()
    if form.validate_on_submit():
       return redirect('reset_password')
    return render_template('verify_token.html', title="استعادة كلمة المرور", form = form)
 
-@application.route("/reset_password", methods=['GET', 'POST'])#E/S
+@app.route("/reset_password", methods=['GET', 'POST'])#E/S
 def reset_password():
    form = ResetPasswordForm()
    pass
    return render_template('reset_password.html', title ="تغيير كلمة المرور", form = form)
 
-@application.route("/admin/Mosques/register", methods=['GET', 'POST'])
+@app.route("/admin/Mosques/register", methods=['GET', 'POST'])
 @login_required
 def register_m():
    form = mosqueForm()
@@ -209,7 +209,7 @@ def register_m():
       return redirect(url_for('admin', arg='Mosques'))
    return render_template('register_m.html' , form_m = form)
 
-@application.route("/admin/Donneurs/register", methods=['GET', 'POST'])
+@app.route("/admin/Donneurs/register", methods=['GET', 'POST'])
 @login_required
 def register_donneurs():
     form = donneurForm()
@@ -237,7 +237,7 @@ def register_donneurs():
         return redirect(url_for('admin', arg = 'Donneurs'))
     return render_template('register_D.html', form_m = form)
 
-@application.route('/admin/Criteres/register', methods=['GET', 'POST'])
+@app.route('/admin/Criteres/register', methods=['GET', 'POST'])
 @login_required
 def register_critere():
     form = critereForm()
@@ -253,7 +253,7 @@ def register_critere():
         return redirect(url_for('admin', arg='Criteres'))
     return render_template('register_C.html', form_m = form)
 
-@application.route('/admin/Projets/register', methods=['GET', 'POST'])
+@app.route('/admin/Projets/register', methods=['GET', 'POST'])
 def register_projets():
     form = ProjectsForm()
     if form.validate_on_submit():
@@ -268,7 +268,7 @@ def register_projets():
         return redirect(url_for('admin', arg='Projets'))
     return render_template('register_P.html', form_m = form)
 
-@application.route('/mosque/register', methods=['GET', 'POST'])
+@app.route('/mosque/register', methods=['GET', 'POST'])
 @login_required
 def register_garants():
     print("session id = {}".format(int(session['user_id'])))
@@ -328,7 +328,7 @@ def register_garants():
         return redirect(url_for('register_garants'))
     return render_template('register_G.html',content = membre, form_m = form)
 
-@application.route("/mosque/Donnations/register",methods=['GET','POST'])
+@app.route("/mosque/Donnations/register",methods=['GET','POST'])
 @login_required
 def register_donnation():
    form = register_new_donnation()
@@ -346,7 +346,7 @@ def register_donnation():
       return redirect(url_for('register_donnation'))
    return render_template("register_don.html",content = membre,form_m= form)
 
-@application.route("/mosque/Donnations")
+@app.route("/mosque/Donnations")
 @login_required
 def list_dons():
    mosque = Mosque.query.filter_by(user_account = session['user_id']).first()
@@ -367,7 +367,7 @@ def list_dons():
          }
    return render_template('list_dons.html', donnations= donnations, content=mosque)
 
-@application.route("/mosque/Update/<int:arg>", methods=['GET','POST'])
+@app.route("/mosque/Update/<int:arg>", methods=['GET','POST'])
 @login_required
 def update_info(arg):
    mosque = Mosque.query.get(int(arg))
@@ -385,7 +385,7 @@ def update_info(arg):
       form.nom_imam.data = mosque.imam
       form.num_tele.data = mosque.num_tele
    return render_template('update_mosque.html',content = mosque, form_m = form)
-@application.route('/admin/update', methods=['GET','POST'])
+@app.route('/admin/update', methods=['GET','POST'])
 def update_parameters():
    form = parameter_utils_form()
    lastest_parametre = parametre_utils.query.all()[0]

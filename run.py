@@ -1,4 +1,4 @@
-from app_racine import application
+from app_racine import app
 #password :ReDnkQeWsp4Jakj4FTk2
 if __name__=="__main__":
-    application.run(debug=1)
+    app.run(debug=1)
