@@ -113,7 +113,7 @@ def list_garants():
         'id': member.id,
         'name': member.nom,
         'data': [x for x in member.inscrits],
-        'columns': ['ح.ب.ج','اســـم الكفيل','لقب الكفيل','ت. الميلاد','عدد الأســـهم','معلومات حول']
+        'columns': ['ح.ب.ج','اســـم الكفيل','لقب الكفيل','ت. الميلاد','المبلـــغ','معلومات حول']
     }
     return render_template('list_garants.html', content = g_content)
 
