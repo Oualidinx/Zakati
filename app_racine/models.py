@@ -9,7 +9,7 @@ class parametre_utils(db.Model):
 	taux_scolaire = db.Column(db.Integer,default = -1)
 	taux_prime_m = db.Column(db.Integer, default = -1)
 	def __repr__(self):
-	 return '<parametre id={}, taux_scolaire={}, taux_prime_m={}'.format(self.id, self.taux_scolaire, taux_prime_m)
+	 return '<parametre id={}, taux_scolaire={}, taux_prime_m={}'.format(self.id, self.taux_scolaire, self.taux_prime_m)
 class Critere(db.Model):
 	id = db.Column(db.String(40) , primary_key = True , nullable = False)
 	categorie = db.Column(db.String(50))

@@ -3,7 +3,6 @@
 {% block content %}
 <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
 	<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-	  
 		{% if content['name']%}
 			<h1 class="h2">مسجـــد {{ content['name']}} </h1>
 		{% endif %}
@@ -13,6 +12,20 @@
 		
 		</div>
 	</div>
+		<div class="dropdown">
+			<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				عرض القائمـة حسب المشروع
+			</button>
+			<div class="dropdown-menu" ari(a-labelledby="dropdownMenuButton">
+				
+					<a class="dropdown-item" href="{{ url_for('list_garants', arg='*') }}">
+						الكـــل
+					</a>
+					<a class="dropdown-item" href="{{ url_for('list_garants',  arg='prime_m')}}">المنحة الشهرية
+					</a>
+					<a class="dropdown-item" href="{{ url_for('list_garants', arg='prime_s' )}}">منحـة التمدرس</a>
+			</div>
+		  </div>
 			{%if content['data'] %}
 			<div class="table-responsive">
 				<table class="table table-bordered table-hover">

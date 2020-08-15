@@ -102,20 +102,24 @@ def mosque(arg):
     mosque_content = Mosque.query.filter_by( id = arg).first()
     return render_template('mosque.html', mosque_name = mosque_content.nom, content = mosque_content)
 
-@app.route("/mosque/listing")
-def list_garants():
-    member = Mosque.query.filter_by(user_account = session['user_id']).first()
-    member.tendance()
-    g_list = Garant.query.filter_by(mosque_id = member.id)
-    for person in g_list:
-       person.get_total_sum()
-    g_content = {
+@app.route("/mosque/listing/<string:arg>")
+def list_garants(arg):
+   member = Mosque.query.filter_by(user_account = session['user_id']).first()
+   member.tendance()
+   g_list = Garant.query.filter_by(mosque_id = member.id)
+   for person in g_list:
+      person.get_total_sum()
+   if arg=="*":
+      g_content = {
         'id': member.id,
         'name': member.nom,
         'data': [x for x in member.inscrits],
         'columns': ['ح.ب.ج','اســـم الكفيل','لقب الكفيل','ت. الميلاد','المبلـــغ','معلومات حول']
-    }
-    return render_template('list_garants.html', content = g_content)
+      }
+   elif arg=="prime_m":
+      
+      pass
+   return render_template('list_garants.html', content = g_content)
 
 @app.route("/donneur")
 @login_required

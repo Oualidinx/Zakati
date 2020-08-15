@@ -12,9 +12,27 @@ from datetime import datetime
 from bidi.algorithm import get_display
 from arabic_reshaper import arabic_reshaper as reshaper
 
-from app_racine.models import Mosque,Critere,Garant,User
+from app_racine.models import Mosque,Critere,Garant,User, parametre_utils
 from app_racine.models import situation_personne,situation_garant,Personne
 from app_racine import db
+
+def is_conserned_prime_s(garant_id):
+    garant = Garant.query.filter_by(id=garant_id).first()
+    taux_scolaire = parametre_utils.query.all()[0].taux_scolaire
+    for person in garant.familles:
+        situation = situation_personne.query.filter_by(personne_id = person.id).filter_by(critere_id='فرد متمدرس').all()
+    if len(situation) > 0:
+        return len(situation) * taux_scolaire
+    return False
+
+def is_conserned_prime_m(garant_id):
+    garant = Garant.query.filter_by(id=garant_id)
+    taux_prime_m = parametre_utils.query.all()[0].taux_prime_m
+    is_jobless = 'بطال' in situation_garant.query.filter_by(garant_id = garant_id) 
+    if is_jobless:
+        return (len(garant.familles)+1)*taux_prime_m
+    return ((len(garant.familles)+1)*taux_prime_m) - 18000
+
 def get_data_from_request(requete,garant_id):
     count = 2
     while True:
