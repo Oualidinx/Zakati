@@ -25,7 +25,7 @@ def is_conserned_prime_s(garant_id):
         return len(situation) * taux_scolaire
     return False
 
-def is_conserned_prime_m(garant_id):
+def prime_m(garant_id):
     garant = Garant.query.filter_by(id=garant_id)
     taux_prime_m = parametre_utils.query.all()[0].taux_prime_m
     is_jobless = 'بطال' in situation_garant.query.filter_by(garant_id = garant_id) 

@@ -13,6 +13,7 @@ from app_racine.forms  import LoginForms, RequestResetForm,ResetPasswordForm,For
 from app_racine.forms  import TokenForm, mosqueForm, donneurForm, critereForm,update_account_form
 from app_racine.forms import parameter_utils_form
 from app_racine.utils  import get_data_from_request,verify_presence,count_points
+from app_racine.utlis import prime_m, is_concerned_prime_s
 
 @app.route('/mosque/form/<string:arg>')
 def print_form(arg):
@@ -106,19 +107,29 @@ def mosque(arg):
 def list_garants(arg):
    member = Mosque.query.filter_by(user_account = session['user_id']).first()
    member.tendance()
-   g_list = Garant.query.filter_by(mosque_id = member.id)
+   g_list = Garant.query.filter_by(mosque_id = member.id).all()
    for person in g_list:
       person.get_total_sum()
-   if arg=="*":
-      g_content = {
+   g_content = {
         'id': member.id,
         'name': member.nom,
-        'data': [x for x in member.inscrits],
+        'data': g_list,
         'columns': ['ح.ب.ج','اســـم الكفيل','لقب الكفيل','ت. الميلاد','المبلـــغ','معلومات حول']
       }
-   elif arg=="prime_m":
-      
-      pass
+   if arg=="prime_m":
+      concerned = []
+      for person in g_list:
+         concerned.append(person, prime_m(person.id))
+      g_content['data'] = concerned
+      g_content['columns'] =['ح.ب.ج','اســـم الكفيل','لقب الكفيل','ت. الميلاد','مبلغ المنحة الشهرية','معلومات حول']
+   elif arg=="prime_s":
+      concerned = []
+      for person in g_list:
+         value = is_concerned_prime_s(person.id)
+         if value != False:
+            concerned.append((person,value))
+      g_content['data'] = concerned
+      g_content['columns'] =['ح.ب.ج','اســـم الكفيل','لقب الكفيل','ت. الميلاد','مبلغ منحة التمدرس','معلومات حول']
    return render_template('list_garants.html', content = g_content)
 
 @app.route("/donneur")

@@ -43,11 +43,11 @@
 					<tbody>
 						{% for line in content['data'] %}
 							<tr>
-								<td>{{line.id}}</td>
-								<td>{{line.prenom}}</td>
-								<td>{{line.nom}}</td>
-								<td>{{line.date_nais}}</td>
-								<td>{{line.Solde_part_financiere}}</td>
+								<td>{{line[0].id}}</td>
+								<td>{{line[0].prenom}}</td>
+								<td>{{line[0].nom}}</td>
+								<td>{{line[0].date_nais}}</td>
+								<td>{{line[1]}}</td>
 								<td align="center"><a href="{{url_for('print_form', arg=line.id)}}" target="_blank" class="btn btn-info btn-sm">طبـــاعة</a></td>
 							</tr>
 						{% endfor %}
