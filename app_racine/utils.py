@@ -16,22 +16,27 @@ from app_racine.models import Mosque,Critere,Garant,User, parametre_utils
 from app_racine.models import situation_personne,situation_garant,Personne
 from app_racine import db
 
-def is_conserned_prime_s(garant_id):
+def is_concerned_prime_s(garant_id):
     garant = Garant.query.filter_by(id=garant_id).first()
     taux_scolaire = parametre_utils.query.all()[0].taux_scolaire
-    for person in garant.familles:
-        situation = situation_personne.query.filter_by(personne_id = person.id).filter_by(critere_id='فرد متمدرس').all()
+    situation=[]
+    for person in garant.familles: 
+        try: 
+            temp = situation_personne.query.filter_by(personne_id = person.id).filter_by(critere_id='فرد متمدرس').first().personne_id 
+            situation.append(temp) 
+        except: 
+            pass
     if len(situation) > 0:
-        return len(situation) * taux_scolaire
+       return len(situation) * taux_scolaire
     return False
 
 def prime_m(garant_id):
-    garant = Garant.query.filter_by(id=garant_id)
+    garant = Garant.query.filter_by(id=garant_id).first()
     taux_prime_m = parametre_utils.query.all()[0].taux_prime_m
     is_jobless = 'بطال' in situation_garant.query.filter_by(garant_id = garant_id) 
     if is_jobless:
         return (len(garant.familles)+1)*taux_prime_m
-    return ((len(garant.familles)+1)*taux_prime_m) - 18000
+    return 18000 -((len(garant.familles)+1)*taux_prime_m) 
 
 def get_data_from_request(requete,garant_id):
     count = 2

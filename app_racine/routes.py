@@ -13,7 +13,7 @@ from app_racine.forms  import LoginForms, RequestResetForm,ResetPasswordForm,For
 from app_racine.forms  import TokenForm, mosqueForm, donneurForm, critereForm,update_account_form
 from app_racine.forms import parameter_utils_form
 from app_racine.utils  import get_data_from_request,verify_presence,count_points
-from app_racine.utlis import prime_m, is_concerned_prime_s
+from app_racine.utils import prime_m, is_concerned_prime_s
 
 @app.route('/mosque/form/<string:arg>')
 def print_form(arg):
@@ -103,8 +103,8 @@ def mosque(arg):
     mosque_content = Mosque.query.filter_by( id = arg).first()
     return render_template('mosque.html', mosque_name = mosque_content.nom, content = mosque_content)
 
-@app.route("/mosque/listing/<string:arg>")
-def list_garants(arg):
+@app.route("/mosque/listing/<string:argument>")
+def list_garants(argument):
    member = Mosque.query.filter_by(user_account = session['user_id']).first()
    member.tendance()
    g_list = Garant.query.filter_by(mosque_id = member.id).all()
@@ -116,20 +116,27 @@ def list_garants(arg):
         'data': g_list,
         'columns': ['ح.ب.ج','اســـم الكفيل','لقب الكفيل','ت. الميلاد','المبلـــغ','معلومات حول']
       }
-   if arg=="prime_m":
+   if argument=="prime_m":
       concerned = []
+      amounts = []
       for person in g_list:
-         concerned.append(person, prime_m(person.id))
+         concerned.append(person)
+         person.Solde_part_financiere = prime_m(person.id)
       g_content['data'] = concerned
       g_content['columns'] =['ح.ب.ج','اســـم الكفيل','لقب الكفيل','ت. الميلاد','مبلغ المنحة الشهرية','معلومات حول']
-   elif arg=="prime_s":
+      return render_template('list_garants.html', content = g_content, amounts = amounts)
+   elif argument=="prime_s":
       concerned = []
+      amounts = []
       for person in g_list:
          value = is_concerned_prime_s(person.id)
-         if value != False:
-            concerned.append((person,value))
+         print(value)
+         if value :
+            concerned.append(person)
+            person.Solde_part_financiere = value
       g_content['data'] = concerned
       g_content['columns'] =['ح.ب.ج','اســـم الكفيل','لقب الكفيل','ت. الميلاد','مبلغ منحة التمدرس','معلومات حول']
+      return render_template('list_garants.html', content = g_content, amounts = amounts)
    return render_template('list_garants.html', content = g_content)
 
 @app.route("/donneur")

@@ -18,12 +18,12 @@
 			</button>
 			<div class="dropdown-menu" ari(a-labelledby="dropdownMenuButton">
 				
-					<a class="dropdown-item" href="{{ url_for('list_garants', arg='*') }}">
+					<a class="dropdown-item" href="{{ url_for('list_garants', argument='*') }}">
 						الكـــل
 					</a>
-					<a class="dropdown-item" href="{{ url_for('list_garants',  arg='prime_m')}}">المنحة الشهرية
+					<a class="dropdown-item" href="{{ url_for('list_garants',  argument='prime_m')}}">المنحة الشهرية
 					</a>
-					<a class="dropdown-item" href="{{ url_for('list_garants', arg='prime_s' )}}">منحـة التمدرس</a>
+					<a class="dropdown-item" href="{{ url_for('list_garants', argument='prime_s' )}}">منحـة التمدرس</a>
 			</div>
 		  </div>
 			{%if content['data'] %}
@@ -43,22 +43,20 @@
 					<tbody>
 						{% for line in content['data'] %}
 							<tr>
-								<td>{{line[0].id}}</td>
-								<td>{{line[0].prenom}}</td>
-								<td>{{line[0].nom}}</td>
-								<td>{{line[0].date_nais}}</td>
-								<td>{{line[1]}}</td>
+								<td>{{line.id}}</td>
+								<td>{{line.prenom}}</td>
+								<td>{{line.nom}}</td>
+								<td>{{line.date_nais}}</td>
+								<td>{{line.Solde_part_financiere}}</td>
 								<td align="center"><a href="{{url_for('print_form', arg=line.id)}}" target="_blank" class="btn btn-info btn-sm">طبـــاعة</a></td>
 							</tr>
 						{% endfor %}
 					</tbody>
 				</table>
 			</div>
-			
-					
 			{% else %}
 				<div class="alert alert-info text-center">
-					<span>لم يتم إضافــة أي محتـــــــاج </span>
+					<span>  لا يوجـــد</span>
 				</div>
 			
 			{% endif %}
