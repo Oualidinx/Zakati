@@ -28,4 +28,4 @@ login = LoginManager(app = app)
 login.login_view = 'login'
 login.login_message_category = "info"
 login.login_message = reshaper.reshape(u"هـذه الخدمة تتطلب تسجيل الدخول")
-from app_racine import routes
+#from app_racine import routes
