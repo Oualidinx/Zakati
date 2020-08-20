@@ -100,12 +100,13 @@ def list_projects():
 @app.route("/mosque/<int:arg>")
 @login_required 
 def mosque(arg):
-    mosque_content = {
+   mosque_content = {
          "mosque": Mosque.query.filter_by( id = arg).first(),
-         "somme_total" : sum([x.montant for x in Fournit.query.filter_by(mosque_id=arg).all()])
+         "somme_total" : sum([x.montant for x in Fournit.query.filter_by(mosque_id=arg).all()]),
+         "total_donneurs" : sum([x.donneur_id for x in Fournit.query.filter_by(mosque_id =  arg).all()])
        }
 
-    return render_template('mosque.html', content = mosque_content)
+   return render_template('mosque.html', content = mosque_content)
 
 @app.route("/mosque/listing/<string:argument>")
 def list_garants(argument):
