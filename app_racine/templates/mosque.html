@@ -8,7 +8,7 @@
 		<h2 class="h2">لوحــة التحكـــم</h2>
 		<ul class="navbar-nav flex-column">
 			<li class="nav-item">
-				<a class="nav-link " href="{{ url_for('mosque', arg=content.id) }}">
+				<a class="nav-link " href="{{ url_for('mosque', arg=content['mosque'].id) }}">
 					الرئيسيــــة 
 				</a>
 			</li>
@@ -23,16 +23,14 @@
 				</a>
 			</li>
 			<li class="nav-item">
-				<a class="nav-link" href="{{ url_for('update_info', arg = content.id) }}" >
+				<a class="nav-link" href="{{ url_for('update_info', arg = content['mosque'].id) }}" >
 					
 					تعديل المعلومات
 				</a>
 			</li>
 			
-
 			<li class="nav-item">
 				<a class="nav-link" href="{{ url_for('list_garants', argument='*') }}">
-					
 					عرض قائمــة المحتاجيـــن
 				</a>
 				</li>
@@ -65,12 +63,57 @@
 
 	<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
 		<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-			{% if mosque_name %}
-				<h1 class="h2">مسجـــد {{ mosque_name }} </h1>
+			{% if content %}
+				<h1 class="h1">مسجـــد {{ content.nom }} </h1>
 			{% else %}
 				<h1 class="h1">لوحــة التحكـــم</h1>
 			{% endif %}
 		</div>
+		<div class="container">
+			<div class="row">
+				<div class="col-md-4">
+					<div class="card">
+						<div class="card-header">
+							<h5 class="h5">
+								عـدد المسجليـن
+							</h5>
+						</div>
+						<div class="text-right card-body">
+							<h1 class="h1">
+								{{ content['mosque'].inscrits|length }}
+							</h1>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="card">
+						<div class="card-header">
+							<h5 class="h5">
+								
+								الميــزان المالي
+
+							</h5>
+						</div>
+						<div class="text-right card-body">
+							<h1 class="h1">
+								{{ content['somme_total'] }} د.ج
+							</h1>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="card">
+						<div class="card-header">
+							<h5 class="h5">
+								عـدد عمليـات التوزيــع
+							</h5>
+						</div>
+						<div class="card-body">
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 	</main>
-	
 {% endblock content %}
