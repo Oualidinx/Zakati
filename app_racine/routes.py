@@ -41,7 +41,8 @@ def admin(arg):
     contents = {
         'Mosques': {
                         'data' : Mosque.query.all(),
-                        'template':'c_mosques.html'
+                        'template':'c_mosques.html',
+                        'total_inscrits': sum([len(x.inscrits) for x in Mosque.query.all() ])
         },
         'Donneurs': {
                         'data' : Donneur.query.all(),
@@ -100,12 +101,12 @@ def list_projects():
 @app.route("/mosque/<int:arg>")
 @login_required 
 def mosque(arg):
+   mosque_content = dict()
    mosque_content = {
-         "mosque": Mosque.query.filter_by( id = arg).first(),
+         "current_m": Mosque.query.filter_by(id=arg).first(),
          "somme_total" : sum([x.montant for x in Fournit.query.filter_by(mosque_id=arg).all()]),
-         "total_donneurs" : sum([x.donneur_id for x in Fournit.query.filter_by(mosque_id =  arg).all()])
-       }
-
+         "total_donneurs" : len([x.donneur_id for x in Fournit.query.filter_by(mosque_id =  arg).all()])
+      }
    return render_template('mosque.html', content = mosque_content)
 
 @app.route("/mosque/listing/<string:argument>")
@@ -116,8 +117,7 @@ def list_garants(argument):
    for person in g_list:
       person.get_total_sum()
    g_content = {
-        'id': member.id,
-        'name': member.nom,
+        'current_m':member,
         'data': g_list,
         'columns': ['ح.ب.ج','اســـم الكفيل','لقب الكفيل','ت. الميلاد','المبلـــغ','معلومات حول']
       }
@@ -353,7 +353,7 @@ def register_garants():
         membre.tendance()
         flash("لقد تم اضـــــافة الفرد بنجاح","success")
         return redirect(url_for('register_garants'))
-    return render_template('register_G.html',content = membre, form_m = form)
+    return render_template('register_G.html',content = {"current_m":membre}, form_m = form)
 
 @app.route("/mosque/Donnations/register",methods=['GET','POST'])
 @login_required
@@ -371,7 +371,7 @@ def register_donnation():
       db.session.commit()
       flash("تمت الاضافـــة بنجاح", "success")
       return redirect(url_for('register_donnation'))
-   return render_template("register_don.html",content = membre,form_m= form)
+   return render_template("register_don.html",content = {"current_m":membre},form_m= form)
 
 @app.route("/mosque/Donnations")
 @login_required
@@ -411,8 +411,10 @@ def update_info(arg):
    elif request.method == 'GET':
       form.nom_imam.data = mosque.imam
       form.num_tele.data = mosque.num_tele
-   return render_template('update_mosque.html',content = mosque, form_m = form)
+   return render_template('update_mosque.html',content ={"current_m" : mosque } , form_m = form)
+
 @app.route('/admin/update', methods=['GET','POST'])
+@login_required
 def update_parameters():
    form = parameter_utils_form()
    lastest_parametre = parametre_utils.query.all()[0]

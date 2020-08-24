@@ -8,7 +8,7 @@
 		<h2 class="h2">لوحــة التحكـــم</h2>
 		<ul class="navbar-nav flex-column">
 			<li class="nav-item">
-				<a class="nav-link " href="{{ url_for('mosque', arg=content['mosque'].id) }}">
+				<a class="nav-link " href="{{ url_for('mosque', arg=content['current_m'].id) }}">
 					الرئيسيــــة 
 				</a>
 			</li>
@@ -23,8 +23,7 @@
 				</a>
 			</li>
 			<li class="nav-item">
-				<a class="nav-link" href="{{ url_for('update_info', arg = content['mosque'].id) }}" >
-					
+				<a class="nav-link" href="{{ url_for('update_info', arg=content['current_m'].id) }}" >
 					تعديل المعلومات
 				</a>
 			</li>
@@ -33,7 +32,7 @@
 				<a class="nav-link" href="{{ url_for('list_garants', argument='*') }}">
 					عرض قائمــة المحتاجيـــن
 				</a>
-				</li>
+			</li>
 			
 		</ul>
 
@@ -64,7 +63,7 @@
 	<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
 		<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
 			{% if content %}
-				<h1 class="h1">مسجـــد {{ content.nom }} </h1>
+				<h1 class="h1">مسجـــد {{ content['current_m'].nom }} </h1>
 			{% else %}
 				<h1 class="h1">لوحــة التحكـــم</h1>
 			{% endif %}
@@ -80,7 +79,7 @@
 						</div>
 						<div class="text-right card-body">
 							<h1 class="h1">
-								{{ content['mosque'].inscrits|length }}
+								{{ content['current_m'].inscrits|length }}
 							</h1>
 						</div>
 					</div>
@@ -108,8 +107,10 @@
 								عــدد المتبرعيــــن
 							</h5>
 						</div>
-						<div class="card-body">
-							
+						<div class="text-right card-body">
+							<h1 class="h1">
+								{{ content['total_donneurs']}}
+							</h1>
 						</div>
 					</div>
 				</div>
