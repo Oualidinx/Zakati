@@ -418,14 +418,18 @@ def update_info(arg):
 def update_parameters():
    form = parameter_utils_form()
    lastest_parametre = parametre_utils.query.all()[0]
-   if form.validate_on_submit():
-      lastest_parametre.taux_scolaire = int(form.taux_scolaire.data)
-      lastest_parametre.taux_prime_m = int(form.taux_prime_m.data)
-      db.session.add(lastest_parametre)
-      db.session.commit()
-      flash("تمت العملية بنجـــاح", "success")
-      return redirect(url_for('admin',arg='home'))
-   elif request.method =="GET":
-      form.taux_prime_m.data = lastest_parametre.taux_prime_m
-      form.taux_scolaire.data = lastest_parametre.taux_scolaire
-      return render_template('update_parametres.html', form_m = form)
+   if lastest_parametre:
+      if form.validate_on_submit():
+         lastest_parametre.taux_scolaire = int(form.taux_scolaire.data)
+         lastest_parametre.taux_prime_m = int(form.taux_prime_m.data)
+         db.session.add(lastest_parametre)
+         db.session.commit()
+         flash("تمت العملية بنجـــاح", "success")
+         return redirect(url_for('admin',arg='home'))
+      elif request.method =="GET":
+         form.taux_prime_m.data = lastest_parametre.taux_prime_m
+         form.taux_scolaire.data = lastest_parametre.taux_scolaire
+         return render_template('update_parametres.html', form_m = form)
+   else:
+      flash('لا توجد أية إعدادت', 'primay')
+      return(url_for('admin', arg="home"))
