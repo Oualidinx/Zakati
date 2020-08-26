@@ -432,4 +432,4 @@ def update_parameters():
          return render_template('update_parametres.html', form_m = form)
    else:
       flash('لا توجد أية إعدادت', 'primay')
-      return(url_for('admin', arg="home"))
+      return render_template('update_parameters.html', form_m=None)
