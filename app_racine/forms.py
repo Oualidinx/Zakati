@@ -35,8 +35,9 @@ class critereForm(FlaskForm):
 			raise ValidationError('القيمة المعدومة غير مقبولة')
 
 class mosqueForm(FlaskForm):
-	nom = StringField("اســـم المسجــد :", validators=[DataRequired()])
-	imam = StringField("اسم الإمــام :", validators=[DataRequired(), Length(min= 5 , max= 50)])
+	nom = StringField("الاســـم  :", validators=[DataRequired()])
+	categorie = SelectField("الصـنـف :", choices=[('مسجد','مسجد'),('جمعية','جمعية')])
+	imam = StringField("اسم المسؤول :", validators=[DataRequired(), Length(min= 5 , max= 50)])
 	adresse = StringField("العنـــوان :", validators=[DataRequired()])
 	#state = SelectField('الولايــــة', validators=[DataRequired()], choices = ['اختر ...','الجزائر','قسنطينة','سطيف','عنابة','وهران','سيدي بلعباس','تلمسان','الشلف','الطارف','سعيدة','الجلفة','الأغواط','تمنراست','بسكرة','ورقلة','غرداية','الوادي','إليزي','تبسة','ام البواقي','خنشلة','برج بو عريريج','المسيلة','البليدة','بجاية','جيجل','تيبازة','تيزي وزو','باتنة','سوق اهراس','سكيكدة','قالمة','ميلة','المدية','البويرة','ادرار','تندوف','البيض','بومرداس','تيارت','غليزان','بشار','عين الدفلى','عين تموشنت','معسكر','مستغانم'])
 	state = StringField('الولاية', validators=[DataRequired()])

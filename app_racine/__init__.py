@@ -23,8 +23,7 @@ db_parameters={
     'host':'localhost',
     'db_name':'database'
 }"""
-app.config['SECRET_KEY'] = '5791628bb0b13ce0c676dfde280ba245'
- 
+app.config['SECRET_KEY'] = '5791628bb0b13ce0c676dfde280ba245' 
 app.config['SQLALCHEMY_DATABASE_URI'] = "{driver}://{user}:{password}@{host}:{port}/{db_name}".format(**db_parameters)
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
