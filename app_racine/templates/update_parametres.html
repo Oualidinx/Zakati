@@ -10,7 +10,7 @@
                     {% with messages = get_flashed_messages(with_categories=true) %}
                         {% if messages %}
                             {% for categorie , message in messages %}
-                                <div class="alert alert-{{ categorie }}">
+                                <div class="text-center alert alert-{{ categorie }}">
                                     {{ message }}
                                 </div>
                             {% endfor %}
@@ -54,10 +54,6 @@
                         {{ form_m.submit(class="btn btn-outline-info") }}
                     </div>                   
                 </form>
-            {% else %}
-                <div class="alert alert-info text-center">
-                    <span>لم يتم إضافــة أية إعـــدادات . </span>
-                </div>
             {% endif %}
         </div>
     </main>

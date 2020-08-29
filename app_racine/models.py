@@ -6,10 +6,12 @@ from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 
 class parametre_utils(db.Model):
 	id = db.Column(db.Integer, primary_key = True)
-	taux_scolaire = db.Column(db.Integer,default = -1)
-	taux_prime_m = db.Column(db.Integer, default = -1)
+	taux_scolaire = db.Column(db.Integer,default = 0)
+	taux_prime_m = db.Column(db.Integer, default = 0)
+	salaire_base = db.Column(db.Integer, default = 20000)
 	def __repr__(self):
-	 return '<parametre id={}, taux_scolaire={}, taux_prime_m={}'.format(self.id, self.taux_scolaire, self.taux_prime_m)
+		return '<parametre id={},\ntaux_scolaire={},\ntaux_prime_m={},\nsalaire de base = {}'.format(self.id, self.taux_scolaire, self.taux_prime_m)
+
 class Critere(db.Model):
 	id = db.Column(db.String(40) , primary_key = True , nullable = False)
 	categorie = db.Column(db.String(50))
@@ -44,7 +46,6 @@ class Mosque(db.Model):
 	#email = db.Column(db.String(100))
 	user_account = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 	category = db.Column(db.String(6),nullable=False)
-	
 	
 	def print_resume(self):
 		return printPDF_resume_view()

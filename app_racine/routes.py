@@ -13,7 +13,7 @@ from app_racine.forms  import LoginForms, RequestResetForm,ResetPasswordForm,For
 from app_racine.forms  import TokenForm, mosqueForm, donneurForm, critereForm,update_account_form
 from app_racine.forms import parameter_utils_form
 from app_racine.utils  import get_data_from_request,verify_presence,count_points
-from app_racine.utils import prime_m, is_concerned_prime_s
+from app_racine.utils import is_concerned_prime_m, is_concerned_prime_s
 
 @app.route('/mosque/form/<string:arg>')
 def print_form(arg):
@@ -126,7 +126,9 @@ def list_garants(argument):
       amounts = []
       for person in g_list:
          concerned.append(person)
-         person.Solde_part_financiere = prime_m(person.id)
+         value =  is_concerned_prime_m(person.id)
+         if value:
+            person.Solde_part_financiere = value
       g_content['data'] = concerned
       g_content['columns'] =['ح.ب.ج','اســـم الكفيل','لقب الكفيل','ت. الميلاد','مبلغ المنحة الشهرية','معلومات حول']
       return render_template('list_garants.html', content = g_content, amounts = amounts)
@@ -417,11 +419,12 @@ def update_info(arg):
 @login_required
 def update_parameters():
    form = parameter_utils_form()
-   lastest_parametre = parametre_utils.query.all()[0]
-   if lastest_parametre:
+   try:
+      lastest_parametre = parametre_utils.query.all()[0]
       if form.validate_on_submit():
          lastest_parametre.taux_scolaire = int(form.taux_scolaire.data)
          lastest_parametre.taux_prime_m = int(form.taux_prime_m.data)
+         lastest_parametre.salaire_base = int(form.salaire_base.data)
          db.session.add(lastest_parametre)
          db.session.commit()
          flash("تمت العملية بنجـــاح", "success")
@@ -429,7 +432,8 @@ def update_parameters():
       elif request.method =="GET":
          form.taux_prime_m.data = lastest_parametre.taux_prime_m
          form.taux_scolaire.data = lastest_parametre.taux_scolaire
+         form.salaire_base.data = lastest_parametre.salaire_base
          return render_template('update_parametres.html', form_m = form)
-   else:
-      flash('لا توجد أية إعدادت', 'primay')
-      return render_template('update_parameters.html', form_m=None)
+   except: 
+      flash('لا توجد أية إعدادت', 'info')
+      return render_template('update_parametres.html', form_m=None)

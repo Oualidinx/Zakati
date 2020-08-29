@@ -30,13 +30,18 @@ def is_concerned_prime_s(garant_id):
        return len(situation) * taux_scolaire
     return False
 
-def prime_m(garant_id):
+def is_concerned_prime_m(garant_id):
     garant = Garant.query.filter_by(id=garant_id).first()
     taux_prime_m = parametre_utils.query.all()[0].taux_prime_m
+    salaire_base = parametre_utils.query.all()[0].salaire_base
     is_jobless = 'بطال' in situation_garant.query.filter_by(garant_id = garant_id) 
     if is_jobless:
         return (len(garant.familles)+1)*taux_prime_m
-    return 18000 -((len(garant.familles)+1)*taux_prime_m) 
+    
+    if ((len(garant.familles)+1)*taux_prime_m) < salaire_base :
+        return salaire_base - ((len(garant.familles)+1)*taux_prime_m)
+    
+    return False
 
 def get_data_from_request(requete,garant_id):
     count = 2
