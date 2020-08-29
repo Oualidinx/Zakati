@@ -57,6 +57,7 @@ def admin(arg):
                         'template' : 'c_criteres.html'
         }
    }
+    print("length in here {}".format(len(contents['Mosques']['data'])))
     if arg == 'home':
         return render_template('admin.html' , today = datetime.now().date() , content = contents)
     return render_template("{page}".format(page = contents[arg]['template']) ,
