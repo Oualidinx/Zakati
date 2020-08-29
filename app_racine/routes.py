@@ -14,7 +14,7 @@ from app_racine.forms  import TokenForm, mosqueForm, donneurForm, critereForm,up
 from app_racine.forms import parameter_utils_form
 from app_racine.utils  import get_data_from_request,verify_presence,count_points
 from app_racine.utils import is_concerned_prime_m, is_concerned_prime_s
-
+from flask_sqlalchemy import sqlalchemy
 @app.route('/mosque/form/<string:arg>')
 def print_form(arg):
    garant = Garant.query.filter_by(id = arg).first()
@@ -37,7 +37,7 @@ def accueil():
 @app.route("/admin/<string:arg>")
 @login_required
 def admin(arg):
-    global contents
+    #global contents
     contents = {
         'Mosques': {
                         'data' : Mosque.query.all(),
@@ -215,8 +215,8 @@ def register_m():
    form = mosqueForm()
    if form.validate_on_submit():
       if verify_presence(form.nom.data, form.phone_num.data, form.imam.data, form.state.data):
-          flash('خطـــأ', 'danger')
-          return redirect(url_for('admin', arg='Mosques'))
+         flash('خطـــأ', 'danger')
+         return redirect(url_for('admin', arg='Mosques'))
       t_mosques = Mosque(
                      nom = form.nom.data,
                      imam = form.imam.data,
@@ -229,13 +229,18 @@ def register_m():
                   username = form.phone_num.data,
                   password = hashed_password
               )
-      db.session.add(t_user)
-      db.session.commit()
-      t_mosques.user_account = User.query.filter_by(username = form.phone_num.data).first().id
-      db.session.add(t_mosques)
-      db.session.commit()
-      flash('لقـد تم اضافة المسجد بنجاح الرجاء الاتصال بإمام المسجد و تسليم معلومات الدخـول', 'success')
-      return redirect(url_for('admin', arg='Mosques'))
+      try:
+         db.session.add(t_user)
+         db.session.commit()
+      except sqlalchemy.exc:
+         flash('يرجى مراجعة المعلومات ','danger')
+         return redirect(url_for('admin', arg='Mosques'))
+      else:
+         t_mosques.user_account = User.query.filter_by(username = form.phone_num.data).first().id
+         db.session.add(t_mosques)
+         db.session.commit()
+         flash('لقـد تم اضافة المسجد بنجاح الرجاء الاتصال بإمام المسجد و تسليم معلومات الدخـول', 'success')
+         return redirect(url_for('admin', arg='Mosques'))
    return render_template('register_m.html' , form_m = form)
 
 @app.route("/admin/Donneurs/register", methods=['GET', 'POST'])
