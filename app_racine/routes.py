@@ -37,7 +37,7 @@ def accueil():
 @app.route("/admin/<string:arg>")
 @login_required
 def admin(arg):
-    #global contents
+    global contents
     contents = {
         'Mosques': {
                         'data' : Mosque.query.all(),
