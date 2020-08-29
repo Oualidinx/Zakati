@@ -115,38 +115,43 @@ def mosque(arg):
 def list_garants(argument):
    member = Mosque.query.filter_by(user_account = session['user_id']).first()
    member.tendance()
-   g_list = Garant.query.filter_by(mosque_id = member.id).all()
-   for person in g_list:
-      person.get_total_sum()
-   g_content = {
-        'current_m':member,
-        'data': g_list,
-        'columns': ['ح.ب.ج','اســـم الكفيل','لقب الكفيل','ت. الميلاد','المبلـــغ','معلومات حول']
-      }
-   if argument=="prime_m":
-      concerned = []
-      amounts = []
+   try:
+      g_list = Garant.query.filter_by(mosque_id = member.id).all()
+   except sqlalchemy.exc:
+      return render_template('list_garants.html', content = None)
+   else:
+
       for person in g_list:
-         concerned.append(person)
-         value =  is_concerned_prime_m(person.id)
-         if value:
-            person.Solde_part_financiere = value
-      g_content['data'] = concerned
-      g_content['columns'] =['ح.ب.ج','اســـم الكفيل','لقب الكفيل','ت. الميلاد','مبلغ المنحة الشهرية','معلومات حول']
-      return render_template('list_garants.html', content = g_content, amounts = amounts)
-   elif argument=="prime_s":
-      concerned = []
-      amounts = []
-      for person in g_list:
-         value = is_concerned_prime_s(person.id)
-         print(value)
-         if value :
+         person.get_total_sum()
+      g_content = {
+         'current_m':member,
+         'data': g_list,
+         'columns': ['ح.ب.ج','اســـم الكفيل','لقب الكفيل','ت. الميلاد','المبلـــغ','معلومات حول']
+         }
+      if argument=="prime_m":
+         concerned = []
+         amounts = []
+         for person in g_list:
             concerned.append(person)
-            person.Solde_part_financiere = value
-      g_content['data'] = concerned
-      g_content['columns'] =['ح.ب.ج','اســـم الكفيل','لقب الكفيل','ت. الميلاد','مبلغ منحة التمدرس','معلومات حول']
-      return render_template('list_garants.html', content = g_content, amounts = amounts)
-   return render_template('list_garants.html', content = g_content)
+            value =  is_concerned_prime_m(person.id)
+            if value:
+               person.Solde_part_financiere = value
+         g_content['data'] = concerned
+         g_content['columns'] =['ح.ب.ج','اســـم الكفيل','لقب الكفيل','ت. الميلاد','مبلغ المنحة الشهرية','معلومات حول']
+         return render_template('list_garants.html', content = g_content, amounts = amounts)
+      elif argument=="prime_s":
+         concerned = []
+         amounts = []
+         for person in g_list:
+            value = is_concerned_prime_s(person.id)
+            print(value)
+            if value :
+               concerned.append(person)
+               person.Solde_part_financiere = value
+         g_content['data'] = concerned
+         g_content['columns'] =['ح.ب.ج','اســـم الكفيل','لقب الكفيل','ت. الميلاد','مبلغ منحة التمدرس','معلومات حول']
+         return render_template('list_garants.html', content = g_content, amounts = amounts)
+      return render_template('list_garants.html', content = g_content)
 
 @app.route("/donneur")
 @login_required
