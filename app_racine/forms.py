@@ -170,7 +170,7 @@ class register_new_donnation(FlaskForm):
 class parameter_utils_form(FlaskForm):
 	taux_scolaire = StringField("قيمة المنحة للفرد الواحد", validators=[DataRequired()])
 	taux_prime_m = StringField("قيمة المبلغ للفرد (خاص بالمنحة الشهرية)",validators=[DataRequired()])
-	salaire_base = StringField("قيمة المبلغ للفرد (الأجر القاعدي)",validators=[DataRequired()])
+	salaire_base = StringField("الأجـــر القـاعدي",validators=[DataRequired()])
 	submit = SubmitField("ارســــــال")
 	def validate_taux_scolaire(self, taux_scolaire):
 		if int(taux_scolaire.data) <= 0:
