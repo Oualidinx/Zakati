@@ -47,7 +47,20 @@
                             {% else %}
                                 {{ form_m.taux_prime_m(class="form-control from-control-lg") }}
                             {% endif %}
-                        </div>            
+                        </div>
+                        <div class="form-group">
+                            {{ form_m.salaire_base.label(class="form=control-label") }}
+                            {% if form_m.salaire_base.errors %}
+                                {{ form_m.salaire_base(class="form-control from-control-lg is-invalid") }}
+                                <div class="invalid-feedback">
+                                    {% for error in form_m.salaire_base.errors %}                           
+                                        <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                {{ form_m.salaire_base(class="form-control from-control-lg") }}
+                            {% endif %}
+                        </div>             
                     </fieldset>
                             
                     <div class="form-group">
