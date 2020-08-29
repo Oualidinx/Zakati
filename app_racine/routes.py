@@ -222,7 +222,8 @@ def register_m():
                      imam = form.imam.data,
                      addresse = form.adresse.data,
                      num_tele = form.phone_num.data,
-                     state = form.state.data
+                     state = form.state.data,
+                     category = form.categorie.data
                   )
       hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
       t_user = User(
