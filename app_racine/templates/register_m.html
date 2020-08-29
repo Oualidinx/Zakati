@@ -3,6 +3,7 @@
             <form method="POST">
                 {{ form_m.hidden_tag() }}
                 <fieldset class="form-group">
+                    
                     <div class="form-group">
                         {{ form_m.nom.label(class="form-control-label") }}
                         {% if form_m.nom.errors %}
@@ -14,6 +15,19 @@
                             </div>
                         {% else %}
                             {{ form_m.nom(class="form-control from-control-md") }}
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form_m.categorie.label(class="form-control-label") }}
+                        {% if form_m.categorie.errors %}
+                            {{ form_m.categorie(class="form-control from-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form_m.categorie.errors %}                            
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form_m.categorie(class="form-control from-control-md") }}
                         {% endif %}
                     </div>
                     <div class="form-group">
