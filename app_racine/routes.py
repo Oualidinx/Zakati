@@ -37,15 +37,16 @@ def accueil():
 @app.route("/admin/<string:arg>")
 @login_required
 def admin(arg):
-    global contents
-    contents = {
+   contents = {
         'Mosques': {
                         'data' : Mosque.query.all(),
+                        'all_mosque': len(Mosque.query.all()),
                         'template':'c_mosques.html',
                         'total_inscrits': sum([len(x.inscrits) for x in Mosque.query.all() ])
         },
         'Donneurs': {
                         'data' : Donneur.query.all(),
+                        'all_donneur':len(Donneur.query.all()),
                         'template' :'c_donneurs.html'
         },
         'Projets': {
@@ -57,10 +58,10 @@ def admin(arg):
                         'template' : 'c_criteres.html'
         }
    }
-    print("length in here {}".format(len(contents['Mosques']['data'])))
-    if arg == 'home':
+   print("length in here {}".format(len(contents['Mosques']['data'])))
+   if arg == 'home':
         return render_template('admin.html' , today = datetime.now().date() , content = contents)
-    return render_template("{page}".format(page = contents[arg]['template']) ,
+   return render_template("{page}".format(page = contents[arg]['template']) ,
                            today = datetime.now().date()
                         )
 
@@ -68,7 +69,7 @@ def admin(arg):
 @login_required
 def list_mosques():
    content = {
-               'data': [x for x in contents['Mosques']['data']],
+               'data': [x for x in Mosque.query.all()],
                'columns': ['الرقم','الاسـم','الامام','العنوان','الولايــة']
            }
    return render_template('list_m.html', content = content)      
@@ -77,7 +78,7 @@ def list_mosques():
 @login_required
 def list_donneurs():
     operations = {
-                'data': [x for x in contents['Donneurs']['data']],
+                'data': [x for x in Donneur.query.all()],
                 'columns': ['الرقم','اللقـــب','الاســـم','العنوان','رقم الهاتف']
             }
     return render_template('list_D.html', content = operations)
@@ -86,7 +87,7 @@ def list_donneurs():
 @login_required
 def list_criteres():
     content = {
-                'data': [x for x in contents['Criteres']['data']],
+                'data': [x for x in Critere.query.all()],
                 'columns': ['الاســــم','التصنيف','النقط']
             }
     return render_template('list_C.html', content = content)
@@ -94,7 +95,7 @@ def list_criteres():
 @app.route('/admin/Projets/listing')
 def list_projects():
    content= {
-           'data': [x for x in contents['Projets']['data']],
+           'data': [x for x in Projet.query.all()],
            'columns': ['الرــقم','القيمة المقدرة','المبلغ الحالي','حول المشروع'] 
    }
    return render_template('list_P.html', content= content)
