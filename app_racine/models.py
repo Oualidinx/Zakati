@@ -136,7 +136,8 @@ class User(db.Model, UserMixin):
 	id =  db.Column(db.Integer, primary_key = True, nullable = False )
 	username = db.Column(db.String(50), nullable = False)
 	password = db.Column(db.String(100), nullable = False)
-	
+	def __repr__(self):
+	 return super().__repr__()
 	def get_reset_token(self, expires_sec = 1800):
 		s = Serializer(app.config['SECRET_KEY'], expires_sec)
 		return s.dumps({'user_id' : self.id}).decode('utf-8')
