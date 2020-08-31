@@ -142,9 +142,9 @@ class RegisterGarantForm(FlaskForm):
     compte_ccp = StringField("الحســـاب البريدي :", validators=[DataRequired() , Length(max=12)])
     cle_ccp = StringField("المفتــاح :", validators=[DataRequired()])
     num_extrait_nais = StringField("رقـم شهادة الميلاد :", validators=[DataRequired()])
-    situation_sante = SelectMultipleField("الحالــة الصحية :", choices=[(objet.id,objet.id) for objet in Critere.query.filter_by(categorie = "الصحية")])
-    situation_sociale = SelectMultipleField("الحالــة الاجتمـــاعيـة :", choices=[(objet.id,objet.id) for objet in Critere.query.filter_by(categorie = "الاجتماعية")])
-    situation_familliale = SelectMultipleField("الحالــة العائليــــــة :", choices=[(objet.id,objet.id) for objet in Critere.query.filter_by(categorie = "العائلية")])
+    situation_sante = SelectMultipleField("الحالــة الصحية :", choices=[(objet.id,objet.id) for objet in Critere.query.filter_by(categorie = "الصحية").all()])
+    situation_sociale = SelectMultipleField("الحالــة الاجتمـــاعيـة :", choices=[(objet.id,objet.id) for objet in Critere.query.filter_by(categorie = "الاجتماعية").all()])
+    situation_familliale = SelectMultipleField("الحالــة العائليــــــة :", choices=[(objet.id,objet.id) for objet in Critere.query.filter_by(categorie = "العائلية").all()])
     famille = []
     submit = SubmitField("أضــــف")
     def validate_compte_ccp(self, compte_ccp):
