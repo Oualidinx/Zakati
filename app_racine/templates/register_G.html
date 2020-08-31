@@ -48,7 +48,7 @@
                                     <div class="col-sm-3">
                                         {{ form_m.prenom.label(class="form-control-label") }}
                                             {% if form_m.prenom.errors %}
-                                                {{ form_m.prenom(class="form-control from-control-lg is-invalid",placeholder="نمط التاريخ يكون مثل يوم/الشهر/السنة") }}
+                                                {{ form_m.prenom(class="form-control from-control-lg is-invalid") }}
                                                 <div class="invalid-feedback">
                                                     {% for error in form_m.prenom.errors %}                            
                                                         <span>{{ error }}</span>
@@ -61,14 +61,14 @@
                                     <div class="col-sm-3">
                                         {{ form_m.date_nais.label(class="form=control-label") }}
                                         {% if form_m.date_nais.errors %}
-                                            {{ form_m.date_nais(class="form-control from-control-lg is-invalid") }}
+                                            {{ form_m.date_nais(class="form-control from-control-lg is-invalid",placeholder="نمط التاريخ يكون مثل يوم/الشهر/السنة") }}
                                             <div class="invalid-feedback">
                                                 {% for error in form_m.date_nais.errors %}                           
                                                     <span>{{ error }}</span>
                                                 {% endfor %}
                                             </div>
                                         {% else %}
-                                            {{ form_m.date_nais(class=" form-control from-control-lg") }}
+                                            {{ form_m.date_nais(class=" form-control from-control-lg" ,placeholder="نمط التاريخ يكون مثل يوم/الشهر/السنة") }}
                                         {% endif %}
                                     </div>
                                     <div class="col-sm-3">
@@ -178,7 +178,7 @@
                                         <tr>
                                             <td>{{ form_m.famille[0].p_nom(class="form-control form-control-sm") }}</td>
                                             <td>{{ form_m.famille[0].p_prenom(class="form-control form-control-sm") }}</td>
-                                            <td>{{ form_m.famille[0].p_date_nais(class="form-control form-control-sm",placeholder="نمط التاريخ يكون مثل يوم/الشهر/السنة") }}</td>
+                                            <td>{{ form_m.famille[0].p_date_nais(class="form-control form-control-sm",placeholder="يوم/الشهر/السنة") }}</td>
                                             <td align="center">{{ form_m.famille[0].education(class="form-check-input") }}</td>
                                             <td align="center">{{ form_m.famille[0].handicap(class="form-check-input") }}</td>
                                             <td align="center">{{ form_m.famille[0].malade_cronic(class="form-check-input") }}</td>
