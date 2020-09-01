@@ -61,7 +61,7 @@
                                     <div class="col-sm-3">
                                         {{ form_m.date_nais.label(class="form=control-label") }}
                                         {% if form_m.date_nais.errors %}
-                                            {{ form_m.date_nais(class="form-control from-control-lg is-invalid",placeholder="نمط التاريخ يكون مثل يوم/الشهر/السنة") }}
+                                            {{ form_m.date_nais(class="form-control from-control-lg is-invalid",placeholder="يوم/الشهر/السنة") }}
                                             <div class="invalid-feedback">
                                                 {% for error in form_m.date_nais.errors %}                           
                                                     <span>{{ error }}</span>
