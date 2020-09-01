@@ -86,11 +86,16 @@ def list_donneurs():
 @app.route('/admin/Criteres/listing')
 @login_required
 def list_criteres():
-    content = {
+   try:
+      content = {
                 'data': [x for x in Critere.query.all()],
                 'columns': ['الاســــم','التصنيف','النقط']
             }
-    return render_template('list_C.html', content = content)
+   except sqlalchemy.exc:
+      flash('الجـــدول فارغ.')
+      return render_template('list_C.html')
+   else:
+      return render_template('list_C.html', content = content)
 
 @app.route('/admin/Projets/listing')
 def list_projects():
