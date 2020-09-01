@@ -168,7 +168,7 @@ class register_new_donnation(FlaskForm):
     		raise ValidationError("قيمــــة خاطئــــة")
 
 class parameter_utils_form(FlaskForm):
-	taux_scolaire = StringField("قيمة المنحة للفرد الواحد", validators=[DataRequired()])
+	taux_scolaire = StringField("(خاص بمنحة التمدرس) قيمة المنحة للفرد الواحد", validators=[DataRequired()])
 	taux_prime_m = StringField("قيمة المبلغ للفرد (خاص بالمنحة الشهرية)",validators=[DataRequired()])
 	salaire_base = StringField("الأجـــر القـاعدي",validators=[DataRequired()])
 	submit = SubmitField("ارســــــال")
