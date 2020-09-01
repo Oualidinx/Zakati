@@ -10,10 +10,10 @@ app = Flask(__name__)
 db_parameters={
     'driver' : 'postgres',
     'port': 5432,
-    'user' : 'famqgloshskjly',
-    'password': '20907dd946ec824b10301a1172ce325ad03604511be60bb30bb5d4c66823b4f3',
-    'host':'ec2-54-158-122-162.compute-1.amazonaws.com',
-    'db_name':'d9go5lpdgoqocg'
+    'user' : 'mvgbuawaljfifm',
+    'password': 'e9214ae3608b108fab30d9c8a2a535007e1fc97293b4e828cb62ebb2e7046e93',
+    'host':'ec2-54-166-107-5.compute-1.amazonaws.com',
+    'db_name':'d50qtvu6sfnjkm'
 }
 """
 db_parameters={
