@@ -113,7 +113,7 @@ def printPDF_view(garant_id):
     member = Mosque.query.filter_by(user_account = session['user_id']).first()
     p = canvas.Canvas(output , pagesize=A4)
     p.setPageSize(A4)
-    pdfmetrics.registerFont(TTFont("Times", 'Times_New_Roman.ttf'))
+    pdfmetrics.registerFont(TTFont("Times", 'times-new-roman.ttf'))
     p.setFont('Times' , 20)
     p.drawCentredString(300,800,get_reshaped_text(u'الجمهورية الجزائرية الديمقراطية الشعبية'))
     p.drawCentredString(300 , 780, get_reshaped_text(u'وزارة الشؤون الدينية و الأوقاف'))
