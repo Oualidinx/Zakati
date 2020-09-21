@@ -30,6 +30,8 @@ def is_concerned_prime_s(garant_id):
        return len(situation) * taux_scolaire
     return False
 
+def project_status(project_id):
+    pass
 def is_concerned_prime_m(garant_id):
     garant = Garant.query.filter_by(id=garant_id).first()
     taux_prime_m = parametre_utils.query.all()[0].taux_prime_m
@@ -113,7 +115,7 @@ def printPDF_view(garant_id):
     member = Mosque.query.filter_by(user_account = session['user_id']).first()
     p = canvas.Canvas(output , pagesize=A4)
     p.setPageSize(A4)
-    pdfmetrics.registerFont(TTFont("Times", 'times-new-roman.ttf'))
+    pdfmetrics.registerFont(TTFont("Times", '../static/fonts/times-new-roman.ttf'))
     p.setFont('Times' , 20)
     p.drawCentredString(300,800,get_reshaped_text(u'الجمهورية الجزائرية الديمقراطية الشعبية'))
     p.drawCentredString(300 , 780, get_reshaped_text(u'وزارة الشؤون الدينية و الأوقاف'))
