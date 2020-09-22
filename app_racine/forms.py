@@ -4,7 +4,7 @@ from wtforms.validators import DataRequired, Length, ValidationError, Email, Equ
 from wtforms import StringField, SubmitField, TextAreaField,DateField
 from wtforms import FloatField, PasswordField, IntegerField, SelectField, FieldList
 from wtforms import SelectMultipleField, FormField, BooleanField
-from .models import Critere, Mosque, Donneur, User, Garant
+from .models import Critere, Mosque, Donneur, User, Garant, Projet
 import arabic_reshaper as reshaper
 
 
@@ -159,7 +159,7 @@ class update_account_form(FlaskForm):
 
 class register_new_donnation(FlaskForm):
     """docstring for register_new_donnation"""
-    #donneur = SelectField("المحســـن :", choices = [(objet.id , objet.id) for objet in Donneur.query.all()],validators=[DataRequired()])
+    project = SelectField("المشـروع :", choices=[(object.title, object.title) for object in Projet.query.all()])
     donneur = StringField("المحســـن :", validators=[DataRequired()])
     montant = StringField("قيمة التبرع :", validators=[DataRequired()])
     submit = SubmitField("تأكيــــد")

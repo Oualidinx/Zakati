@@ -11,6 +11,10 @@
 	<form method="POST">
         {{form_m.hidden_tag()}}
         <fieldset class="form-group">
+            <div class="form-group">
+                {{ form_m.project.label(class='form-control-label') }}
+                {{ form_m.project(class='col-md-4 form-control') }}
+            </div>
         	<div class="form-group">
                 {{ form_m.donneur.label(class="form-control-label") }}
                 {{ form_m.donneur(class="col-md-4 form-control form-control-md") }}
@@ -25,9 +29,10 @@
                         {% endfor %}
                     </div>
                {% else %}
-                    {{ form_m.montant(class="form-control from-control-md") }}
+                    {{ form_m.montant(class="col-md-4 form-control from-control-md") }}
                 {% endif %}
             </div>
+            
         </fieldset>
         <div class="form-group">
         	<div class="form-group">

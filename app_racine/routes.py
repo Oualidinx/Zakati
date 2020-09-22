@@ -112,6 +112,7 @@ def mosque(arg):
    mosque_content = {
          "current_m": Mosque.query.filter_by(id=arg).first(),
          "somme_total" : sum([x.montant for x in Fournit.query.filter_by(mosque_id=arg).all()]),
+         #"status_zakat": Project.query.filter_by(title=","),
          "total_donneurs" : len([x.donneur_id for x in Fournit.query.filter_by(mosque_id =  arg).all()])
       }
    return render_template('mosque.html', content = mosque_content)
@@ -412,7 +413,7 @@ def list_dons():
            'data': operations,
            'columns': ['الرقـم','الاسم و اللقب','القيمــة','التاريخ']
          }
-   return render_template('list_dons.html', donnations= donnations, content=mosque)
+   return render_template('list_dons.html', donnations= donnations, content={"current_m": mosque})
 
 @app.route("/mosque/Update/<int:arg>", methods=['GET','POST'])
 @login_required

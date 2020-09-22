@@ -9,16 +9,12 @@
         <title>{{ title }}</title>
     </head>
     <body>
-        <div class="row thisFont">
-            <h1 class="col-sm text-center">وقـــف</h1>
-        </div>
-        <div align="center" class="container  thisFont">
+        <div  align="center" class="container thisFont">
             <div class="card col-md-4">
-                
                 <div class="card-body">
                     <form class="form-horizontal"  action="{{ url_for('login') }}" method='POST'>
                         {{ form.hidden_tag() }}
-                        <img style="padding-bottom: 10px;"src="{{ url_for('static', filename='image/logo.png') }}" alt="" class="card-img-top">
+                        <img style="height: 65%; width:65%" src="{{ url_for('static', filename='image/image72.png') }}" class="card-img-top">
                             {% with messages = get_flashed_messages(with_categories=true) %}
                             {% if messages %}
                                 {% for categorie , message in messages %}
@@ -27,39 +23,35 @@
                                     </div>
                                 {% endfor %}
                             {% endif %}
-                            {% endwith %}                           
+                            {% endwith %}
                                 <div class="form-group">
-                                    {{ form.username.label(class="form=control-label")}}
+                                    {{ form.username.label(class="form-control-label")}}
                                     {% if form.username.errors %}
-                                    {{ form.username(class="form-control from-control-lg is-invalid") }}
+                                    {{ form.username(class="form-control from-control-md is-invalid") }}
                                     <div class="invalid-feedback">
                                         {% for error in form.username.errors %}							
                                             <span>{{ error }}</span>
                                         {% endfor %}
                                     </div>
                                     {% else %}
-                                        {{ form.username(class="form-control from-control-lg") }}
+                                        {{ form.username(class="form-control from-control-md") }}
                                     {% endif %}
                                 </div>
                                 <div class="form-group">
                                     {{ form.password.label(class="form-control-label") }}
                                     {% if form.password.errors %}
-                                        {{ form.password(class="form-control from-control-lg is-invalid") }}
+                                        {{ form.password(class="form-control from-control-md is-invalid") }}
                                         <div class="invalid-feedback">
                                             {% for error in form.password.errors %}							
                                                 <span>{{ error }}</span>
                                             {% endfor %}
                                         </div>
                                     {% else %}
-                                        {{ form.password(class="form-control form-control-lg") }}
+                                        {{ form.password(class="form-control form-control-md") }}
                                     {% endif %}
                                 </div>
                             <div class="form-group">
                                 {{ form.submit(class="btn btn-outline-info") }}
-                                <br>
-                                <small class="text-muted ml-2">
-                                    <a href="{{ url_for('request_token') }}">نسيت كلمة المرور ؟</a>
-                                </small>
                             </div>
                         </form>
                 </div>

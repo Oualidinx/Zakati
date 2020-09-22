@@ -11,17 +11,39 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta http-equiv="X-UA-Compatible" content="ie=edge">
-		
+		<style>
+			.defintion-loader{
+				position: absolute;
+				top: 0;
+				bottom: 0%;
+				left: 0;
+				right: 0%;
+				background-color: white;
+				z-index: 99;
+			}
+		</style>
 		{% if title %}
 			<title>{{ title }}</title>
 		{% else %}
 			<title>زكـــاة</title>
 		{% endif %}
 	</head>
+	
 	<body>
 		
-		{% block nav_bar %}
+		<div class="defintion-loader" style="display: none;">
 			
+			<div align="center">
+				<img src="{{ url_for('static', filename='image/image72.png')}}" >
+				<h1 class="thisFont" style="color: #00625dff;">
+					وقــف
+				</h1>
+				<h1 class="thisFont" style="color: #00625dff;">
+					شلابيـة بشباش -رحمها الله -
+				</h1>
+			</div>
+		</div>
+		{% block nav_bar %}
 		{% endblock nav_bar %}
 		<div class="container-fluid thisFont">
 			<div class="row">

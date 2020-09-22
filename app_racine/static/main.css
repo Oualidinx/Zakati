@@ -1,11 +1,10 @@
 @font-face{
     font-family: Amiri_font;
-    src: url('./fonts/Amiri-Regular.ttf') format("truetype");
+    src: url('./fonts/Amiri-Bold.ttf') format("truetype");
   }
-  .thisFont{
-    font-family: Amiri_font;
-    
-  }
+.thisFont{
+  font-family: Amiri_font;
+}
   body {
     background: white;
     color: #333333;
