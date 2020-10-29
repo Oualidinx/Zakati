@@ -12,16 +12,19 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta http-equiv="X-UA-Compatible" content="ie=edge">
 		<style>
-			.defintion-loader{
-				position: absolute;
-				top: 0;
-				bottom: 0%;
-				left: 0;
-				right: 0%;
-				background-color: white;
-				z-index: 99;
+			.pageloader {
+				position:fixed;
+				left:0;
+				top:0;
+				bottom:0;
+				right:0;
+				background-color:white;
+				z-index:99999;
 			}
 		</style>
+		{% block styles %}
+		{% endblock styles %}
+
 		{% if title %}
 			<title>{{ title }}</title>
 		{% else %}
@@ -31,10 +34,9 @@
 	
 	<body>
 		
-		<div class="defintion-loader" style="display: none;">
-			
+		<!--<div class="pageloader">
 			<div align="center">
-				<img src="{{ url_for('static', filename='image/image72.png')}}" >
+				<img height="25%" width="25%" src="{{ url_for('static', filename='image/image72.png')}}" >
 				<h1 class="thisFont" style="color: #00625dff;">
 					وقــف
 				</h1>
@@ -42,9 +44,11 @@
 					شلابيـة بشباش -رحمها الله -
 				</h1>
 			</div>
+		</div>-->
+		<div class="container-fluid">
+			{% block nav_bar %}
+			{% endblock nav_bar %}
 		</div>
-		{% block nav_bar %}
-		{% endblock nav_bar %}
 		<div class="container-fluid thisFont">
 			<div class="row">
 				{% block side_bar %}
@@ -53,9 +57,11 @@
 				{% endblock content %}	
 			</div>	
 		</div>
-		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+		<script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
 		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+		<script src="{{ url_for('static', filename='custom-scripts.js') }}"></script>
+		
 		{% block scripts %}
 		{% endblock scripts %}
 

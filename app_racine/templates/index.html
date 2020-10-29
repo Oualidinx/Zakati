@@ -1,53 +1,55 @@
 {% extends 'layout.html'%}
+{% block styles %}
+<style>
+	.header {
+		position: fixed;
+		background:rgba(0,0,0,.2);
+		width: 100%;
+	}
+	header .header.sticky-active{
+		background-color: white;
+	}
+</style>
+{% endblock styles %}
 {% block nav_bar %}
-<nav class="navbar navbar-expand-lg navbar-light thisFont">
-	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-		<span class="navbar-toggler-icon"></span>
-  </button>
-	<div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
-          <a class="nav-link" href="{{ url_for('accueil')}}">الرئيسيـــة <span class="sr-only">(current)</span></a>
-        </li>
-			<a class="nav-link" href="#defintion">التعريف بالموقــــع</a>
-		</li>
-		<li class="nav-item">
-			<a class="nav-link" href="#project">المشاريـــع</a>
-		</li>
-		<li class="nav-item">
-			<a class="nav-link" href="{{ url_for('login') }}">تسجيل الدخـــول</a>
-		</li>
-      </ul>
-     </div>
-  </nav>	
+<div class="container">
+		<nav class=" nav-header navbar navbar-expand-lg navbar-light thisFont">
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<div class="logo">
+					<a href="{{ url_for('accueil') }}">
+						<!--<img src="{{ url_for('static', filename='image/image72.png')}}">-->
+					</a>
+				</div>
+			<ul class="navbar-nav mr-auto">
+				<li class="nav-item active">
+				<a class="nav-link" href="{{ url_for('accueil')}}">الرئيسيـــة <span class="sr-only">(current)</span></a>
+				</li>
+                <li>
+					<a class="nav-link" href="#defintion">التعريف بالموقــــع</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="#project">المشاريـــع</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="{{ url_for('login') }}">تسجيل الدخـــول</a>
+				</li>
+			</ul>
+			</div>
+		</nav>
+
+</div>
 {% endblock nav_bar %}
 {% block content %}
-  
 	<div class="container">
-		<div class="row">
-			<div class="col-sm">
-				<div id="definition">
-					<h4 class="h4 font-weight-bold">التعريــف بالموقــع</h4>
-					<p class="text-justify">
-						كن لا بد أن أوضح لك أن كل هذه الأفكار المغلوطة حول استنكار  النشوة وتمجيد الألم نشأت بالفعل، وسأعرض لك التفاصيل لتكتشف حقيقة وأساس تلك السعادة البشرية، فلا أحد يرفض أو يكره أو يتجنب الشعور بالسعادة، ولكن بفضل هؤلاء الأشخاص الذين لا يدركون بأن السعادة لا بد أن نستشعرها بصورة أكثر عقلانية ومنطقية فيعرضهم هذا لمواجهة الظروف الأليمة، وأكرر بأنه لا يوجد من يرغب في الحب ونيل المنال ويتلذذ بالآلام، الألم هو الألم ولكن نتيجة لظروف ما قد تكمن السعاده فيما نتحمله من كد وأسي.
-						كن لا بد أن أوضح لك أن كل هذه الأفكار المغلوطة حول استنكار  النشوة وتمجيد الألم نشأت بالفعل، وسأعرض لك التفاصيل لتكتشف حقيقة وأساس تلك السعادة البشرية، فلا أحد يرفض أو يكره أو يتجنب الشعور بالسعادة، ولكن بفضل هؤلاء الأشخاص الذين لا يدركون بأن السعادة لا بد أن نستشعرها بصورة أكثر عقلانية ومنطقية فيعرضهم هذا لمواجهة الظروف الأليمة، وأكرر بأنه لا يوجد من يرغب في الحب ونيل المنال ويتلذذ بالآلام، الألم هو الألم ولكن نتيجة لظروف ما قد تكمن السعاده فيما نتحمله من كد وأسي.
-						كن لا بد أن أوضح لك أن كل هذه الأفكار المغلوطة حول استنكار  النشوة وتمجيد الألم نشأت بالفعل، وسأعرض لك التفاصيل لتكتشف حقيقة وأساس تلك السعادة البشرية، فلا أحد يرفض أو يكره أو يتجنب الشعور بالسعادة، ولكن بفضل هؤلاء الأشخاص الذين لا يدركون بأن السعادة لا بد أن نستشعرها بصورة أكثر عقلانية ومنطقية فيعرضهم هذا لمواجهة الظروف الأليمة، وأكرر بأنه لا يوجد من يرغب في الحب ونيل المنال ويتلذذ بالآلام، الألم هو الألم ولكن نتيجة لظروف ما قد تكمن السعاده فيما نتحمله من كد وأسي.
-					</p>
-				</div>
-			</div>
+		|<div class="container-fluid" style="background-image: url('../static/image/great.png');">
 			
-		</div>
-		<div class="row">
-			<div class="col-sm">
-				<div id="project">
-					<h4 class="h4 font-weight-bold">المشاريـــع</h4>
-					<p class="text-justify">
-						كن لا بد أن أوضح لك أن كل هذه الأفكار المغلوطة حول استنكار  النشوة وتمجيد الألم نشأت بالفعل، وسأعرض لك التفاصيل لتكتشف حقيقة وأساس تلك السعادة البشرية، فلا أحد يرفض أو يكره أو يتجنب الشعور بالسعادة، ولكن بفضل هؤلاء الأشخاص الذين لا يدركون بأن السعادة لا بد أن نستشعرها بصورة أكثر عقلانية ومنطقية فيعرضهم هذا لمواجهة الظروف الأليمة، وأكرر بأنه لا يوجد من يرغب في الحب ونيل المنال ويتلذذ بالآلام، الألم هو الألم ولكن نتيجة لظروف ما قد تكمن السعاده فيما نتحمله من كد وأسي.
-						كن لا بد أن أوضح لك أن كل هذه الأفكار المغلوطة حول استنكار  النشوة وتمجيد الألم نشأت بالفعل، وسأعرض لك التفاصيل لتكتشف حقيقة وأساس تلك السعادة البشرية، فلا أحد يرفض أو يكره أو يتجنب الشعور بالسعادة، ولكن بفضل هؤلاء الأشخاص الذين لا يدركون بأن السعادة لا بد أن نستشعرها بصورة أكثر عقلانية ومنطقية فيعرضهم هذا لمواجهة الظروف الأليمة، وأكرر بأنه لا يوجد من يرغب في الحب ونيل المنال ويتلذذ بالآلام، الألم هو الألم ولكن نتيجة لظروف ما قد تكمن السعاده فيما نتحمله من كد وأسي.
-						كن لا بد أن أوضح لك أن كل هذه الأفكار المغلوطة حول استنكار  النشوة وتمجيد الألم نشأت بالفعل، وسأعرض لك التفاصيل لتكتشف حقيقة وأساس تلك السعادة البشرية، فلا أحد يرفض أو يكره أو يتجنب الشعور بالسعادة، ولكن بفضل هؤلاء الأشخاص الذين لا يدركون بأن السعادة لا بد أن نستشعرها بصورة أكثر عقلانية ومنطقية فيعرضهم هذا لمواجهة الظروف الأليمة، وأكرر بأنه لا يوجد من يرغب في الحب ونيل المنال ويتلذذ بالآلام، الألم هو الألم ولكن نتيجة لظروف ما قد تكمن السعاده فيما نتحمله من كد وأسي.
-					</p>
-				</div>
-			</div>
 		</div>
 	</div>
 {% endblock content %}
+<!-- {% block scripts %}
+	<script>
+		$(window).on('load',function() {
+			$('.pageloader').fadeOut(10)
+		});	
+	</script>
+{% endblock scripts %}->
