@@ -54,12 +54,12 @@ class Mosque(db.Model):
 		try:
 			min_points = Garant.query.filter_by(mosque_id=self.id).filter_by(actif=1).order_by(Garant.Solde_points.asc()).first().Solde_points
 			g_list = Garant.query.filter_by(mosque_id=self.id).filter_by(actif=1)
-			for person in g_list:
-				person.Solde_finale = round(person.Solde_points / min_points, 2)
-				db.session.add(person)
-				db.session.commit()
 		except sqlalchemy.exc:
 			return None
+		for person in g_list:
+			person.Solde_finale = round(person.Solde_points / min_points, 2)
+			db.session.add(person)
+			db.session.commit()
 		
 	def get_value(self):#قيمة السهم في المسجد
 		g_list = Garant.query.filter_by(mosque_id = self.id)
