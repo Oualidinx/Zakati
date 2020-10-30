@@ -6,8 +6,6 @@ from wtforms import FloatField, PasswordField, IntegerField, SelectField, FieldL
 from wtforms import SelectMultipleField, FormField, BooleanField
 from .models import Critere, Mosque, Donneur, User, Garant, Projet
 import arabic_reshaper as reshaper
-
-
 """
 	formulaire dédiés spécialement au côté administration de la platforme
 	D'une part, ces formulaire sert à définir la partie dynamique de toutes les utilisateur de l'application Zakat
