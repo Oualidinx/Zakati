@@ -1,3 +1,6 @@
 #ignore the virtualenv directory
-
 /venv/
+#Compiled files
+.pyc
+.pyo
+
