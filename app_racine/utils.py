@@ -108,14 +108,16 @@ def get_reshaped_text(text):
     return arabic_text 
 
 from io import BytesIO
+import os
 #construite le formulaire
 def printPDF_view(garant_id):
     output = BytesIO()
     person = Garant.query.filter_by(id=garant_id).first()
+    print(os.path.dirname('.'))
+    pdfmetrics.registerFont(TTFont("Times", 'times.ttf'))
     member = Mosque.query.filter_by(user_account = session['user_id']).first()
     p = canvas.Canvas(output , pagesize=A4)
     p.setPageSize(A4)
-    pdfmetrics.registerFont(TTFont("Times", '../static/fonts/times-new-roman.ttf'))
     p.setFont('Times' , 20)
     p.drawCentredString(300,800,get_reshaped_text(u'الجمهورية الجزائرية الديمقراطية الشعبية'))
     p.drawCentredString(300 , 780, get_reshaped_text(u'وزارة الشؤون الدينية و الأوقاف'))

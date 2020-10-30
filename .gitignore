@@ -1,0 +1,3 @@
+#ignore the virtualenv directory
+
+/venv/
