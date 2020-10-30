@@ -120,9 +120,11 @@ def mosque(arg):
 @app.route("/mosque/listing/<string:argument>")
 def list_garants(argument):
    member = Mosque.query.filter_by(user_account = session['user_id']).first()
-
+   tendance = member.tendance()
+   if tendance != None:
+       return render_template('list_garants.html', content=None)
    try:
-      member.tendance()
+
       g_list = Garant.query.filter_by(mosque_id = member.id).all()
 
    except sqlalchemy.exc:
