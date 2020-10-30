@@ -15,6 +15,7 @@ db_parameters={
     'host':'ec2-34-202-65-210.compute-1.amazonaws.com',
     'db_name':'d7i4nsjusks75a'
 }
+app.config['SECRET_KEY'] = '5791628bb0b13ce0c676dfde280ba245'
 app.config['SQLALCHEMY_DATABASE_URI'] = "{driver}://{user}:{password}@{host}:{port}/{db_name}".format(**db_parameters)
 
 """
