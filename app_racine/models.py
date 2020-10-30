@@ -52,9 +52,10 @@ class Mosque(db.Model):
 
 	def tendance(self):#حساب السهم
 		try:
-			min_points = Garant.query.filter_by(mosque_id=self.id).filter_by(actif=1).order_by(Garant.Solde_points.asc()).first().Solde_points
+			first = Garant.query.filter_by(mosque_id=self.id).filter_by(actif=1).order_by(Garant.Solde_points.asc()).first()
+			min_points = first.Solde_points
 			g_list = Garant.query.filter_by(mosque_id=self.id).filter_by(actif=1)
-		except sqlalchemy.exc:
+		except Exception:
 			return None
 		for person in g_list:
 			person.Solde_finale = round(person.Solde_points / min_points, 2)
