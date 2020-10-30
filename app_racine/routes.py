@@ -120,13 +120,14 @@ def mosque(arg):
 @app.route("/mosque/listing/<string:argument>")
 def list_garants(argument):
    member = Mosque.query.filter_by(user_account = session['user_id']).first()
-   member.tendance()
+
    try:
+      member.tendance()
       g_list = Garant.query.filter_by(mosque_id = member.id).all()
+
    except sqlalchemy.exc:
       return render_template('list_garants.html', content = None)
    else:
-
       for person in g_list:
          person.get_total_sum()
       g_content = {
@@ -245,6 +246,12 @@ def register_m():
               )
       try:
          db.session.add(t_user)
+
+
+
+
+
+
          db.session.commit()
       except sqlalchemy.exc:
          flash('يرجى مراجعة المعلومات ','danger')
