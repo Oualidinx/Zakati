@@ -14,11 +14,16 @@
 {% endblock greetings %}
 {% block styles %}
     <style>
-        .cap-1{
+
+        .cap-1 {
             position: absolute;
             z-index: 3;
-            right : 42%;
-            top : 35%;
+            right: 42%;
+            top: 35%;
+        }
+        .text-deco-2{
+            padding-top: 10%;
+            color: #e6493aff;
         }
         .sld-img{
             opacity: 80%;
@@ -28,7 +33,7 @@
         .cap-2{
             position: absolute;
             z-index: 3;
-            right : 42%;
+            right : 42.5%;
             top : 45%;
 
         }
@@ -60,19 +65,19 @@
 					</a>-->
                 </div>
 			<ul class="navbar-nav mr-auto">
-				<li class="nav-item active" style="font-size: 18px;">
-				<a class="nav-link text-" href="{{ url_for('accueil')}}">الرئيسيـــة
+				<li class="nav-item active" style="color: #e6493aff;">
+				<a class="nav-link" href="{{ url_for('accueil')}}" style="font-size: 18px; color: #00625dff;">الرئيسيـــة
                     <span class="sr-only">(current)</span>
                 </a>
 				</li>
-                <li class="nav-item " style="font-size: 18px;">
-					<a class="nav-link" href="#defintion">التعريف بالموقــــع</a>
+                <li class="nav-item"  style="color: #e6493aff;">
+					<a class="nav-link" href="#definition" style="font-size: 18px; color: #00625dff;">التعريف بالموقــــع</a>
 				</li>
-				<li class="nav-item" style="font-size: 18px;">
-					<a class="nav-link" href="#project">المشاريـــع</a>
+				<li class="nav-item"  style="color: #e6493aff;">
+					<a class="nav-link " href="#project" style="font-size: 18px; color: #00625dff;">المشاريـــع</a>
 				</li>
-				<li class="nav-item" style="font-size: 18px;">
-					<a class="nav-link" href="{{ url_for('login') }}">تسجيل الدخـــول</a>
+				<li class="nav-item " >
+					<a class="nav-link " style="font-size: 18px; color: #00625dff;" href="{{ url_for('login') }}">تسجيل الدخـــول</a>
 				</li>
 			</ul>
 			</div>
@@ -100,12 +105,87 @@
             </div>
         </div>
     </div>
+    <div class="row" style="height: 600px;padding-right: 10%;  padding-top: 200px;" >
 
+        <div class="col-md"  style="padding-left: 10%;">
+            <h3 class="h3 text-deco-2">التعريف بالمنصــة</h3>
+            <p class="text-justify" style="font-size: 20px;">
+ شرع الله الزكاة لتكون تزكية و طهرا لنفوس المؤمنين، و نماء مستمر لأموالهم و ثرواتهم،
+            و لكي نسهل على المؤمن عملية دفع الزكاة أو الصدقة و من أجل أيضا أن تكون العمليات و الإجراءات في غاية الشفافية،
+            فكرنا في تطوير منصة لتنظيم عمليات جمع الصدقات و الزكاة وتوزيعها،
+            </p>
+            <h3 class="h3 text-deco-2">هدف المنصة</h3>
+            <p class="text-justify" style="font-size: 20px;">    1. التنسيق وربط السلسلة بين المُحسن و المُحتاج والوسطاء من مساجد وجمعيات خيرية بوسيلة تتيح العمل على وصول صدقة كل متصدق  الى مصارفها الشرعية<br>
+    2. توحيد قاعدة المعلومات الخاصة بالمحتاجين بين الوسطاء، و معرفة العدد الحقيقي للفقراء و القيمة اللازمة لسد الحاجة و كفاية المؤونة.<br>
+    3.  ضمان الشفافية فالمُحسن سيعلم كيفية صرف صدقته مما يزيد من ثقته،و ضمان عدالة التوزيع على الفقراء، لضمان الاستقرار في ظل تكافل صادق.
+        </p>
+        </div>
+        <div class="col-md"  >
+            <img src="../static/image/framework.png" id="definition" style="width: 55%; height: 80%;padding-top: 90px;">
+        </div>
+    </div>
+    <div class="row" style="height: 600px;padding-right: 10%; padding-top: 100px;">
+        <div class="col-md"   id ="project" style="padding-left: 10%; padding-top: 60px; right: 90px;">
+            <img src="../static/image/donation.png">
+        </div>
+        <div class="col-md" >
+            <h3 class="h3 text-deco-2">
+                المشــاريع
+            </h3>
+            <p class="text-justify" style="font-size: 20px;">
+            للمنصة خمسة مشاريع
+                <ul class="list-unstyled" style="font-size: 20px;">
+                    <li >
+                        المشروع الأول: زكاة الفطر
+                    </li>
+                    <li >
+                        المشروع الثاني: زكاة الحول
+                    </li>
+                    <li >
+                        المشروع الثاني: المنحـة الشهرية
+                    </li>
+                    <li  >
+                        المشروع الرابع: منحة التمدرس
+                    </li>
+                    <li>
+                        المشروع الخامس: أضحية العيد
+                    </li>
+                </ul>
+                كل مُحسن له حرية اختيار المشروع الذي يريد إيداع صدقته فيه.
+            </p>
+        </div>
+    </div>
 {% endblock content %}
 {% block scripts %}
 	<script>
 		$(window).on('load',function() {
 			$('.pageloader').fadeOut(8000)
-		});	
+		});
+        <!--This script has been copied from the tutorial of w3schools-->
+        $(document).ready(function(){
+          // Add smooth scrolling to all links
+          $("a").on('click', function(event) {
+
+            // Make sure this.hash has a value before overriding default behavior
+            if (this.hash !== "") {
+              // Prevent default anchor click behavior
+              event.preventDefault();
+
+              // Store hash
+              var hash = this.hash;
+
+              // Using jQuery's animate() method to add smooth page scroll
+              // The optional number (800) specifies the number of milliseconds it takes to scroll to the specified area
+              $('html, body').animate({
+                scrollTop: $(hash).offset().top
+              }, 800, function(){
+
+                // Add hash (#) to URL when done scrolling (default click behavior)
+                window.location.hash = hash;
+              });
+            } // End if
+          });
+        });
+
 	</script>
 {% endblock scripts %}
