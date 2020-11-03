@@ -33,24 +33,18 @@
 	
 	<body>
 		
-		<div class="pageloader">
-			<div align="center">
-				<img height="25%" width="25%" src="{{ url_for('static', filename='image/image72.png')}}" >
-				<h1 class="thisFont" style="color: #00625dff;">
-					وقــف
-				</h1>
-				<h1 class="thisFont" style="color: #00625dff;">
-					شلابيـة بشباش -رحمها الله -
-				</h1>
-			</div>
-		</div>
+		{% block greetings %}
+        {% endblock greetings %}
 		<div style="width: 100%;">
 			{% block nav_bar %}
 			{% endblock nav_bar %}
 		</div>
 		<div class="container-fluid thisFont">
-            {% block side_bar %}
-			{% endblock side_bar %}
+            <div class="position-fixed" style="width: 100%;">
+                {% block side_bar %}
+			    {% endblock side_bar %}
+            </div>
+
             {% block content %}
             {% endblock content %}
 		</div>
