@@ -4,7 +4,6 @@
 		<!--styles-->
 		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
 		<link rel="stylesheet" href="{{ url_for('static', filename='dashboard.css')}}">
-		<link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.css') }}">
 		<link rel="stylesheet" href="{{ url_for('static', filename='bootstrap-rtl.css') }}">
 		<meta name="author" content="OUAREM Oualid">
 		<meta name="description" content="وقف على شكل نظام آلي لتسيير الصدقات و الزكوات المودعة لدى المساجد">
@@ -34,7 +33,7 @@
 	
 	<body>
 		
-		<!--<div class="pageloader">
+		<div class="pageloader">
 			<div align="center">
 				<img height="25%" width="25%" src="{{ url_for('static', filename='image/image72.png')}}" >
 				<h1 class="thisFont" style="color: #00625dff;">
@@ -44,18 +43,16 @@
 					شلابيـة بشباش -رحمها الله -
 				</h1>
 			</div>
-		</div>-->
-		<div class="container-fluid">
+		</div>
+		<div style="width: 100%;">
 			{% block nav_bar %}
 			{% endblock nav_bar %}
 		</div>
 		<div class="container-fluid thisFont">
-			<div class="row">
-				{% block side_bar %}
-				{% endblock side_bar %}
-				{% block content %}
-				{% endblock content %}	
-			</div>	
+            {% block side_bar %}
+			{% endblock side_bar %}
+            {% block content %}
+            {% endblock content %}
 		</div>
 		<script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
