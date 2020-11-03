@@ -7,14 +7,14 @@ import arabic_reshaper as reshaper
 from flask_bcrypt import Bcrypt
 
 app = Flask(__name__)
-"""
+
 db_parameters={
     'driver' : 'postgres',
     'port': 5432,
-    'user' : 'xvxgsgmdbdjrsr',
-    'password': '598bbf294f2af3860f052210a5b9cfa78e2890a81d1d94955824ccc23c49bfe6',
-    'host':'ec2-34-202-65-210.compute-1.amazonaws.com',
-    'db_name':'d7i4nsjusks75a'
+    'user' : 'pgrtppckxjamkr',
+    'password': '39718d80e9caafc479afd7b469394af766e19564813ba084ab318ef9ff6952df',
+    'host':'ec2-34-225-162-157.compute-1.amazonaws.com',
+    'db_name':'dbckftoiarvgpc'
 }
 app.config['SECRET_KEY'] = '5791628bb0b13ce0c676dfde280ba245'
 app.config['SQLALCHEMY_DATABASE_URI'] = "{driver}://{user}:{password}@{host}:{port}/{db_name}".format(**db_parameters)
@@ -29,7 +29,7 @@ db_parameters={
 }
 app.config['SECRET_KEY'] = '5791628bb0b13ce0c676dfde280ba245' 
 app.config['SQLALCHEMY_DATABASE_URI'] = "{driver}://{user}:{password}@{host}/{db_name}".format(**db_parameters)
-
+"""
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
