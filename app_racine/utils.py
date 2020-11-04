@@ -126,8 +126,8 @@ from io import BytesIO
 def print_PDF_view(garant_id):
     output = BytesIO()
     person = Garant.query.filter_by(id=garant_id).first()
-    TTFSearchPath.append(os.path.dirname(os.path.abspath('TimesNewRoman.tff')) + '/app_racine/static/fonts')
-    pdfmetrics.registerFont(TTFont("Times", 'TimesNewRoman.ttf'))
+    TTFSearchPath.append(os.path.dirname(os.path.abspath('Times_New_Roman.tff')) + '/app_racine/static/fonts')
+    pdfmetrics.registerFont(TTFont("Times", 'Times_New_Roman.ttf'))
     member = Mosque.query.filter_by(user_account=session['user_id']).first()
     p = canvas.Canvas(output, pagesize=A4)
     p.setPageSize(A4)
@@ -192,11 +192,11 @@ def print_PDF_view(garant_id):
 def printPDF_resume_view():
     member = Mosque.query.filter_by(user_account=session['user_id']).first()
     garant_list = list(Garant.query.filter_by(mosque_id=member.id))
-    TTFSearchPath.append(os.path.dirname(os.path.abspath('TimesNewRoman.tff'))+'/app_racine/static/fonts')
+    TTFSearchPath.append(os.path.dirname(os.path.abspath('Times_New_Roman.tff'))+'/app_racine/static/fonts')
     print(TTFSearchPath)
     styles = getSampleStyleSheet()
     style = styles["BodyText"]
-    pdfmetrics.registerFont(TTFont("Times", 'TimesNewRoman.ttf'))
+    pdfmetrics.registerFont(TTFont("Times", 'Times_New_Roman.ttf'))
     style.font = "Times"
     output = BytesIO()
     canv = canvas.Canvas(output, pagesize=landscape(A4))
