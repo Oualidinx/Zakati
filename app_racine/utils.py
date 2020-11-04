@@ -1,5 +1,6 @@
 from werkzeug.exceptions import BadRequestKeyError
 from flask import make_response,session
+from reportlab import rl_config
 from reportlab.lib.pagesizes import A4,landscape
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.pdfbase import pdfmetrics
@@ -15,7 +16,7 @@ from arabic_reshaper import arabic_reshaper as reshaper
 from app_racine.models import Mosque,Critere,Garant,User, parametre_utils
 from app_racine.models import situation_personne,situation_garant,Personne
 from app_racine import db
-
+rl_config.TTFSearchPath.append('/static/fonts')
 def is_concerned_prime_s(garant_id):
     garant = Garant.query.filter_by(id=garant_id).first()
     taux_scolaire = parametre_utils.query.all()[0].taux_scolaire
@@ -113,7 +114,7 @@ import os
 def printPDF_view(garant_id):
     output = BytesIO()
     person = Garant.query.filter_by(id=garant_id).first()
-    print(os.path.dirname('.'))
+
     pdfmetrics.registerFont(TTFont("Times", 'TimesNewRoman.ttf'))
     member = Mosque.query.filter_by(user_account = session['user_id']).first()
     p = canvas.Canvas(output , pagesize=A4)
