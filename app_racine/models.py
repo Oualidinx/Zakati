@@ -89,7 +89,7 @@ class Garant(db.Model):
 	mosque_id = db.Column(db.Integer , db.ForeignKey('mosque.id'), nullable = False)
 	
 	def print_form(self):#return a response token
-		return printPDF_view(self.id)
+		return print_PDF_view(self.id)
 	
 	def get_total_sum(self):
 		self.Solde_part_financiere = self.Solde_finale * Mosque.query.filter_by(id = self.mosque_id).first().get_value()
@@ -154,4 +154,4 @@ class User(db.Model, UserMixin):
 		except:
 			return None
 		return User.query.get(user_id)
-from app_racine.utils import printPDF_view,printPDF_resume_view
+from app_racine.utils import print_PDF_view,printPDF_resume_view
