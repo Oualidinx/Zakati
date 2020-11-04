@@ -11,10 +11,10 @@ app = Flask(__name__)
 db_parameters={
     'driver' : 'postgres',
     'port': 5432,
-    'user' : 'pgrtppckxjamkr',
-    'password': '39718d80e9caafc479afd7b469394af766e19564813ba084ab318ef9ff6952df',
-    'host':'ec2-34-225-162-157.compute-1.amazonaws.com',
-    'db_name':'dbckftoiarvgpc'
+    'user' : 'zjwtzosbblbwcq',
+    'password': 'fa3600c2e780ec286471a414329751935831278b8971e9d763a37f5640762952',
+    'host':'ec2-54-224-175-142.compute-1.amazonaws.com',
+    'db_name':'daonvmcpqk35rv'
 }
 app.config['SECRET_KEY'] = '5791628bb0b13ce0c676dfde280ba245'
 app.config['SQLALCHEMY_DATABASE_URI'] = "{driver}://{user}:{password}@{host}:{port}/{db_name}".format(**db_parameters)
