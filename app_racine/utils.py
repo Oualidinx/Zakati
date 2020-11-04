@@ -114,7 +114,7 @@ def printPDF_view(garant_id):
     output = BytesIO()
     person = Garant.query.filter_by(id=garant_id).first()
     print(os.path.dirname('.'))
-    pdfmetrics.registerFont(TTFont("Times", 'times.ttf'))
+    pdfmetrics.registerFont(TTFont("Times", 'TimesNewRoman.ttf'))
     member = Mosque.query.filter_by(user_account = session['user_id']).first()
     p = canvas.Canvas(output , pagesize=A4)
     p.setPageSize(A4)
