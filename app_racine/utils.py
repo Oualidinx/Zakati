@@ -196,7 +196,7 @@ def printPDF_resume_view():
     print(TTFSearchPath)
     styles = getSampleStyleSheet()
     style = styles["BodyText"]
-    pdfmetrics.registerFont(TTFont("Times", 'Times_New_Roman.ttf'))
+    pdfmetrics.registerFont(TTFont("Times", 'TimesNewRoman.ttf'))
     style.font = "Times"
     output = BytesIO()
     canv = canvas.Canvas(output, pagesize=landscape(A4))
@@ -217,9 +217,9 @@ def printPDF_resume_view():
 
     nb_pages = 1
 
-    if (len(garant_list) > 15):
+    if len(garant_list) > 15:
         nb_pages = nb_pages + int((len(garant_list) - 15) / 18)
-        if ((len(garant_list) - 15) % 18 != 0):
+        if (len(garant_list) - 15) % 18 != 0:
             nb_pages = nb_pages + 1
     i = 1
 
