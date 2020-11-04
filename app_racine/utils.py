@@ -192,7 +192,7 @@ def print_PDF_view(garant_id):
 def printPDF_resume_view():
     member = Mosque.query.filter_by(user_account=session['user_id']).first()
     garant_list = list(Garant.query.filter_by(mosque_id=member.id))
-    # print(len(garant_list))
+    TTFSearchPath.append(os.path.dirname(os.path.abspath('TimesNewRoman.tff'))+'/app_racine/static/fonts')
     styles = getSampleStyleSheet()
     style = styles["BodyText"]
     pdfmetrics.registerFont(TTFont("Times", 'Times_New_Roman.ttf'))
