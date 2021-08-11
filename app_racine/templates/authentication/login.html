@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html dir ="rtl">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bootstrap-rtl.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
+        <title>{{ title }}</title>
+    </head>
+    <body>
+        <div  align="center" class="container thisFont">
+            <div class="card col-md-4">
+                <div class="card-body">
+                    <form class="form-horizontal"  action="{{ url_for('auth_bp.login') }}" method='POST'>
+                        {{ form.hidden_tag() }}
+                        <img style="height: 65%; width:65%" src="{{ url_for('static', filename='image/image72.png') }}" class="card-img-top">
+                            {% with messages = get_flashed_messages(with_categories=true) %}
+                            {% if messages %}
+                                {% for categorie , message in messages %}
+                                    <div class="alert alert-{{ categorie }}">
+                                        {{ message }}
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                            {% endwith %}
+                                <div class="form-group">
+                                    {{ form.username.label(class="form-control-label")}}
+                                    {% if form.username.errors %}
+                                    {{ form.username(class="form-control from-control-md is-invalid") }}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.username.errors %}							
+                                            <span>{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                    {% else %}
+                                        {{ form.username(class="form-control from-control-md") }}
+                                    {% endif %}
+                                </div>
+                                <div class="form-group">
+                                    {{ form.password.label(class="form-control-label") }}
+                                    {% if form.password.errors %}
+                                        {{ form.password(class="form-control from-control-md is-invalid") }}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.password.errors %}							
+                                                <span>{{ error }}</span>
+                                            {% endfor %}
+                                        </div>
+                                    {% else %}
+                                        {{ form.password(class="form-control form-control-md") }}
+                                    {% endif %}
+                                </div>
+                            <div class="form-group">
+                                {{ form.submit(class="btn btn-outline-info") }}
+                            </div>
+                            
+                        </form>
+                </div>
+            </div>
+        </div>
+        <script src="{{ url_for('static', filename='bootstrap.js') }}"></script>
+        <script src="{{ url_for('static', filename='jquery.js') }}"></script>
+    </body>
+</html>

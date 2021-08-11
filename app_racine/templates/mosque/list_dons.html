@@ -1,0 +1,50 @@
+{% extends './includes/mosque_layout.html' %}
+
+{% block mosque_content %}
+	<div class="container">
+		<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+			{% if session['mosque_name'] %}
+				<h1 class="h2">مسجـــد {{  session['mosque_name'] }} </h1>
+			{% endif %}
+            {#
+            <div class="btn-toolbar mb-2 mb-md-0">
+                <a target="_blank" class="btn btn-outline-primary nav-link" href="#">طبــــع القائمـة</a>
+            </div>
+            #}
+		</div>
+		<div class="row justify-content-center">
+			<div class="col-md">
+				<div class="card shadow-lg border-0 rounded-lg mt-5">
+					<div class="card-header">
+						<div class="row">
+							<div class="col-md">
+								<h3 class="h3">
+									المتبرعيــن و عمليات التبرع
+								</h3>
+							</div>
+							<div class="col-md text-right">
+								<a class="btn btn-outline-primary" href="{{ url_for('mosque_bp.register_donation') }}">
+									<i class="fa fa-plus"></i></a>
+							</div>
+						</div>
+					</div>
+					{% include "includes/ui-table.html" %}
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock mosque_content %}
+{% block scripts %}
+    <script>
+        $(document).ready( function () {
+            $('#ui-table').DataTable({
+                "bPaginate": false,
+                "fixedColumns":   true,
+                "info":     false,
+                "language": {
+                    "url": "{{url_for('static', filename='DataTables/Arabic.json')}}"
+                }
+            });
+        });
+    </script>
+{% endblock scripts %}

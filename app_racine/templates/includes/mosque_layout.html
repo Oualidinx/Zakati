@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="OUAREM Oualid" />
+        <title>لوحة التحكم - مسجد {{session['mosque_name']}} </title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+        <link href="{{ url_for('static', filename='css/styles.css' )}}" rel="stylesheet" />
+        <link rel="stylesheet" href="{{url_for('static', filename='bootstrap-rtl.css')}}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/fontawesome-free.min.css') }}">
+        <style>
+
+            div.dataTables_wrapper {
+                direction: rtl;
+            }
+
+            /* Ensure that the demo table scrolls */
+            th, td { white-space: nowrap; }
+            div.dataTables_wrapper {
+                width: 800px;
+                margin: 0 auto;
+            }
+
+        </style>
+        {% block stylesheets %}
+
+        {% endblock %}
+    </head>
+    <body class="sb-nav-fixed thisFont" style="background-image: url('{{url_for('static', filename='image/path.png')}}'); background-repeat: repeat; position: static; opacity: 100%;">
+        <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+            <a class="navbar-brand" href="{{url_for('mosque_bp.mosque_dashboard')}}">زكــاة</a>
+
+            <!-- Navbar Search-->
+            <span class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0"></span>
+            <!-- Navbar-->
+
+            <ul class="navbar-nav ml-auto ml-md-0">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="userDropdown" href="#" role="button" data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-user fa-fw"></i></a>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                        <a class="dropdown-item" href="{{ url_for('auth_bp.logout') }}">تسجيل الخـروج</a>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+
+        <div id="layoutSidenav">
+            <div id="layoutSidenav_nav">
+                <nav class="sb-sidenav accordion sb-sidenav-light" id="sidenavAccordion">
+                    <div class="sb-sidenav-menu">
+                        <div class="nav">
+                            <h3><a class="nav-link" href="{{url_for('mosque_bp.mosque_dashboard')}}">
+                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                لوحة التحكم
+                            </a></h3>
+                            <a class="nav-link" href="{{ url_for('mosque_bp.mosque_dashboard') }}">
+                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                                    الرئيسية
+                            </a>
+                            <a class="nav-link collapsed" href="{{url_for('mosque_bp.list_garants', page = 1)}}">
+                                <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
+                                عرض قائمــة المحتاجيـــن
+                            </a>
+
+                            <a class="nav-link" href="{{url_for('mosque_bp.list_dons', page = 1)}}">
+                                <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
+                                 علميات التبـــرع
+                            </a>
+
+                            <a class="nav-link collapsed" href="{{url_for('mosque_bp.update_info')}}">
+                                <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
+                                تعديل المعلومات
+                            </a>
+
+                            <a class="nav-link collapsed" href="{{url_for('mosque_bp.update_password')}}">
+                                <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
+                                تعديل كلمة المرور
+                            </a>
+
+                            <a class="nav-link collapsed" href="{{url_for('auth_bp.logout')}}">
+                                <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
+                                تسجيل الخروج
+                            </a>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+            <div id="layoutSidenav_content">
+                <main class="content">
+                    {% block mosque_content %}
+                    {% endblock  mosque_content %}
+                </main>
+            </div>
+        </div>
+        <script src="{{ url_for('static', filename='js/jquery.js') }}"
+                crossorigin="anonymous"></script>
+        <script src="{{ url_for('static', filename='DataTables/js/jquery.dataTables.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"
+                crossorigin="anonymous"></script>
+        <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+        <script src="{{ url_for('static', filename='DataTables/js/dataTables.bootstrap4.min.js' )}}" crossorigin="anonymous"></script>
+
+        {% block scripts %}
+
+        {% endblock scripts %}
+    </body>
+</html>

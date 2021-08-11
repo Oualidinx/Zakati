@@ -1,0 +1,139 @@
+
+{% extends './includes/mosque_layout.html' %}
+
+{% block mosque_content %}
+    <div class="container">
+        <div class="row justify-content-lg-center">
+            <div class="col-lg">
+                <div class="card shadow-lg border-0 rounded-lg mt-5">
+                    <div class="card-header">
+                        <h3 class="text-center font-weight-light my-4">المساجـــد</h3>
+                    </div>
+                    </div>
+                    <div class="card-body">
+                        <form action="" method="POST">
+                            {{ form.hidden_tag() }}
+                            {% with messages = get_flashed_messages(with_categories=true) %}
+                                {% if messages %}
+                                    {% for category , message in messages %}
+                                        <div class="alert alert-{{category}} alert-dismissible" role="alert">
+                                            {{ message }}
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                                                    aria-hidden="true" class="text-left">&times;</span></button>
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            {% endwith %}
+                            <h2>معلومات حول الامام</h2>
+                            <div class="form-row">
+                                <div class="col-md">
+                                    <div class="form-group">
+                                        {{ form.first_name.label(class="small mb-1") }}
+                                        {% if form.first_name.errors %}
+                                            {{ form.first_name(class="form-control form-control-md")}}
+                                            {% for error in form.first_name.errors %}
+                                                <div class="alert alert-danger">
+                                                    {{ error }}
+                                                </div>
+                                            {% endfor %}
+                                        {% else %}
+                                            {{ form.first_name(class="form-control form-control-md") }}
+                                        {% endif %}
+
+                                    </div>
+                                </div>
+                                <div class="col-md">
+                                    <div class="form-group">
+                                        {{ form.last_name.label(class="small mb-1") }}
+                                        {% if form.last_name.errors %}
+                                            {{ form.last_name(class="form-control form-control-md") }}
+                                            {% for error in form.last_name.errors %}
+                                                <div class="alert alert-danger">
+                                                    {{ error }}
+                                                </div>
+                                            {% endfor %}
+                                        {% else %}
+                                            {{ form.last_name(class="form-control form-control-md") }}
+                                        {% endif %}
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+
+                                <div class="col-md">
+                                    <h6>يرجى الاحتفاظ باسم المستخدم</h6>
+                                    <div class="form-group">
+                                        {{ form.username.label(class="small mb-1") }}
+                                        {% if form.username.errors %}
+                                            {{ form.username(class="form-control form-control-md", disabled=True)}}
+                                            {% for error in form.username.errors %}
+                                                <div class="alert alert-danger">
+                                                    {{ error }}
+                                                </div>
+                                            {% endfor %}
+                                        {% else %}
+                                                {{ form.username(class="form-control form-control-md", disabled=True)}}
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                {# Manufacturer #}
+
+
+                                <div class="col-md">
+                                    <div class="form-group">
+                                        {{ form.phone_num.label(class="small mb-1") }}
+                                        {% if form.phone_num.errors %}
+                                            {{ form.phone_num(class="form-control form-control-md")}}
+                                            {% for error in form.phone_num.errors %}
+                                                <div class="alert alert-danger">
+                                                    {{ error }}
+                                                </div>
+                                            {% endfor %}
+                                        {% else %}
+                                            {{ form.phone_num(class="form-control form-control-md")}}
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="col-md">
+                                    <div class="form-group">
+                                        {{ form.email.label(class="small mb-1") }}
+                                        {% if form.email.errors %}
+                                            {{ form.email(class="form-control form-control-md")}}                                                {% for error in form.manufacturer.errors %}
+                                                    <div class="alert alert-danger">
+                                                        {{ error }}
+                                                    </div>
+                                                {% endfor %}
+                                        {% else %}
+                                                {{ form.email(class="form-control form-control-md")}}
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col-md">
+                                    <div class="form-group">
+                                        {{ form.current_password.label(class="small mb-1") }}
+                                        {% if form.current_password.errors %}
+                                            {{ form.current_password(class="form-control form-control-md") }}                                            {% for error in form.description.errors %}
+                                                <div class="alert alert-danger">
+                                                    {{ error }}
+                                                </div>
+                                            {% endfor %}
+                                        {% else %}
+                                            {{ form.current_password(class="form-control form-control-md")}}
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group mt-4 mb-0">
+                                {{ form.submit(class='btn btn-primary') }}
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+    </div>
+{% endblock mosque_content %}

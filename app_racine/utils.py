@@ -1,5 +1,6 @@
 from werkzeug.exceptions import BadRequestKeyError
 from flask import make_response, session
+from flask_login import current_user
 from reportlab.lib.pagesizes import A4, landscape
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.pdfbase import pdfmetrics
@@ -8,81 +9,108 @@ from reportlab.pdfgen import canvas
 from reportlab.rl_config import TTFSearchPath
 from reportlab.platypus.tables import Table, TableStyle
 from reportlab.lib import colors
-from datetime import datetime
+
 from bidi.algorithm import get_display
-from arabic_reshaper import arabic_reshaper as reshaper
-from app_racine.models import Mosque, Critere, Garant, User, parametre_utils
-from app_racine.models import situation_personne, situation_garant, Personne
+
+from arabic_reshaper import arabic_reshaper
+
+from app_racine.mosque.models import Garant, GarantProject, SituationGarant, Mosque, Personne, SituationPerson
+from app_racine.master.models import *
 from app_racine import db
+
 import os
+from io import BytesIO
 
-
+from datetime import datetime
 
 
 def is_concerned_prime_s(garant_id):
     garant = Garant.query.filter_by(id=garant_id).first()
-    taux_scolaire = parametre_utils.query.all()[0].taux_scolaire
+    taux_scolaire = ParameterUtils.query.first().taux_scolaire
     situation = []
-    for person in garant.familles:
-        try:
-            temp = situation_personne.query.filter_by(personne_id=person.id).filter_by(
-                critere_id='فرد متمدرس').first().personne_id
-            situation.append(temp)
-        except:
-            pass
-    if len(situation) > 0:
-        return len(situation) * taux_scolaire
-    return False
+    if Critere.query.all():
+        for person in garant.familles:
+            temp = SituationPerson.query.filter_by(personne_id=person.id) \
+                                        .filter_by(critere_id=Critere.query.filter_by(label='فرد متمدرس') \
+                                                   .first().id) \
+                                        .first().personne_id
+            if temp:
+                situation.append(temp)
 
-
-def project_status(project_id):
-    pass
+        if len(situation) > 0:
+            garant.prime_scolaire = len(situation) * taux_scolaire
+            db.session.add(garant)
+            db.session.commit()
+            return len(situation) * taux_scolaire
+    return None
 
 
 def is_concerned_prime_m(garant_id):
     garant = Garant.query.filter_by(id=garant_id).first()
-    taux_prime_m = parametre_utils.query.all()[0].taux_prime_m
-    salaire_base = parametre_utils.query.all()[0].salaire_base
-    is_jobless = 'بطال' in situation_garant.query.filter_by(garant_id=garant_id)
+    taux_prime_m = ParameterUtils.query.first().taux_prime_m
+    salaire_base = ParameterUtils.query.first().salaire_base
+    is_jobless = Critere.query.join(SituationGarant, SituationGarant.critere_id == Critere.id) \
+        .filter(Critere.label == 'بطال').first()
     if is_jobless:
+        garant.prime_mensuelle = (len(garant.familles) + 1) * taux_prime_m
+        db.session.add(garant)
+        db.session.commit()
         return (len(garant.familles) + 1) * taux_prime_m
 
     if ((len(garant.familles) + 1) * taux_prime_m) < salaire_base:
+        garant.prime_mensuelle = salaire_base - ((len(garant.familles) + 1) * taux_prime_m)
+        db.session.add(garant)
+        db.session.commit()
         return salaire_base - ((len(garant.familles) + 1) * taux_prime_m)
-
-    return False
+    return None
 
 
 def get_data_from_request(requete, garant_id):
     count = 2
-    while True:
-        try:
-            p = Personne(
-                nom=requete.form["p_{}_nom".format(str(count))],
-                prenom=requete.form["p_{}_prenom".format(str(count))],
-                date_naissance=requete.form["p_{}_date_nais".format(str(count))],
-                relation_ship=requete.form["p_{}_relation_ship".format(str(count))],
-                garant_id=garant_id
-            )
-            db.session.add(p)
-            db.session.commit()
-            if requete.form.getlist("p_{}_malade_cronic".format(str(count))):
-                malade_cronic = situation_personne(critere_id="مرض مزمن", personne_id=p.id)
-                db.session.add(malade_cronic)
+    max_clicks = requete.form.get('max_clicks')
+    if Critere.query.all():
+        for i in range(count, int(max_clicks) + 1):
+            if f'p_{i}_nom' not in dict(requete.form):
+                continue
+            else:
+                _person = Garant.query.filter_by(nom=requete.form[f"p_{i}_nom"]) \
+                    .filter_by(prenom=requete.form[f"p_{i}_prenom"]) \
+                    .filter_by(date_nais=datetime.strptime(requete.form[f"p_{i}_date_nais"], '%Y-%m-%d')) \
+                    .first()
+                if _person:
+                    return False
+                p = Personne()
+                p.nom = requete.form[f"p_{i}_nom"]
+                p.prenom = requete.form[f"p_{i}_prenom"]
+                p.date_naissance = datetime.strptime(dict(requete.form)[f"p_{i}_date_nais"], '%Y-%m-%d')
+                p.relation_ship = requete.form[f"p_{i}_relation_ship"]
+                p.garant_id = garant_id
+                db.session.add(p)
                 db.session.commit()
+                if requete.form.get(f"p_{i}_malade_cronic") == "y" and Critere.query.filter_by(
+                        label="مرض مزمن").first():
+                    malade_cronic = SituationPerson()
+                    malade_cronic.critere_id = Critere.query.filter_by(label="مرض مزمن").first().id
+                    malade_cronic.personne_id = p.id
+                    db.session.add(malade_cronic)
+                    db.session.commit()
 
-            if requete.form.getlist("p_{}_education".format(str(count))):
-                education = situation_personne(critere_id="فرد متمدرس", personne_id=p.id)
-                db.session.add(education)
-                db.session.commit()
-
-            if requete.form.getlist("p_{}_handicap".format(str(count))):
-                handicap = situation_personne(critere_id="اعاقة", personne_id=p.id)
-                db.session.add(handicap)
-                db.session.commit()
-        except BadRequestKeyError as e:
-            break
-        count = count + 1
+                if requete.form.get(f"p_{i}_education") == 'y' and Critere.query.filter_by(
+                        label="فرد متمدرس").first():
+                    education = SituationPerson()
+                    education.critere_id = Critere.query.filter_by(label="فرد متمدرس").first().id
+                    education.personne_id = p.id
+                    db.session.add(education)
+                    db.session.commit()
+                if requete.form.get(f"p_{i}_handicap") == 'y' and Critere.query.filter_by(
+                        label="اعاقة").first():
+                    handicap = SituationPerson()
+                    handicap.critere_id = Critere.query.filter_by(label="اعاقة").first().id
+                    handicap.personne_id = p.id
+                    db.session.add(handicap)
+                    db.session.commit()
+        return True
+    return False
 
 
 def verify_presence(data1, data2, data3, data4):
@@ -95,37 +123,55 @@ def verify_presence(data1, data2, data3, data4):
     return False
 
 
-def count_points_personne(person):
-    status = situation_personne.query.filter_by(personne_id=person.id)
-    points = 0
-    for situation in status:
-        poids = Critere.query.filter_by(id=situation.critere_id).first().poids
-        points += poids
-    return points
+def count_points_person(person):
+    status = SituationPerson.query.filter_by(personne_id=person.id).all()
+    if status:
+        points = 0
+        for situation in status:
+            w = Critere.query.filter_by(id=situation.critere_id).first()
+            if w:
+                weight = w.weight
+                points += weight
+        return points
+    return 0
 
 
 def count_points(garant, persons):
-    S = situation_garant.query.filter_by(garant_id=garant.id)
-    for situation in S:
-        poids = Critere.query.filter_by(id=situation.critere_id).first().poids
-        garant.Solde_points += poids
-    for person in persons:
-        garant.Solde_points += count_points_personne(person)
+    status = SituationGarant.query.filter_by(garant_id=garant.id).all()
+    if status:
+        for situation in status:
+            weight = Critere.query.filter_by(id=situation.critere_id).first().weight
+            garant.Solde_points += weight
+        for person in persons:
+            garant.Solde_points += count_points_person(person)
 
 
 def get_reshaped_text(text):
-    arabic_text = reshaper.reshape(text)
+    arabic_text = arabic_reshaper.reshape(text)
     arabic_text = get_display(arabic_text)
     return arabic_text
 
 
-from io import BytesIO
-
-
 # construite le formulaire
-def print_PDF_view(garant_id):
+def PrintPDFView(garant_id):
     output = BytesIO()
-    person = Garant.query.filter_by(id=garant_id).first()
+    garant = Garant.query.get(garant_id)
+    persons = Personne.query.filter_by(garant_id=garant.id).all()
+    resume = dict()
+    resume['enfants'] = len([p for p in persons if p.relation_ship == "ابن(ة)"])
+    query = Personne.query.join(SituationPerson, Personne.id == SituationPerson.personne_id).add_columns(
+        Personne.id, Personne.garant_id, SituationPerson.critere_id)
+    result = query.filter_by(critere_id='فرد متمدرس')
+    result_students = result.filter(Personne.garant_id == garant.id)
+    resume['students'] = len(result_students.all())
+    result_origins = set(query.filter(Personne.garant_id == garant.id).all()) - set(result_students.all())
+    resume['origins'] = len([p for p in result_origins if p.critere_id != 'زوجة'])
+    del query
+    query = Critere.query.join(SituationGarant, Critere.id == SituationGarant.critere_id) \
+        .add_columns(Critere.id, Critere.category).filter(SituationGarant.garant_id == garant.id)
+    resume['status_soc'] = query.filter(Critere.category == 'الاجتماعية').all()
+    resume['status_sante'] = query.filter(Critere.category == 'الصحية').all()
+    resume['status_fam'] = query.filter(Critere.category == 'العائلية').all()
     TTFSearchPath.append(os.path.dirname(os.path.abspath('Times_New_Roman.tff')) + '/app_racine/static/fonts')
     pdfmetrics.registerFont(TTFont("Times", 'Times_New_Roman.ttf'))
     member = Mosque.query.filter_by(user_account=session['user_id']).first()
@@ -144,56 +190,59 @@ def print_PDF_view(garant_id):
     p.setFontSize(17)
     p.drawRightString(550, 580, get_reshaped_text(u'1- التعريــف :'))
     p.setFontSize(16)
-    p.drawRightString(530, 560, get_reshaped_text(u'الإســم :  ' + person.prenom))
-    p.drawRightString(300, 560, get_reshaped_text(u'اللقــــب :  ' + person.nom))
-    p.drawRightString(530, 540, get_reshaped_text(u'تاريـخ الميلاد : ' + str(person.date_nais)[:10]))
-    # print("Utils-> date_nais: {}".format(str(person.date_nais)[:10]))
-    # p.drawRightString(300 , 540 , get_reshaped_text(u'مكان الميلاد : '+person.lieu_nais))
-    # p.drawRightString(530 , 520 , get_reshaped_text(u'العنوان : '+person.Adress))
+    p.drawRightString(530, 560, get_reshaped_text(u'الإســم :  ' + garant.prenom))
+    p.drawRightString(300, 560, get_reshaped_text(u'اللقــــب :  ' + garant.nom))
+    p.drawRightString(530, 540, get_reshaped_text(u'تاريـخ الميلاد : ' + str(garant.date_nais)[:10]))
+    p.drawRightString(300, 540, get_reshaped_text(u'مكان الميلاد : '))
+    p.drawRightString(530, 520, get_reshaped_text(u'العنوان : '))
     p.setFontSize(17)
-    """p.drawRightString(550 , 490 , get_reshaped_text(u'2- الحالة الاجتماعية :'))
+    p.drawRightString(550, 490, get_reshaped_text(u'2- الحالة الاجتماعية :'))
+    p.setFontSize(14)
+    w, h = 530, 470
+    for x in resume['status_soc']:
+        p.drawRightString(w, h, str(x.id))  # get_reshaped_text(str(x.id))
+        h = h - 20
+    p.setFontSize(17)
+    p.drawRightString(550, h, get_reshaped_text(u'3- الحالة الصحيــــة :'))
+    p.setFontSize(14)
+    h = h - 20
+    for status in resume['status_sante']:
+        p.drawRightString(530, h, get_reshaped_text(status.id))
+        h = h - 20
+    p.setFontSize(17)
+    p.drawRightString(550, h, get_reshaped_text(u'6- أفراد على نفقـة طالـب الزكاة (العدد) : '))
     p.setFontSize(16)
-    p.drawRightString(530 , 470 , get_reshaped_text(u'الحالة المدنيــة : ' + person.sit_famille))
+    h = h - 30
+    p.drawRightString(500, h, get_reshaped_text(
+        u'أ- الفروع الصُّلبِيُّون : ' + str(resume['enfants'])))
+    h = h - 30
+    p.drawRightString(500, h,
+                      get_reshaped_text(u' ب- الأصـول (الأب، الأم، الجـد، الجـدة) : ' + str(resume['origins'])))
+    h = h - 30
+    """p.drawRightString(500, 275, get_reshaped_text(
+        u'ج- حـالات أخـرى : ' + str(len(Personne.objects.filter(fk_id_garant=garant.id, relation="اخرى")))))"""
+    p.drawRightString(550, h, get_reshaped_text(u'في : برج بو عريريج'))
+    p.drawRightString(400, h, get_reshaped_text(u'التــــاريخ : ' + str(datetime.today())[:10]))
+    p.drawRightString(200, h, get_reshaped_text(u'إمضـاء المعنـي : '))
     p.setFontSize(17)
-    p.drawRightString(550 , 445 , get_reshaped_text(u'3- الســكن : '))
-    p.setFontSize(16)
-    p.drawRightString(480 , 445 , get_reshaped_text(person.log))
-    p.setFontSize(17)
-    p.drawRightString(550 , 420 , get_reshaped_text(u'4- العمــــل : '))
-    p.setFontSize(16)
-    p.drawRightString(480 , 420  , get_reshaped_text(person.Profession))
-    p.setFontSize(17)
-    p.drawRightString(550 , 395 , get_reshaped_text(u'5- الاستفادة من خدمات الضمان الاجتماعـي : '))
-    p.setFontSize(16)
-    p.drawRightString(280, 395  , get_reshaped_text(person.Health_care))
-    p.setFontSize(17)
-    p.drawRightString(550 , 365 , get_reshaped_text(u'6- أفراد على نفقـة طالـب الزكاة (العدد) : '))
-    p.setFontSize(16)
-    p.drawRightString(500 , 335 , get_reshaped_text(u'أ- الفروع الصُّلبِيُّون : '+str(len(Personne.query.filter_by(garant_id = person.CCP , relation = "ابن")))))
-    p.drawRightString(500 , 305 , get_reshaped_text(u' ب- الأصـول (الأب، الأم، الجـد، الجـدة) : '+str(len(personne.objects.filter(fk_id_garant = person.CCP , relation = "والد(ة)")))))
-    p.drawRightString(500 , 275 , get_reshaped_text(u'ج- حـالات أخـرى : '+str(len(personne.objects.filter(fk_id_garant = person.CCP , relation = "اخرى")))))
-    """
-    p.drawRightString(550, 200, get_reshaped_text(u'في : برج بو عريريج'))
-    p.drawRightString(400, 200, get_reshaped_text(u'التــــاريخ : ' + str(datetime.today())[:10]))
-    p.drawRightString(200, 200, get_reshaped_text(u'إمضـاء المعنـي : '))
-    p.setFontSize(17)
+
     p.drawCentredString(320, 100, get_reshaped_text(u'أقسـم بالله العظيم أن كل المعلومات التي قدمتها أعلاه صحيحة'))
     p.save()
     pdf_out = output.getvalue()
     output.close()
     response = make_response(pdf_out)
-    response.headers['Content-Disposition'] = 'inline; filename="{id}.pdf"'.format(id=person.id)
-    print("Utils: attachment; filename=\"{id}.pdf\"".format(id=person.id))
+    response.headers['Content-Disposition'] = f'inline; filename="{garant.first_name} \
+                                                {garant.last_name} {str(datetime.utcnow().date())}.pdf" '
+
     response.mimetype = 'application/pdf'
     return response
 
 
 # la liste finale
-def printPDF_resume_view():
+def PrintPDFResumeView(project_id):
     member = Mosque.query.filter_by(user_account=session['user_id']).first()
-    garant_list = list(Garant.query.filter_by(mosque_id=member.id))
-    TTFSearchPath.append(os.path.dirname(os.path.abspath('Times_New_Roman.tff'))+'/app_racine/static/fonts')
-    print(TTFSearchPath)
+
+    TTFSearchPath.append(os.path.dirname(os.path.abspath('Times_New_Roman.tff')) + '/app_racine/static/fonts')
     styles = getSampleStyleSheet()
     style = styles["BodyText"]
     pdfmetrics.registerFont(TTFont("Times", 'Times_New_Roman.ttf'))
@@ -206,13 +255,28 @@ def printPDF_resume_view():
     canv.setFontSize(18)
     canv.drawCentredString(400, 528, get_reshaped_text(u'مســجد ' + member.nom))
     canv.setFontSize(16)
-    canv.drawRightString(800, 510, get_reshaped_text(u'البلديــة :' + member.state))
-    canv.drawRightString(800, 488, get_reshaped_text(u'التاريــخ : ' + str(datetime.today())[:10]))
-    # les données
+    canv.drawRightString(800, 510, get_reshaped_text(u'الولايـــة :' + Wilaya.query.get(member.state).name))
+    canv.drawRightString(800, 488, get_reshaped_text(u'التاريــخ : ' + str(datetime.utcnow().date())))
+    garant_list = Garant.query.filter_by(mosque_id=member.id).filter_by(is_active=1).all()
+    project = Project.query.get(project_id)
     data = [(get_reshaped_text(u'      الإمضـاء      '), get_reshaped_text(u'        بطاقة الهوية      '),
              get_reshaped_text(u'\t\t القيمة (د.ج)\t\t'), get_reshaped_text(u'\tعدد الاسهم\t'),
              get_reshaped_text(u'\t تاريخ الميلاد \t '), get_reshaped_text(u'          الاســم و اللقــب          '),
              get_reshaped_text(u'الرقم'))]
+    if project and project.title == 'المنحة الشهرية':
+        canv.setFont("Times", 22)
+        canv.drawCentredString(400, 550, get_reshaped_text(u'قائمـة المستفيديــن من المنحة الشهرية'))
+        garant_list = Garant.query.join(Mosque, Mosque.id == Garant.mosque_id) \
+            .filter(Mosque.usser_account == current_user.id) \
+            .filter(is_concerned_prime_m(Garant.id) is not None)
+    elif project and project.title == 'منحة التمدرس':
+        canv.setFont("Times", 22)
+        canv.drawCentredString(400, 550, get_reshaped_text(u'قائمـة المستفيديــن من منحة التمدرس'))
+        garant_list = Garant.query.join(Mosque, Mosque.id == Garant.mosque_id) \
+            .filter(Mosque.usser_account == current_user.id) \
+            .filter(is_concerned_prime_s(Garant.id) is not None)
+    # les données
+
     count = 1
 
     nb_pages = 1
@@ -244,10 +308,22 @@ def printPDF_resume_view():
 
         for person in donnee:
             temp = (
-                "", "", person.Solde_part_financiere, person.Solde_finale,
-                get_reshaped_text(str(person.date_nais)[:10]), \
+                "", "", person.get_total_sum(), person.Solde_finale,
+                get_reshaped_text(str(person.date_nais.date())),
                 get_reshaped_text(person.nom) + "    " + get_reshaped_text(person.prenom), count)
             montant = montant + person.Solde_finale
+            if project and project.title == 'المنحة الشهرية':
+                temp = (
+                    "", "", person.get_total_sum(), person.prime_mensuelle,
+                    get_reshaped_text(str(person.date_nais.date())),
+                    get_reshaped_text(person.nom) + "    " + get_reshaped_text(person.prenom), count)
+                montant = montant + person.prime_mensuelle
+            elif project and project.title == 'منحة التمدرس':
+                temp = (
+                    "", "", person.get_total_sum(), person.prime_scolaire,
+                    get_reshaped_text(str(person.date_nais.date())),
+                    get_reshaped_text(person.nom) + "    " + get_reshaped_text(person.prenom), count)
+                montant = montant + person.prime_scolaire
             data.append(temp)
             count = count + 1
 
@@ -274,6 +350,6 @@ def printPDF_resume_view():
     pdf_out = output.getvalue()
     output.close()
     response = make_response(pdf_out)
-    response.headers['Content-Disposition'] = 'inline; filename=' + str(datetime.today())[:10] + '.pdf'
+    response.headers['Content-Disposition'] = 'inline; filename=' + member.nom+"_"+str(datetime.today())[:10] + '.pdf'
     response.mimetype = "application/pdf"
     return response

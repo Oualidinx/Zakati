@@ -1,0 +1,336 @@
+{% extends './includes/admin_layout.html' %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/select2.min.css') }}">
+    <style>
+        .container h1 {
+            font-family: 'Raleway';
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: -1px;
+            font-size: 50px;
+        }
+        hr {
+            border: 0;
+            height: 3px;
+            background-image: linear-gradient(to right, rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
+        }
+
+        .thumbnail {
+            margin-bottom:6px;
+          display:flex;
+          flex-wrap: wrap;
+        }
+
+
+        .blur {
+            transform: scale(0.9);
+            opacity: 0.6;
+            -webkit-filter: blur(2px);
+            -moz-filter: blur(2px);
+            -o-filter: blur(2px);
+            -ms-filter: blur(2px);
+            filter: blur(2px);
+        }
+        a {
+            text-decoration: none;
+        }
+        a:visited, a:focus{
+            color: white;
+        }
+
+
+        .image_area {
+            position: relative;
+        }
+
+        img {
+            display: block;
+            max-width: 100%;
+        }
+
+        .preview {
+            overflow: hidden;
+            width: 160px;
+            height: 160px;
+            margin: 10px;
+            border: 1px solid red;
+        }
+
+        .modal-lg {
+            max-width: 1000px !important;
+        }
+
+        .overlay {
+            position: absolute;
+            bottom: 10px;
+            left: 0;
+            right: 0;
+            background-color: rgba(255, 255, 255, 0.5);
+            overflow: hidden;
+            height: 0;
+            transition: .5s ease;
+            width: 100%;
+        }
+
+        .text {
+            color: #333;
+            font-size: 20px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            -webkit-transform: translate(-50%, -50%);
+            -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+    </style>
+{% endblock stylesheets%}
+{% block app_content %}
+    <div class="container">
+        <div class="row justify-content-lg-center">
+            <div class="col-lg">
+                <div class="card shadow-lg border-0 rounded-lg mt-5">
+                    <div class="card-header">
+                        <h3 class="text-center font-weight-light my-4">المساجـــد</h3>
+                    </div>
+                    </div>
+                    <div class="card-body">
+                        <form action="" method="POST">
+                            {{ form.hidden_tag() }}
+                            {% with messages = get_flashed_messages(with_categories=true) %}
+                                {% if messages %}
+                                    {% for category , message in messages %}
+                                        <div class="alert alert-{{category}} alert-dismissible" role="alert">
+                                            {{ message }}
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                                                    aria-hidden="true" class="text-left">&times;</span></button>
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            {% endwith %}
+                            <h2>معلومات حول المسجد أو الجمعية</h2>
+                            <div class="form-row">
+                                <div class="col-md">
+                                    <div class="form-group">
+                                        {{ form.nom.label(class="small mb-1") }}
+                                        {% if form.nom.errors %}
+                                            {{ form.nom(class="form-control form-control-md") }}
+                                            {% for error in form.nom.errors %}
+                                                <div class="alert alert-danger">
+                                                    {{ error }}
+                                                </div>
+                                            {% endfor %}
+                                        {% else %}
+                                            {{ form.nom(class="form-control form-control-md") }}
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col-md">
+                                    <div class="form-group">
+                                        {{ form.categorie.label(class="small mb-1") }}
+                                        {% if form.categorie.errors %}
+                                            {{ form.categorie(class="select2-categorie-selection form-control form-control-md") }}
+                                            {% for error in form.categorie.errors %}
+                                                <div class="alert alert-danger">
+                                                    {{ error }}
+                                                </div>
+                                            {% endfor %}
+                                        {% else %}
+                                            {{ form.categorie(class="select2-categorie-selection form-control form-control-md") }}
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col-md">
+                                    <div class="form-group">
+                                        {{ form.adresse.label(class="small mb-1") }}
+                                        {% if form.adresse.errors %}
+                                            {{ form.adresse(class="form-control form-control-md") }}
+                                            {% for error in form.adresse.errors %}
+                                                <div class="alert alert-danger">
+                                                    {{ error }}
+                                                </div>
+                                            {% endfor %}
+                                        {% else %}
+                                            {{ form.adresse(class="form-control form-control-md") }}
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col-md">
+                                    <div class="form-group">
+                                        {{ form.state.label(class="small mb-1") }}
+                                        {% if form.state.errors %}
+                                            {{ form.state(class="select2-state-selection form-control form-control-md") }}
+                                            {% for error in form.state.errors %}
+                                                <div class="alert alert-danger">
+                                                    {{ error }}
+                                                </div>
+                                            {% endfor %}
+                                        {% else %}
+                                            {{ form.state(class="select2-state-selection form-control form-control-md") }}
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col-md">
+                                    <div class="form-group">
+                                        {{ form.phone_num.label(class="small mb-1") }}
+                                        {% if form.phone_num.errors %}
+                                            {{ form.phone_num(class="form-control form-control-md")}}                                                {% for error in form.manufacturer.errors %}
+                                                <div class="alert alert-danger">
+                                                    {{ error }}
+                                                </div>
+                                            {% endfor %}
+                                        {% else %}
+                                            {{ form.phone_num(class="form-control form-control-md")}}
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <h2>معلومات حول الامام</h2>
+                            <div class="form-row">
+                                <div class="col-md">
+                                    <div class="form-group">
+                                        {{ form.first_name.label(class="small mb-1") }}
+                                        {% if form.first_name.errors %}
+                                            {{ form.first_name(class="form-control form-control-md")}}
+                                            {% for error in form.first_name.errors %}
+                                                <div class="alert alert-danger">
+                                                    {{ error }}
+                                                </div>
+                                            {% endfor %}
+                                        {% else %}
+                                            {{ form.first_name(class="form-control form-control-md") }}
+                                        {% endif %}
+
+                                    </div>
+                                </div>
+                                <div class="col-md">
+                                    <div class="form-group">
+                                        {{ form.last_name.label(class="small mb-1") }}
+                                        {% if form.last_name.errors %}
+                                            {{ form.last_name(class="form-control form-control-md") }}
+                                            {% for error in form.last_name.errors %}
+                                                <div class="alert alert-danger">
+                                                    {{ error }}
+                                                </div>
+                                            {% endfor %}
+                                        {% else %}
+                                            {{ form.last_name(class="form-control form-control-md") }}
+                                        {% endif %}
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+
+                                <div class="col-md">
+                                    <h6>يرجى الاحتفاظ باسم المستخدم</h6>
+                                    <div class="form-group">
+                                        {{ form.username.label(class="small mb-1") }}
+                                        {% if form.username.errors %}
+                                            {{ form.username(class="form-control form-control-md", disabled=True)}}
+                                            {% for error in form.username.errors %}
+                                                <div class="alert alert-danger">
+                                                    {{ error }}
+                                                </div>
+                                            {% endfor %}
+                                        {% else %}
+                                                {{ form.username(class="form-control form-control-md", disabled=True)}}
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                {# Manufacturer #}
+
+
+                                <div class="col-md">
+                                    <div class="form-group">
+                                        {{ form.phone_num_imam.label(class="small mb-1") }}
+                                        {% if form.phone_num_imam.errors %}
+                                            {{ form.phone_num_imam(class="form-control form-control-md")}}
+                                            {% for error in form.phone_num_imam.errors %}
+                                                <div class="alert alert-danger">
+                                                    {{ error }}
+                                                </div>
+                                            {% endfor %}
+                                        {% else %}
+                                            {{ form.phone_num_imam(class="form-control form-control-md")}}
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="col-md">
+                                    <div class="form-group">
+                                        {{ form.email.label(class="small mb-1") }}
+                                        {% if form.email.errors %}
+                                            {{ form.email(class="form-control form-control-md")}}                                                {% for error in form.manufacturer.errors %}
+                                                    <div class="alert alert-danger">
+                                                        {{ error }}
+                                                    </div>
+                                                {% endfor %}
+                                        {% else %}
+                                                {{ form.email(class="form-control form-control-md")}}
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                {# brand #}
+                            </div>
+
+                            <h2>معلومات الدخول</h2>
+                            <div class="form-row">
+                                <div class="col-md">
+                                    <div class="form-group">
+                                        {{ form.password.label(class="small mb-1") }}
+                                        {% if form.password.errors %}
+                                            {{ form.password(class="select2-brand-selection form-control")}}
+                                            {% for error in form.password.errors %}
+                                                <div class="alert alert-danger">
+                                                    {{ error }}
+                                                </div>
+                                            {% endfor %}
+                                        {% else %}
+                                            {{ form.password(class="select2-brand-selection form-control")}}
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="col-md">
+                                    <div class="form-group">
+                                        {{ form.confirm_password.label(class="small mb-1") }}
+                                        {% if form.confirm_password.errors %}
+                                            {{ form.confirm_password(class="form-control form-control-md") }}                                            {% for error in form.description.errors %}
+                                                <div class="alert alert-danger">
+                                                    {{ error }}
+                                                </div>
+                                            {% endfor %}
+                                        {% else %}
+                                            {{ form.confirm_password(class="form-control form-control-md")}}
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group mt-4 mb-0">
+                                {{ form.submit(class='btn btn-primary') }}
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+    </div>
+{% endblock %}
+{% block scripts %}
+    <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/select2.min.js') }}"></script>
+    <script>
+        $(document).ready(function () {
+            $('.select2-state-selection').select2();
+            $('.select2-categorie-selection').select2();
+        });
+    </script>
+{% endblock scripts%}

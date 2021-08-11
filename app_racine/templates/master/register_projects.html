@@ -1,0 +1,97 @@
+{% extends './includes/admin_layout.html' %}
+{% block stylesheets %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/summernote.min.css') }}">
+{%endblock stylesheets %}
+{% block app_content %}
+    <div class="container">
+        <div class="row justify-content-lg-center">
+            <div class="col-lg">
+                <div class="card shadow-lg border-0 rounded-lg mt-5">
+                    <div class="card-header">
+                        <h3 class="text-center font-weight-light my-4">تعريف المشروع</h3>
+                    </div>
+                    </div>
+                    <div class="card-body">
+                        <form action="" method="POST">
+                            {{ form.hidden_tag() }}
+                            {% with messages = get_flashed_messages(with_categories=true) %}
+                                {% if messages %}
+                                    {% for category , message in messages %}
+                                        <div class="alert alert-{{category}} alert-dismissible" role="alert">
+                                            {{ message }}
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                                                    aria-hidden="true" class="text-left">&times;</span></button>
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            {% endwith %}
+
+                            <div class="form-row">
+                                <div class="col-md">
+                                    <div class="form-group">
+                                        {{ form.title.label(class="small mb-1") }}
+                                        {% if form.title.errors %}
+                                            {{ form.title(class="form-control form-control-md")|safe }}
+                                            {% for error in form.title.errors %}
+                                                <div class="alert alert-danger">
+                                                    {{ error }}
+                                                </div>
+                                            {% endfor %}
+                                        {% else %}
+                                            {{ form.title(class="form-control form-control-md")|safe }}
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col-md">
+                                    <div class="form-group">
+                                        {{ form.Description.label(class="small mb-1") }}
+                                        {% if form.Description.errors %}
+                                            {{ form.Description(class="select2-categorie-selection form-control form-control-md") }}
+                                            {% for error in form.Description.errors %}
+                                                <div class="alert alert-danger">
+                                                    {{ error }}
+                                                </div>
+                                            {% endfor %}
+                                        {% else %}
+                                            {{ form.Description(class="select2-categorie-selection form-control form-control-md") }}
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col-md">
+                                    <div class="form-group">
+                                        {{ form.montant_estime.label(class="small mb-1") }}
+                                        {% if form.montant_estime.errors %}
+                                            {{ form.montant_estime(class="form-control form-control-md") }}
+                                            {% for error in form.montant_estime.errors %}
+                                                <div class="alert alert-danger">
+                                                    {{ error }}
+                                                </div>
+                                            {% endfor %}
+                                        {% else %}
+                                            {{ form.montant_estime(class="form-control form-control-md") }}
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group mt-4 mb-0">
+                                {{ form.submit(class='btn btn-primary') }}
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+    </div>
+{% endblock %}
+{% block scripts %}
+    <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/summernote.min.js') }}"></script>
+    <script !src="">
+        $(document).ready(function(){
+            $('#Description').summernote();
+        });
+    </script>
+{% endblock scripts%}

@@ -3,4 +3,5 @@
 #Compiled files
 .pyc
 .pyo
+/migrations
 

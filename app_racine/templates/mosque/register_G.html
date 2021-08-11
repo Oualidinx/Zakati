@@ -1,0 +1,357 @@
+{% extends './includes/mosque_layout.html' %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/select2.min.css')}}">
+{% endblock stylesheets %}
+{% block mosque_content %}
+    <div class="container">
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            {% if content   %}
+                <h1 class="h2">مسجـــد {{  session['mosque_name']}} </h1>
+            {% endif %}
+        </div>
+
+        <form method="POST">
+            {{form.hidden_tag()}}
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for categorie , message in messages %}
+                        <div class="alert alert-{{ categorie }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            <fieldset class="form-group" id="accordion">
+                <div class="card">
+                    <div class="card-header">
+                        <a class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true">
+                            التعريــــف
+                        </a>
+                    </div>
+                    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                        <div class="card-body">
+                            <div class="form-row">
+                                <div class="col-md">
+                                    <div class="form-group">
+                                        {{ form.nom.label(class="form-control-label") }}
+                                        {% if form.nom.errors %}
+                                            {{ form.nom(class="form-control from-control-lg is-invalid") }}
+                                            <div class="alert alert-danger">
+                                            {% for error in form.nom.errors %}
+                                                <span>{{ error }}</span>
+                                            {% endfor %}
+                                            </div>
+                                        {% else %}
+                                            {{ form.nom(class="form-control from-control-md") }}
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="col-md">
+                                    <div class="form-group">
+                                        {{ form.prenom.label(class="form-control-label") }}
+                                        {% if form.prenom.errors %}
+                                            {{ form.prenom(class="form-control from-control-lg is-invalid") }}
+                                            <div class="alert alert-danger">
+                                                {% for error in form.prenom.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                        {% else %}
+                                            {{ form.prenom(class="form-control from-control-md") }}
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col-md">
+                                    <div class="form-group">
+                                        {{ form.address.label(class="form-control-label") }}
+                                        {% if form.address.errors %}
+                                            {{ form.address(class="form-control from-control-lg is-invalid") }}
+                                            <div class="alert alert-danger">
+                                            {% for error in form.address.errors %}
+                                                <span>{{ error }}</span>
+                                            {% endfor %}
+                                            </div>
+                                        {% else %}
+                                            {{ form.address(class="form-control from-control-md") }}
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="col-md">
+                                    <div class="form-group">
+                                        {{ form.phone_number.label(class="form-control-label") }}
+                                        {% if form.phone_number.errors %}
+                                            {{ form.phone_number(class="form-control from-control-md") }}
+                                            {% for error in form.phone_number.errors %}
+                                                <div class="alert alert-danger">
+                                                    <span>{{ error }}</span>
+                                                </div>
+                                            {% endfor %}
+                                        {% else %}
+                                            {{ form.phone_number(class="form-control from-control-md") }}
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col-md">
+                                    <div class="form-group">
+                                        {{ form.date_nais.label(class="form=control-label") }}
+                                        {% if form.date_nais.errors %}
+                                            {{ form.date_nais(class="form-control from-control-lg",placeholder="يوم/الشهر/السنة") }}
+                                            <div class="alert alert-danger">
+                                                {% for error in form.date_nais.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                        {% else %}
+                                            {{ form.date_nais(class=" form-control from-control-lg") }}
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="col-md">
+                                    <div class="form-group">
+                                        {{ form.num_extrait_nais.label(class="form-control-label") }}
+                                        {% if form.num_extrait_nais.errors %}
+                                            {{ form.num_extrait_nais(class="form-control from-control-lg is-invalid") }}
+                                            <div class="alert alert-danger">
+                                                {% for error in form.num_extrait_nais.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                        {% else %}
+                                            {{ form.num_extrait_nais(class="form-control from-control-md") }}
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col-md">
+                                    <div class="form-group">
+                                        {{ form.compte_ccp.label(class="form-control-label") }}
+                                        {% if form.compte_ccp.errors %}
+                                            {{ form.compte_ccp(class="form-control from-control-lg") }}
+                                             {% for error in form.compte_ccp.errors %}
+                                                <div class="alert alert-danger">
+
+                                                    {{ error }}
+
+                                                </div>
+                                            {% endfor %}
+                                        {% else %}
+                                            {{ form.compte_ccp(class="form-control from-control-md") }}
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="col-md">
+                                    <div class="form-group">
+                                        {{ form.cle_ccp.label(class="form-control-label") }}
+                                        {% if form.cle_ccp.errors %}
+                                            {{ form.cle_ccp(class="form-control from-control-lg") }}
+                                            <div class="alert alert-danger">
+                                                {% for error in form.cle_ccp.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                        {% else %}
+                                            {{ form.cle_ccp(class="form-control from-control-md") }}
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col-md">
+                                    <div class="form-group">
+                                        {{ form.situation_sante.label(class="form-control-label") }}
+                                        {% if form.situation_sante.errors %}
+                                            {{ form.situation_sante(class="select-sante form-control") }}
+                                            <div class="alert alert-danger">
+                                                {% for error in form.situation_sante.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                        {% else %}
+                                            {{ form.situation_sante(class="select-sante form-control ") }}
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col-md">
+                                    <div class="form-group">
+                                        {{ form.situation_familliale.label(class="form-control-label") }}
+                                        {% if form.situation_familliale.errors %}
+                                        {{ form.situation_familliale(class="select-familliale form-control form-control-md") }}
+                                            <div class="alert alert-danger">
+                                                {% for error in form.situation_familliale.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                        {% else %}
+                                            {{ form.situation_familliale(class="select-familliale form-control form-control-md") }}
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col-md">
+                                    <div class="form-group">
+                                        {{ form.situation_sociale.label(class="form-control-label") }}
+                                        {% if form.situation_sociale.errors %}
+                                            {{ form.situation_sociale(class="select-social form-control form-control-md") }}
+                                            <div class="alert alert-danger">
+                                                {% for error in form.situation_sociale.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                        {% else %}
+                                            {{ form.situation_sociale(class="select-social form-control form-control-md") }}
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div><br>
+                <div class="form-group">
+                    <div class="card">
+                        <div class="card-header">
+                            <a class="btn btn-link" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true">
+                                الأفراد المكفولــين
+                            </a>   
+                        </div>
+                        <div id="collapseTwo" class="collapse show"  aria-labelledby="headingTwo" data-parent="#accordion">
+                            <div class="card-body ">
+                                <table id="entries" class="table table-hover">
+                                    <thead class="thead">
+                                        <tr>
+                                            <th scope = "col"><center>{{ famille.p_nom.label(class="form-control-label")}}</center></th>
+                                            <th scope = "col"><center>{{ famille.p_prenom.label(class="form-control-label")}}</center></th>
+                                            <th scope = "col"><center>{{ famille.p_date_nais.label(class="form-control-label")}}</center></th>
+                                            <th scope = "col"><center>{{ famille.education.label }}</center></th>
+                                            <th scope = "col" class="col-sm-1"><center>{{ famille.handicap.label }}</center></th>
+                                            <th scope = "col" class="col-sm-2"><center>{{ famille.malade_cronic.label }}</center></th>
+                                            <th scope = "col" class="col-sm-2"><center>{{ famille.p_relation_ship.label }}</center></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>     
+                                        <tr>
+                                            <td>{{ famille.p_nom(class="form-control form-control-sm") }}</td>
+                                            <td>{{ famille.p_prenom(class="form-control form-control-sm") }}</td>
+                                            <td>{{ famille.p_date_nais(class="form-control form-control-sm") }}</td>
+                                            <td align="center">{{ famille.education(class="form-check-input") }}</td>
+                                            <td align="center">{{ famille.handicap(class="form-check-input") }}</td>
+                                            <td align="center">{{ famille.malade_cronic(class="form-check-input") }}</td>
+                                            <td>{{ famille.p_relation_ship(class="form-control form-control-sm") }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div class="form-group">
+                                    <div align="left" class="form-group">
+                                        <a onclick="add_entry();" role="button" class="btn btn-outline-primary">أضف فردا آخر</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+            <div class="form-group">
+                <div class="form-group">
+                    {{ form.submit(class="btn btn-outline-info") }}
+                </div>
+            </div>
+            <input type="hidden" id="hidden_input" name="max_clicks" value="0">
+        </form>
+
+    </div>
+{% endblock mosque_content %}
+
+{% block scripts%}
+    <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/select2.min.js') }}"></script>
+    <script>
+        var nb_entries = 2;
+        var max_click = 2
+        function add_entry(){
+            var local_entity = nb_entries
+            var table = document.getElementById("entries");
+            var node = document.getElementById("p_"+(local_entity)+"_relation_ship")
+
+            while(node && (local_entity > 2)){
+                local_entity = local_entity - 1;
+                node = document.getElementById("p_"+(local_entity)+"_relation_ship")
+            }
+            var row = table.insertRow(local_entity);
+            var cell0 = row.insertCell(0);
+            var cell1 = row.insertCell(1);
+            var cell2 = row.insertCell(2);
+            var cell3 = row.insertCell(3);
+            var cell4 = row.insertCell(4);
+            var cell5 = row.insertCell(5);
+            var cell6 = row.insertCell(6);
+            var cell7 = row.insertCell(7);
+            cell0.innerHTML = '<input class="form-control form-control-sm" type="text"\
+                                    name="p_'+local_entity+'_nom"\
+                                    id="p_'+local_entity+'_nom"/>';
+            cell1.innerHTML = '<input class="form-control form-control-sm" type="text"\
+                                    name="p_'+local_entity+'_prenom"\
+                                    id="p_'+local_entity+'_prenom"/>';
+            cell2.innerHTML = '<input class="form-control form-control-sm"\
+                            value="{{famille.p_date_nais.data}}"\
+                            type="date" name="p_'+local_entity+'_date_nais"\
+                            id="p_'+local_entity+'_date_nais"/>';
+                cell3.innerHTML = '<input class="form-check-input"\
+                            type="checkbox"\
+                            name="p_'+local_entity+'_education"\
+                            id="p_'+local_entity+'_education" value="y"/>';
+            cell3.setAttribute("align","center");
+            cell4.innerHTML = '<input class="form-check-input" type="checkbox"\
+                                name="p_'+local_entity+'_handicap"\
+                                id="p_'+local_entity+'_handicap" value="y"/>';
+            cell4.setAttribute("align","center");
+            cell5.innerHTML = '<input class="form-check-input"\
+                                type="checkbox"\
+                                name="p_'+local_entity+'_malade_cronic"\
+                                id="p_'+local_entity+'_malade_cronic" value="y"/>';
+            cell5.setAttribute("align","center");
+            cell6.innerHTML = '<select class="form-control form-control-sm" \
+                                name="p_'+local_entity+'_relation_ship" \
+                                id="p_'+local_entity+'_relation_ship" ><option>اختـــر</option><option>ابن(ة)</option> \
+                                <option>زوجة</option><option>الأب</option><option>الأم</option><option>الجد</option> \
+                                <option>الجدة</option></select>';
+            cell7.innerHTML = '<td><a class="btnDelete btn-sm btn-circle btn-outline-danger"><i class="fa fa-minus"></i></a></td>';
+            if (nb_entries > max_click){
+                max_click = nb_entries;
+                document.getElementById('hidden_input').value = max_click;
+            }
+            nb_entries = nb_entries  + 1;
+        }
+        $(document).ready(function(){
+
+            $('.select-sante').select2({
+                width:'82.8%'
+            });
+
+            $('.select-social').select2({
+                width:'80%'
+            });
+
+            $('.select-familliale').select2({
+                width:'81%'
+            });
+
+            $("#entries").on('click','.btnDelete',function(){
+               $(this).closest('tr').remove();
+               if (nb_entries === 0){
+                    nb_entries = 2
+               }else{
+                    nb_entries = nb_entries - 1;
+               }
+            });
+        })
+
+    </script>
+{% endblock scripts %}

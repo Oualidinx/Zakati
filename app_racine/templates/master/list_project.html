@@ -1,0 +1,27 @@
+{% extends './includes/admin_layout.html' %}
+
+{% block app_content %}
+	<div class="container">
+		<div class="row justify-content-center">
+			<div class="col-md">
+				<div class="card shadow-lg border-0 rounded-lg mt-5">
+					<div class="card-header">
+						<div class="row">
+							<div class="col-md">
+								<h3 class="h3">
+									المشاريـع
+								</h3>
+							</div>
+							<div class="col-md text-right">
+								<a class="btn btn-outline-primary" href="{{ url_for('master_bp.register_projects') }}">
+									<i class="fa fa-plus"></i></a>
+							</div>
+						</div>
+					</div>
+
+					{% include "includes/ui-table.html" %}
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock app_content %}

@@ -1,6 +1,8 @@
-from app_racine import routes
+import os
 
-from app_racine import app
+from app_racine import app, create_app
 
-if __name__=="__main__":
-    app.run(debug=1)
+app = create_app(os.environ.get('FLASK_ENV'))
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port="5050")
