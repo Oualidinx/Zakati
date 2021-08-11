@@ -4,4 +4,6 @@
 .pyc
 .pyo
 /migrations
+.idea
+__pycache
 
