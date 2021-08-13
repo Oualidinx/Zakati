@@ -29,7 +29,7 @@ class TestingConfig(Config):
 
 
 class ProductionConfig(Config):
-    SQLALCHEMY_DATABASE_URI = "sqlite:///data-production.db"
+    SQLALCHEMY_DATABASE_URI = "postgresql://mnljrbiokoxfqf:e2097e7a5c84ceb997b4f3436d65dbbf4462d110c08a82a1af0dd6f065900844@ec2-3-233-100-43.compute-1.amazonaws.com:5432/d4dq5ml7dv24rk"
 
 
 config = {
