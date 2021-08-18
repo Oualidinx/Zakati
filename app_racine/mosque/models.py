@@ -101,14 +101,14 @@ class Mosque(PaginationMixin, db.Model):
 
 class SituationGarant(PaginationMixin, db.Model):
     __tablename__ = "situation_garant"
-    garant_id = db.Column(db.String(10), db.ForeignKey('garant.id'), primary_key=True, nullable=False)
-    critere_id = db.Column(db.String(40), db.ForeignKey('critere.id'), primary_key=True)
+    garant_id = db.Column(db.Integer, db.ForeignKey('garant.id'), primary_key=True, nullable=False)
+    critere_id = db.Column(db.Integer, db.ForeignKey('critere.id'), primary_key=True)
 
 
 class SituationPerson(PaginationMixin, db.Model):
     __tablename__ = "situation_person"
     personne_id = db.Column(db.Integer, db.ForeignKey('personne.id'), primary_key=True)
-    critere_id = db.Column(db.String(40), db.ForeignKey('critere.id'), primary_key=True)
+    critere_id = db.Column(db.Integer, db.ForeignKey('critere.id'), primary_key=True)
 
 
 class Personne(PaginationMixin, db.Model):
