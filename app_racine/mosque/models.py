@@ -118,7 +118,7 @@ class Personne(PaginationMixin, db.Model):
     prenom = db.Column(db.String(50), nullable=False)
     date_naissance = db.Column(db.DateTime, nullable=False)
     relation_ship = db.Column(db.String(6), nullable=False, default="")
-    garant_id = db.Column(db.String(10), db.ForeignKey('garant.id'), nullable=False)  # le compte ccp
+    garant_id = db.Column(db.Integer, db.ForeignKey('garant.id'), nullable=False)  # le compte ccp
 
 
 class GarantProject(PaginationMixin, db.Model):
