@@ -16,7 +16,7 @@ class CritereForm(FlaskForm):
     submit = SubmitField("إضــافة")
 
     def validate_label(self, label):
-        critere = Critere.query.filter_by(id=label.data).filter_by(category=self.categorie.data).first()
+        critere = Critere.query.filter_by(label=label.data).filter_by(category=self.categorie.data).first()
         if critere:
             raise ValidationError('لقـد تم ادخـال هذا المعيار من قبل')
 
