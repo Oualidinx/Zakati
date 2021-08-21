@@ -253,7 +253,7 @@ def list_garants(page):
                 list_endpoint="mosque_bp.list_garants",
                 columns=['الرقم', 'اسم الكفيل', 'لقب الكفيل', 'مبلغ منحة التمدرس', 'ت. الميلاد']
             )
-    return render_template('mosque/list_garants.html', results=data, form = form)
+    return render_template('mosque/list_garants.html', results=data if data else None, form = form)
 
 
 @mosque_bp.route("/donneur")
