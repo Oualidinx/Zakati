@@ -63,8 +63,8 @@ class MosqueForm(FlaskForm):
     confirm_password = PasswordField("تأكيـــد كلمــة المرور :*",
                                      validators=[DataRequired(),
                                                  EqualTo('password', message='كلمتي المرور غير متطابقتين')])
-    first_name = StringField('اسم الامام :*', validators=[DataRequired()])
-    last_name = StringField('لقب الامام :*', validators=[DataRequired()])
+    first_name = StringField('اسم الامام/المسؤول :*', validators=[DataRequired()])
+    last_name = StringField('لقب الامام/المسؤول :*', validators=[DataRequired()])
     phone_num_imam = StringField('رقم الهاتف: *', validators=[DataRequired()])
     username = StringField('اسم المستخدم :')
     submit = SubmitField("إضــافة")
