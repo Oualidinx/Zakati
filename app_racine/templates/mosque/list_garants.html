@@ -62,68 +62,6 @@
 			</div>
 		</div>
 	</div>
-{#
-<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
-	<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-		{% if content['name']%}
-			<h1 class="h2">مسجـــد {{ content['name']}} </h1>
-		{% endif %}
-		<div class="btn-toolbar mb-2 mb-md-0">
-				
-			<a target="_blank" class="btn nav-link" href="{{ url_for('print_table') }}">طبــــع القائمـة</a>
-		
-		</div>
-	</div>
-		<div class="dropdown">
-			<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-				عرض القائمـة حسب المشروع
-			</button>
-			<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-					<a class="dropdown-item" href="{{ url_for('list_garants', argument='*') }}">
-						الكـــل
-					</a>
-					<a class="dropdown-item" href="{{ url_for('list_garants',  argument='prime_m')}}">المنحة الشهرية
-					</a>
-					<a class="dropdown-item" href="{{ url_for('list_garants', argument='prime_s' )}}">منحـة التمدرس</a>
-			</div>
-		  </div>
-			{%if content['data'] %}
-			<div class="table-responsive">
-				<table class="table table-bordered table-hover">
-					<thead>
-						<tr>
-							{% with columns = content['columns'] %}
-								{% if columns %}
-									{% for colonne in columns %}
-										<th>{{colonne}}</th>
-									{% endfor %}
-								{% endif %}
-							{% endwith %}
-							<th>عمليات</th>
-						</tr>
-					</thead>
-					<tbody>
-						{% for line in content['data'] %}
-							<tr>
-								<td>{{line.id}}</td>
-								<td>{{line.prenom}}</td>
-								<td>{{line.nom}}</td>
-								<td>{{line.date_nais}}</td>
-								<td>{{line.Solde_part_financiere}}</td>
-								<td align="center"><a href="{{url_for('print_form', arg=line.id)}}" target="_blank" class="btn btn-info btn-sm">طبـــاعة</a></td>
-							</tr>
-						{% endfor %}
-					</tbody>
-				</table>
-			</div>
-			{% else %}
-				<div class="alert alert-info text-center">
-					<span>  لا يوجـــد</span>
-				</div>
-			{% endif %}
-
-</main>
-#}
 {% endblock mosque_content %}
 
 {% block scripts %}

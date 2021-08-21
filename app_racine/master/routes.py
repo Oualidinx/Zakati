@@ -65,7 +65,7 @@ def list_mosques(page):
 def register_m():
     form = MosqueForm()
     form.state.choices = [('None', 'الولاية')] + [(x.id, x.name) for x in Wilaya.query.all()]
-    form.username.data = str(secrets.token_hex(8))
+    form.username.data = str(secrets.token_hex(4))
     if form.validate_on_submit():
         t_mosques = Mosque()
         t_mosques.nom = form.nom.data
