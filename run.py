@@ -2,6 +2,8 @@ import os
 
 from app_racine import app, create_app
 
+from dotenv import load_dotenv
+load_dotenv('.flaskenv')
 app = create_app(os.environ.get('FLASK_ENV'))
 
 if __name__ == "__main__":

@@ -4,14 +4,22 @@
 from flask_sqlalchemy import SQLAlchemy
 
 from flask import Flask
-from flask_login.login_manager import LoginManager
+from flask_login import LoginManager
 import arabic_reshaper as reshaper
+
+from apifairy import APIFairy
+from flask_marshmallow import Marshmallow
+
 from config import config
 app = Flask(__name__)
 
 db = SQLAlchemy(app)
 
 login = LoginManager(app=app)
+
+api_fairy = APIFairy(app=app)
+
+marsh = Marshmallow()
 
 
 def create_app(config_name):
@@ -38,4 +46,6 @@ def create_app(config_name):
     from app_racine.users import user_bp as user_bp
     
     app.register_blueprint(user_bp)
+
+    marsh.init_app(app)
     return app
