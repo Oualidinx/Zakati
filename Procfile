@@ -1,1 +1,1 @@
-web:  flask run --port 5000
+web:  flask run
