@@ -14,7 +14,7 @@ class User(db.Model, UserMixin):
     phone_number = db.Column(db.String(10), nullable=False, index=True)
     email = db.Column(db.String(100))
     address = db.Column(db.String(255))
-    password = db.Column(db.String(100), nullable=False)
+    password = db.Column(db.String(512), nullable=False)
     mosques = db.relationship('Mosque', secondary="donate_mosque",
                               primaryjoin='User.id == foreign(DonateMosque.user_id)',
                               secondaryjoin="Mosque.id == foreign(DonateMosque.id)", viewonly=True
