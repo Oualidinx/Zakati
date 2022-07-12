@@ -1,4 +1,3 @@
-import re
 
 from flask_login import current_user
 from flask_wtf import FlaskForm
@@ -51,12 +50,13 @@ class PersonPerGarant(FlaskForm):
     p_nom = StringField("اللقــــب", validators=[Length(max=50)])
     p_prenom = StringField("الاســـم", validators=[Length(max=50)])
     p_date_nais = DateField("تاريــخ الميلاد", default=datetime.utcnow().date())
-    education = BooleanField('التمـدرس')
-    handicap = BooleanField('الاعـاقـة')
-    malade_cronic = BooleanField('المرض المزمن')
+    # malade_cronic = BooleanField('المرض المزمن')
+    situation = SelectMultipleField('حالة المكفـول: ', validate_choice=False)
+    cronic_desease = StringField('نوع المرض: ')
     p_relation_ship = SelectField("صلة القرابــة ",
                                   choices=[("", "اختـــر"), ("ابن(ة)", "ابن(ة)"), ("زوجة", "زوجة"), ("الأب", "الأب"),
-                                           ("الأم", "الأم"), ("الجد", "الجد"), ("الجدة", "الجدة")])
+                                           ("الأم", "الأم"), ("الجد", "الجد"), ("الجدة", "الجدة"), ("أخ(ت)", "أخ(ت)"),
+                                           ("عم(ة)", "عم(ة)"), ("خال(ة)", "خال(ة)")])
 
 
 class RegisterGarantForm(FlaskForm):
@@ -65,12 +65,18 @@ class RegisterGarantForm(FlaskForm):
     date_nais = DateField("تاريــخ الميلاد :", validators=[DataRequired()], default=datetime.utcnow().date())
     address = StringField('العنـوان: ', validators=[DataRequired()])
     phone_number = StringField('رقم الهاتف: ', validators=[DataRequired()])
+    card_id = StringField('رقـم بطاقـة الهوية: ', validators=[DataRequired()])
+    release_date = DateField('تاريخ الاصدار: ', validators=[DataRequired()])
+    # place_issue = SelectMultipleField('مكـان الاصدار: ', validators=[DataRequired()])
+    release_authority = StringField('مكـان الاصدار: ', validators=[DataRequired()])
     compte_ccp = StringField("الحســـاب البريدي :", validators=[DataRequired(), Length(max=12)])
     cle_ccp = IntegerField("المفتــاح :", validators=[DataRequired()])
     num_extrait_nais = StringField("رقـم شهادة الميلاد :", validators=[DataRequired()])
     situation_sante = SelectMultipleField("الحالــة الصحية :", coerce=int, validate_choice=False)
+    home_appliance = SelectMultipleField('حالة الأجهزة الكهرومنزلية: ', validate_choice=False)
     situation_sociale = SelectMultipleField("الحالــة الاجتمـــاعيـة :", coerce=int, validate_choice=False)
     situation_familliale = SelectMultipleField("الحالــة العائليــــــة :", coerce=int, validate_choice=False)
+    cronic_deseases = SelectMultipleField('اسم المـرض: ', validate_choice=False)
     submit = SubmitField("أضــــف")
 
     def validate_compte_ccp(self, compte_ccp):

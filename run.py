@@ -1,6 +1,6 @@
 import os
 
-from app_racine import app, create_app
+from app_racine import create_app
 
 from dotenv import load_dotenv
 load_dotenv('.flaskenv')

@@ -1,24 +1,25 @@
 class Config:
-    SQLALCHEMY_COMMIT_ON_TEARDOWN = True
-    SQLALCHEMY_TRACK_MODIFICATIONS = True
     REMEMBER_COOKIE_SECURE = True
+    SQLALCHEMY_TRACK_MODIFICATIONS=True
 
     @staticmethod
-    def init_app(app):
+    def init_app():
         pass
 
 
 class DevelopmentConfig(Config):
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = "sqlite:///data-dev.db"
-    SQLALCHEMY_TRACK_MODIFICATIONS = True
-    SECRET_KEY='69ae5bd0ce7c457caf8ac853d9484e176e03f0af777158259de72c2fce40ae273a08b76b1aa161591a57b13a36807bfc089b1d08db816aaf32775c79a3eea344d88ff6578e84a48be667097b8ec3d14eff9ce2323cfbc95abbb936db4e651354aef0a43dd60cf0de95678c17908d343cb505bf82abdb41d4661da8ed61187798'
+    SQLALCHEMY_DATABASE_URI = "mysql+pymysql://oualid:1091eb5a6c62@localhost/zakati"
+    # SQLALCHEMY_DATABASE_URI = "sqlite:///zakati.sqlite"
+    # SQLALCHEMY_TRACK_MODIFICATIONS = True
+    # SQLALCHEMY_COMMIT_ON_TEARDOWN = True
+    SECRET_KEY = "69ae5bd0ce7c457caf8ac853d9484e176e03f0af777158259de72c2fce40ae273a08b76b1aa161591a57b13a36807bfc089b1d08db816aaf32775c79a3eea344d88ff6578e84a48be667097b8ec3d14eff9ce2323cfbc95abbb936db4e651354aef0a43dd60cf0de95678c17908d343cb505bf82abdb41d4661da8ed61187798 "
 
 
 class TestingConfig(Config):
     TESTING = True
     SQLALCHEMY_DATABASE_URI = "sqlite:///data-test.db"
-    SECRET_KEY='4d3add65ad8f19e70dffc8adc956f7178ed70873bdd669938b6ce0980f463410152a64a3e37ba0c660c28844257f3ae77a04497aed8e91c962a6eb283ded27e4'
+    SECRET_KEY = '4d3add65ad8f19e70dffc8adc956f7178ed70873bdd669938b6ce0980f463410152a64a3e37ba0c660c28844257f3ae77a04497aed8e91c962a6eb283ded27e4'
 
 
 class ProductionConfig(Config):

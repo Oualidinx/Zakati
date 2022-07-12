@@ -1,4 +1,6 @@
-#!/home/oualid/Zakati/venv/bin/python3
+#!/bin/sh
+'''exec' "/home/oualidinx/Documents/my projects/Zakati/venv/bin/python3" "$0" "$@"
+' '''
 # -*- coding: utf-8 -*-
 import re
 import sys

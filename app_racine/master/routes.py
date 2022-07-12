@@ -1,7 +1,7 @@
 from flask import session, url_for, redirect, request, flash, render_template, abort
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import current_user, login_required
-from app_racine import db
+from app_racine import database
 from app_racine.master import master_bp
 from app_racine.mosque.models import *
 from app_racine.master.models import *
@@ -15,7 +15,7 @@ import sqlalchemy
 
 ALLOWED_TAGS = bleach.ALLOWED_TAGS + ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'div', 'dt', 'dd', 'table', 'tbody', 'thead',
                                       'section',
-                                      'u', 'i', 'br', 'em', 'strong','p', 't']
+                                      'u', 'i', 'br', 'em', 'strong', 'p', 't']
 
 
 @master_bp.before_request
@@ -24,6 +24,7 @@ def master_bp_before_request():
         if current_user.is_authenticated and current_user.role == 'administrator':
             print("admin dashboard")
         else:
+            print(f'at {datetime.utcnow()}')
             abort(403)
     except Exception as exception:
         print(f'at {datetime.utcnow()}: {str(exception)}')
@@ -35,11 +36,11 @@ def master_bp_before_request():
 def admin_dashboard():
     garants = Garant.query.all()
     mosques = Mosque.query.all()
-    nb_donors = User.query.filter_by(role="donor")
+    nb_donors = User.query.filter_by(role="donor").all()
     data = {
         'nb_garant': len(garants) if garants else 0,
         'nb_mosques': len(mosques) if mosques else 0,
-        'nb_donors': len(nb_donors) if nb_donors.all() else 0
+        'nb_donors': len(nb_donors) if nb_donors else 0
     }
     return render_template('master/admin.html', content=data)
 
@@ -65,7 +66,9 @@ def list_mosques(page):
 def register_m():
     form = MosqueForm()
     form.state.choices = [('None', 'الولاية')] + [(x.id, x.name) for x in Wilaya.query.all()]
-    form.username.data = str(secrets.token_hex(4))
+    t = secrets.token_hex(4)
+    if not form.is_submitted() or form.errors:
+        form.username.data = t
     if form.validate_on_submit():
         t_mosques = Mosque()
         t_mosques.nom = form.nom.data
@@ -82,12 +85,11 @@ def register_m():
         t_user.role = 'imam'
         t_user.phone_number = form.phone_num_imam.data
         t_user.email = form.email.data if form.email.data != '' else None
-
-        db.session.add(t_user)
-        db.session.commit()
+        database.session.add(t_user)
+        database.session.commit()
         t_mosques.user_account = t_user.id
-        db.session.add(t_mosques)
-        db.session.commit()
+        database.session.add(t_mosques)
+        database.session.commit()
         flash('لقـد تم اضافة المسجد بنجاح الرجاء الاتصال بإمام المسجد و تسليم معلومات الدخـول', 'success')
         return redirect(url_for("master_bp.register_m"))
     return render_template('master/register_mosques.html', form=form)
@@ -116,14 +118,15 @@ def list_criteres(page):
 def register_critere():
     form = CritereForm()
     form.categorie.choices = [('None', 'التصنيف')] + [('الاجتماعية', 'الاجتماعية'), ('الصحية', 'الصحية'),
-                                                      ('العائلية', 'العائلية')]
+                                                      ('العائلية', 'العائلية'),
+                                                      ('الاجهزة الكهرومنزلية', 'الاجهزة الكهرومنزلية')]
     if form.validate_on_submit():
         _critere = Critere()
         _critere.label = form.label.data
         _critere.category = form.categorie.data
         _critere.weight = form.poids.data
-        db.session.add(_critere)
-        db.session.commit()
+        database.session.add(_critere)
+        database.session.commit()
         flash('تمت العملية بنجاح', 'success')
         return redirect(url_for('master_bp.register_critere'))
     return render_template('master/register_critere.html', form=form)
@@ -138,13 +141,14 @@ def edit_critere(_id):
         return redirect(url_for('master_bp.list_criteres', page=1))
 
     form = EditCritereForm()
-    form.categorie.choices = [('None', '')] + [('الاجتماعية', 'الاجتماعية'), ('الصحية', 'الصحية'),
-                                               ('العائلية', 'العائلية')]
-    form.categorie.data = critere.category
+    form.categorie.choices = [(critere.category, critere.category)]+[('None', '')] + [('الاجتماعية', 'الاجتماعية'), ('الصحية', 'الصحية'),
+                                               ('العائلية', 'العائلية'),("الاجهزة الكهرومنزلية","الاجهزة الكهرومنزلية")]
+    # form.categorie.data = critere.category
     if request.method == 'GET':
         form.label.data = critere.label
         form.poids.data = critere.weight
     elif form.validate_on_submit():
+        print(form.data)
         _critere = Critere.query.filter_by(category=form.categorie.data).filter_by(label=form.label.data).first()
         if _critere and _critere.id != critere.id:
             flash('هذا المعيار موجود من قبل')
@@ -152,8 +156,8 @@ def edit_critere(_id):
         critere.label = form.label.data
         critere.category = form.categorie.data
         critere.weight = form.poids.data
-        db.session.add(critere)
-        db.session.commit()
+        database.session.add(critere)
+        database.session.commit()
         flash('تمت عملية التعديل بنجاح', 'success')
         return redirect(url_for('master_bp.list_criteres', page=1))
     return render_template('master/register_critere.html', form=form)
@@ -185,8 +189,8 @@ def register_projects():
         cleaned_data = bleach.clean(form.Description.data, tags=ALLOWED_TAGS)
         t_prj.Description = cleaned_data
         t_prj.montant_estime = form.montant_estime.data
-        db.session.add(t_prj)
-        db.session.commit()
+        database.session.add(t_prj)
+        database.session.commit()
         flash('تمت العملية بنجاح', 'success')
         return redirect(url_for('master_bp.register_projects'))
     return render_template('master/register_projects.html', form=form)
@@ -210,8 +214,8 @@ def edit_project(_id):
         cleaned_data = bleach.clean(form.Description.data, tags=ALLOWED_TAGS)
         prj.Description = cleaned_data
         prj.montant_estime = form.montant_estime.data
-        db.session.add(prj)
-        db.session.commit()
+        database.session.add(prj)
+        database.session.commit()
         flash('تمت عملية التعديل بنجاح', 'success')
         return redirect(url_for('master_bp.list_projects', page=1))
     return render_template('master/register_projects.html', form=form)
@@ -228,8 +232,8 @@ def update_parameters():
         latest_parametre.taux_scolaire = form.taux_scolaire.data
         latest_parametre.taux_prime_m = form.taux_prime_m.data
         latest_parametre.salaire_base = form.salaire_base.data
-        db.session.add(latest_parametre)
-        db.session.commit()
+        database.session.add(latest_parametre)
+        database.session.commit()
         flash("تمت العملية بنجـــاح", "success")
         return redirect(url_for('master_bp.update_parameters'))
     elif request.method == "GET":

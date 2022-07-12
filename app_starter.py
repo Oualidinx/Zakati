@@ -1,5 +1,6 @@
 from flask_migrate import Migrate
-from app_racine import create_app, db
+from app_racine import create_app
+from app_racine import database as db
 from app_racine.users.models import *
 from app_racine.master.models import *
 from app_racine.mosque.models import *
@@ -12,12 +13,8 @@ from dotenv import load_dotenv
 load_dotenv('.flaskenv')
 app = create_app(os.environ.get('FLASK_ENV'))
 
-migrate = Migrate(app, db)
+migrate = Migrate(app=app, db=db)
 
-@app.before_request
-def app_before_request():
-    print('app before request')
-    
 
 @app.shell_context_processor
 def make_shell_context():

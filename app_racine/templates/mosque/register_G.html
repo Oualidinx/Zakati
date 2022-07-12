@@ -3,7 +3,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/select2.min.css')}}">
 {% endblock stylesheets %}
 {% block mosque_content %}
-    <div class="container">
+    <div class="container-fluid">
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
             {% if content   %}
                 <h1 class="h2">مسجـــد {{  session['mosque_name']}} </h1>
@@ -106,7 +106,7 @@
                                                 {% endfor %}
                                             </div>
                                         {% else %}
-                                            {{ form.date_nais(class=" form-control from-control-lg") }}
+                                            {{ form.date_nais(class="form-control from-control-lg") }}
                                         {% endif %}
                                     </div>
                                 </div>
@@ -122,6 +122,53 @@
                                             </div>
                                         {% else %}
                                             {{ form.num_extrait_nais(class="form-control from-control-md") }}
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col-md">
+                                    <div class="form-group">
+                                        {{ form.card_id.label(class="form-control-label") }}
+                                        {% if form.card_id.errors %}
+                                            {{ form.card_id(class=" from-control-md") }}
+                                             {% for error in form.card_id.errors %}
+                                                <div class="alert alert-danger">
+
+                                                    {{ error }}
+
+                                                </div>
+                                            {% endfor %}
+                                        {% else %}
+                                            {{ form.card_id(class="form-control from-control-md") }}
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="col-md">
+                                    <div class="form-group">
+                                        {{ form.release_date.label(class="form-control-label") }}
+                                        {% if form.release_date.errors %}
+                                            {{ form.release_date(class="form-control from-control-md") }}
+                                             {% for error in form.release_date.errors %}
+                                                <div class="alert alert-danger">
+                                                    {{ error }}
+                                                </div>
+                                            {% endfor %}
+                                        {% else %}
+                                            {{ form.release_date(class="form-control from-control-md") }}
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="col-md">
+                                    <div class="form-group">
+                                        {{ form.release_authority.label(class="form-control-label") }}
+                                        {% if form.release_authority.errors %}
+                                            {{ form.release_authority(class="form-control form-control-md") }} {# select-place-issue  #}
+                                            <div class="alert alert-danger">
+                                                {{ error }}
+                                            </div>
+                                        {% else %}
+                                            {{ form.release_authority(class="form-control form-control-md") }}{# select-place-issue  #}
                                         {% endif %}
                                     </div>
                                 </div>
@@ -176,6 +223,21 @@
                                         {% endif %}
                                     </div>
                                 </div>
+{#                                <div class="col-md">#}
+{#                                    <div class="form-group">#}
+{#                                        {{ form.cronic_deseases.label(class="form-control-label") }}#}
+{#                                        {% if form.cronic_deseases.errors %}#}
+{#                                            {{ form.cronic_deseases(class="select-cronic-deseases form-control") }}#}
+{#                                            <div class="alert alert-danger">#}
+{#                                                {% for error in form.cronic_deseases.errors %}#}
+{#                                                    <span>{{ error }}</span>#}
+{#                                                {% endfor %}#}
+{#                                            </div>#}
+{#                                        {% else %}#}
+{#                                            {{ form.cronic_deseases(class="select-cronic-deseases form-control ") }}#}
+{#                                        {% endif %}#}
+{#                                    </div>#}
+{#                                </div>#}
                             </div>
                             <div class="form-row">
                                 <div class="col-md">
@@ -211,6 +273,23 @@
                                     </div>
                                 </div>
                             </div>
+                        <div class="form-row">
+                                <div class="col-md">
+                                    <div class="form-group">
+                                        {{ form.home_appliance.label(class="form-control-label") }}
+                                        {% if form.home_appliance.errors %}
+                                            {{ form.home_appliance(class="select-home-appliance form-control form-control-md") }}
+                                            <div class="alert alert-danger">
+                                                {% for error in form.home_appliance.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                        {% else %}
+                                            {{ form.home_appliance(class="select-home-appliance form-control form-control-md") }}
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div><br>
@@ -222,34 +301,35 @@
                             </a>   
                         </div>
                         <div id="collapseTwo" class="collapse show"  aria-labelledby="headingTwo" data-parent="#accordion">
-                            <div class="card-body ">
-                                <table id="entries" class="table table-hover">
+                            <div class="card-body">
+                                <table id="entries" class="table">
                                     <thead class="thead">
                                         <tr>
                                             <th scope = "col"><center>{{ famille.p_nom.label(class="form-control-label")}}</center></th>
                                             <th scope = "col"><center>{{ famille.p_prenom.label(class="form-control-label")}}</center></th>
                                             <th scope = "col"><center>{{ famille.p_date_nais.label(class="form-control-label")}}</center></th>
-                                            <th scope = "col"><center>{{ famille.education.label }}</center></th>
-                                            <th scope = "col" class="col-sm-1"><center>{{ famille.handicap.label }}</center></th>
-                                            <th scope = "col" class="col-sm-2"><center>{{ famille.malade_cronic.label }}</center></th>
-                                            <th scope = "col" class="col-sm-2"><center>{{ famille.p_relation_ship.label }}</center></th>
+{#                                            <th scope = "col"><center>{{ famille.education.label }}</center></th>#}
+{#                                            <th scope = "col" class="col-sm-1"><center>{{ famille.handicap.label }}</center></th>#}
+                                            <th scope = "col"><center>{{ famille.situation.label }}</center></th>
+                                            <th scope = "col"><center>{{ famille.p_relation_ship.label }}</center></th>
                                         </tr>
                                     </thead>
                                     <tbody>     
                                         <tr>
-                                            <td>{{ famille.p_nom(class="form-control form-control-sm") }}</td>
-                                            <td>{{ famille.p_prenom(class="form-control form-control-sm") }}</td>
-                                            <td>{{ famille.p_date_nais(class="form-control form-control-sm") }}</td>
-                                            <td align="center">{{ famille.education(class="form-check-input") }}</td>
-                                            <td align="center">{{ famille.handicap(class="form-check-input") }}</td>
-                                            <td align="center">{{ famille.malade_cronic(class="form-check-input") }}</td>
-                                            <td>{{ famille.p_relation_ship(class="form-control form-control-sm") }}</td>
+                                            <td style="width: 15%;">{{ famille.p_nom(class="form-control  form-control-sm") }}</td>
+                                            <td style="width: 15%;">{{ famille.p_prenom(class="form-control form-control-sm") }}</td>
+                                            <td style="width: 15%;">{{ famille.p_date_nais(class="form-control form-control-sm") }}</td>
+{#                                            <td align="center">{{ famille.education(class="form-check-input") }}</td>#}
+{#                                            <td align="center">{{ famille.handicap(class="form-check-input") }}</td>#}
+                                            <td style="width: 30%;">{{ famille.situation(class="select-situation form-control form-control-sm") }}</td>
+{#                                            <td style="width: 30%;">{{ famille.cronic_desease(class="select-cronic-desease form-control") }}</td>#}
+                                            <td style="width: 25%;">{{ famille.p_relation_ship(class="form-control form-control-sm") }}</td>
                                         </tr>
                                     </tbody>
                                 </table>
                                 <div class="form-group">
                                     <div align="left" class="form-group">
-                                        <a onclick="add_entry();" role="button" class="btn btn-outline-primary">أضف فردا آخر</a>
+                                        <button id="add-entry" class="btn btn-outline-primary">أضف فردا آخر</button>
                                     </div>
                                 </div>
                             </div>
@@ -270,87 +350,137 @@
 
 {% block scripts%}
     <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+
     <script src="{{ url_for('static', filename='js/jquery.js') }}"></script>
     <script src="{{ url_for('static', filename='js/select2.min.js') }}"></script>
     <script>
-        var nb_entries = 2;
-        var max_click = 2
-        function add_entry(){
-            var local_entity = nb_entries
-            var table = document.getElementById("entries");
-            var node = document.getElementById("p_"+(local_entity)+"_relation_ship")
-
-            while(node && (local_entity > 2)){
-                local_entity = local_entity - 1;
-                node = document.getElementById("p_"+(local_entity)+"_relation_ship")
-            }
-            var row = table.insertRow(local_entity);
-            var cell0 = row.insertCell(0);
-            var cell1 = row.insertCell(1);
-            var cell2 = row.insertCell(2);
-            var cell3 = row.insertCell(3);
-            var cell4 = row.insertCell(4);
-            var cell5 = row.insertCell(5);
-            var cell6 = row.insertCell(6);
-            var cell7 = row.insertCell(7);
-            cell0.innerHTML = '<input class="form-control form-control-sm" type="text"\
-                                    name="p_'+local_entity+'_nom"\
-                                    id="p_'+local_entity+'_nom"/>';
-            cell1.innerHTML = '<input class="form-control form-control-sm" type="text"\
-                                    name="p_'+local_entity+'_prenom"\
-                                    id="p_'+local_entity+'_prenom"/>';
-            cell2.innerHTML = '<input class="form-control form-control-sm"\
-                            value="{{famille.p_date_nais.data}}"\
-                            type="date" name="p_'+local_entity+'_date_nais"\
-                            id="p_'+local_entity+'_date_nais"/>';
-                cell3.innerHTML = '<input class="form-check-input"\
-                            type="checkbox"\
-                            name="p_'+local_entity+'_education"\
-                            id="p_'+local_entity+'_education" value="y"/>';
-            cell3.setAttribute("align","center");
-            cell4.innerHTML = '<input class="form-check-input" type="checkbox"\
-                                name="p_'+local_entity+'_handicap"\
-                                id="p_'+local_entity+'_handicap" value="y"/>';
-            cell4.setAttribute("align","center");
-            cell5.innerHTML = '<input class="form-check-input"\
-                                type="checkbox"\
-                                name="p_'+local_entity+'_malade_cronic"\
-                                id="p_'+local_entity+'_malade_cronic" value="y"/>';
-            cell5.setAttribute("align","center");
-            cell6.innerHTML = '<select class="form-control form-control-sm" \
-                                name="p_'+local_entity+'_relation_ship" \
-                                id="p_'+local_entity+'_relation_ship" ><option>اختـــر</option><option>ابن(ة)</option> \
-                                <option>زوجة</option><option>الأب</option><option>الأم</option><option>الجد</option> \
-                                <option>الجدة</option></select>';
-            cell7.innerHTML = '<td><a class="btnDelete btn-sm btn-circle btn-outline-danger"><i class="fa fa-minus"></i></a></td>';
-            if (nb_entries > max_click){
-                max_click = nb_entries;
-                document.getElementById('hidden_input').value = max_click;
-            }
-            nb_entries = nb_entries  + 1;
-        }
-        $(document).ready(function(){
+        let nb_entries = 2;
+        let max_click = 2;
+        $(document).ready(function() {
+            {#$('.select-cronic-deseases').select2();#}
+            $('.select-situation').select2({
+                delay: 250,
+                width: "90%",
+                ajax: {
+                    url: "{{ url_for('mosque_bp.get_situation') }}",
+                    xhrFields: {
+                        withCredentials: true
+                    },
+                    crossDomain: true,
+                    dataType: 'json',
+                    data: function (params) {
+                        let query = {
+                            search: params.term,
+                        }
+                        return query
+                    },
+                    processResults: function (data) {
+                        return {
+                            results: $.map(data, function (item) {
+                                return {
+                                    text: item['text'],
+                                    id: item['id']
+                                }
+                            })
+                        };
+                    },
+                    contentType: "application/json",
+                    type: 'GET'
+                    // Additional AJAX parameters go here; see the end of this chapter for the full code of this example
+                }
+            });
 
             $('.select-sante').select2({
-                width:'82.8%'
+                width: '81%'
             });
 
             $('.select-social').select2({
-                width:'80%'
+                width: '81%'
             });
 
             $('.select-familliale').select2({
-                width:'81%'
+                width: '81%'
             });
-
-            $("#entries").on('click','.btnDelete',function(){
-               $(this).closest('tr').remove();
-               if (nb_entries === 0){
+            $('.select-home-appliance').select2({
+                width:"81%"
+            })
+            $("#entries").on('click', '.btnDelete', function () {
+                $(this).closest('tr').remove();
+                if (nb_entries === 0) {
                     nb_entries = 2
-               }else{
+                } else {
                     nb_entries = nb_entries - 1;
-               }
+                }
             });
+            $("#add-entry").on('click', function() {
+                let local_entity = nb_entries;
+                let table = document.getElementById("entries");
+                let node = document.getElementById("p_" + (local_entity) + "_relation_ship");
+
+                while (node && (local_entity > 2)) {
+                    local_entity = local_entity - 1;
+                    node = document.getElementById("p_" + (local_entity) + "_relation_ship")
+                }
+                const row = table.insertRow(local_entity);
+                const cell0 = row.insertCell(0); const cell1 = row.insertCell(1); const cell2 = row.insertCell(2);
+                const cell3 = row.insertCell(3); const cell4 = row.insertCell(4); const cell5 = row.insertCell(5);
+                cell0.innerHTML = '<input class="form-control form-control-sm" type="text"\
+                                    name="p_' + local_entity + '_nom"\
+                                    id="p_' + local_entity + '_nom"/>';
+                cell1.innerHTML = '<input class="form-control form-control-sm" type="text"\
+                                    name="p_' + local_entity + '_prenom"\
+                                    id="p_' + local_entity + '_prenom"/>';
+                cell2.innerHTML = '<input class="form-control form-control-sm"\
+                            value="{{famille.p_date_nais.data}}"\
+                            type="date" name="p_' + local_entity + '_date_nais"\
+                            id="p_' + local_entity + '_date_nais"/>';
+                cell3.innerHTML = '<select class="select-' + local_entity + '-situation form-check-input"\
+                                name="p_' + local_entity + '_situation"\
+                                id="p_' + local_entity + '_situation" value="y" multiple="multiple"/></select>';
+                $('.select-' + local_entity + '-situation').select2({
+                    width: "90%",
+                    delay: 250,
+                    ajax: {
+                        url: "{{ url_for('mosque_bp.get_situation') }}",
+                        xhrFields: {
+                            withCredentials: true
+                        },
+                        crossDomain: true,
+                        dataType: 'json',
+                        data: function (params) {
+                            let query = {
+                                search: params.term,
+                            }
+                            return query
+                        },
+                        processResults: function (data) {
+                            console.table(data);
+                            return {
+                                results: $.map(data, function (item) {
+                                    return {
+                                        text: item['text'],
+                                        id: item['id']
+                                    }
+                                })
+                            };
+                        },
+                        contentType: "application/json",
+                        type: 'GET'
+                    }
+                });
+                cell4.innerHTML = '<select class="form-control form-control-sm" \
+                                name="p_' + local_entity + '_relation_ship" \
+                                id="p_' + local_entity + '_relation_ship" ><option>اختـــر</option><option>ابن(ة)</option> \
+                                <option>زوجة</option><option>الأب</option><option>الأم</option><option>الجد</option> \
+                                <option>الجدة</option></select>';
+                cell5.innerHTML = '<td><a class="btnDelete btn-sm btn-warning"><i class="fa fa-trash"></i></a></td>';
+                if (nb_entries > max_click) {
+                    max_click = nb_entries;
+                    document.getElementById('hidden_input').value = max_click;
+                }
+                nb_entries = nb_entries + 1;
+            }
+            );
         })
 
     </script>

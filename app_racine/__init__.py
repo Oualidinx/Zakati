@@ -1,4 +1,4 @@
-#!/usr/bin/python3.7
+#!../venv/bin/python
 # -*- coding: utf-8 -*-
 
 from flask_sqlalchemy import SQLAlchemy
@@ -11,21 +11,22 @@ from apifairy import APIFairy
 from flask_marshmallow import Marshmallow
 
 from config import config
+
 app = Flask(__name__)
 
-db = SQLAlchemy(app)
+database = SQLAlchemy()
 
-login = LoginManager(app=app)
+login = LoginManager(app)
 
-api_fairy = APIFairy(app=app)
+api_fairy = APIFairy()
 
 marsh = Marshmallow()
 
 
 def create_app(config_name):
-    app.config.from_object(config [config_name])
-    config[config_name].init_app(app)
-    db.init_app(app)
+    app.config.from_object(config[config_name])
+    config[config_name].init_app()
+
     login.login_view = 'auth_bp.login'
     login.login_message_category = "info"
     login.login_message = reshaper.reshape(u"هـذه الخدمة تتطلب تسجيل الدخول")
@@ -39,13 +40,13 @@ def create_app(config_name):
     app.register_blueprint(a_bp)
 
     from app_racine.mosque import mosque_bp as m_bp
-    
+
     app.register_blueprint(m_bp)
-    
 
     from app_racine.users import user_bp as user_bp
-    
+
     app.register_blueprint(user_bp)
 
     marsh.init_app(app)
+    database.init_app(app)
     return app

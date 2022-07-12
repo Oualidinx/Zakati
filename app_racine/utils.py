@@ -16,7 +16,7 @@ from arabic_reshaper import arabic_reshaper
 
 from app_racine.mosque.models import Garant, GarantProject, SituationGarant, Mosque, Personne, SituationPerson
 from app_racine.master.models import *
-from app_racine import db
+from app_racine import database
 
 import os
 from io import BytesIO
@@ -39,8 +39,8 @@ def is_concerned_prime_s(garant_id):
 
         if len(situation) > 0:
             garant.prime_scolaire = len(situation) * taux_scolaire
-            db.session.add(garant)
-            db.session.commit()
+            database.session.add(garant)
+            database.session.commit()
             return len(situation) * taux_scolaire
     return None
 
@@ -53,14 +53,14 @@ def is_concerned_prime_m(garant_id):
         .filter(Critere.label == 'بطال').first()
     if is_jobless:
         garant.prime_mensuelle = (len(garant.familles) + 1) * taux_prime_m
-        db.session.add(garant)
-        db.session.commit()
+        database.session.add(garant)
+        database.session.commit()
         return (len(garant.familles) + 1) * taux_prime_m
 
     if ((len(garant.familles) + 1) * taux_prime_m) < salaire_base:
         garant.prime_mensuelle = salaire_base - ((len(garant.familles) + 1) * taux_prime_m)
-        db.session.add(garant)
-        db.session.commit()
+        database.session.add(garant)
+        database.session.commit()
         return salaire_base - ((len(garant.familles) + 1) * taux_prime_m)
     return None
 
@@ -85,30 +85,31 @@ def get_data_from_request(requete, garant_id):
                 p.date_naissance = datetime.strptime(dict(requete.form)[f"p_{i}_date_nais"], '%Y-%m-%d')
                 p.relation_ship = requete.form[f"p_{i}_relation_ship"]
                 p.garant_id = garant_id
-                db.session.add(p)
-                db.session.commit()
-                if requete.form.get(f"p_{i}_malade_cronic") == "y" and Critere.query.filter_by(
-                        label="مرض مزمن").first():
-                    malade_cronic = SituationPerson()
-                    malade_cronic.critere_id = Critere.query.filter_by(label="مرض مزمن").first().id
-                    malade_cronic.personne_id = p.id
-                    db.session.add(malade_cronic)
-                    db.session.commit()
+                database.session.add(p)
+                database.session.commit()
+                # if requete.form.get(f"p_{i}_malade_cronic") == "y" and Critere.query.filter_by(
+                #         label="مرض مزمن").first():
+                #     malade_cronic = SituationPerson()
+                #     malade_cronic.critere_id = Critere.query.filter_by(label="مرض مزمن").first().id
+                #     malade_cronic.personne_id = p.id
+                #     database.session.add(malade_cronic)
+                #     database.session.commit()
 
-                if requete.form.get(f"p_{i}_education") == 'y' and Critere.query.filter_by(
-                        label="فرد متمدرس").first():
-                    education = SituationPerson()
-                    education.critere_id = Critere.query.filter_by(label="فرد متمدرس").first().id
-                    education.personne_id = p.id
-                    db.session.add(education)
-                    db.session.commit()
-                if requete.form.get(f"p_{i}_handicap") == 'y' and Critere.query.filter_by(
-                        label="اعاقة").first():
-                    handicap = SituationPerson()
-                    handicap.critere_id = Critere.query.filter_by(label="اعاقة").first().id
-                    handicap.personne_id = p.id
-                    db.session.add(handicap)
-                    db.session.commit()
+                # if requete.form.get(f"p_{i}_education") == 'y' and Critere.query.filter_by(
+                #         label="فرد متمدرس").first():
+                #     education = SituationPerson()
+                #     education.critere_id = Critere.query.filter_by(label="فرد متمدرس").first().id
+                #     education.personne_id = p.id
+                #     database.session.add(education)
+                #     database.session.commit()
+                if requete.form.get(f"p_{i}_situation"):
+                    for state in requete.form.get(f"p_{i}_situation"):
+                        if Critere.query.get(int (state)):
+                            _state = SituationPerson()
+                            _state.critere_id = int(state)
+                            _state.personne_id = p.id
+                            database.session.add(_state)
+                            database.session.commit()
         return True
     return False
 
@@ -128,7 +129,7 @@ def count_points_person(person):
     if status:
         points = 0
         for situation in status:
-            w = Critere.query.filter_by(id=situation.critere_id).first()
+            w = Critere.query.get(situation.critere_id)
             if w:
                 weight = w.weight
                 points += weight
@@ -263,18 +264,22 @@ def PrintPDFResumeView(project_id):
              get_reshaped_text(u'\t\t القيمة (د.ج)\t\t'), get_reshaped_text(u'\tعدد الاسهم\t'),
              get_reshaped_text(u'\t تاريخ الميلاد \t '), get_reshaped_text(u'          الاســم و اللقــب          '),
              get_reshaped_text(u'الرقم'))]
+    canv.setFont("Times", 22)
     if project and project.title == 'المنحة الشهرية':
-        canv.setFont("Times", 22)
         canv.drawCentredString(400, 550, get_reshaped_text(u'قائمـة المستفيديــن من المنحة الشهرية'))
         garant_list = Garant.query.join(Mosque, Mosque.id == Garant.mosque_id) \
             .filter(Mosque.usser_account == current_user.id) \
             .filter(is_concerned_prime_m(Garant.id) is not None)
     elif project and project.title == 'منحة التمدرس':
-        canv.setFont("Times", 22)
         canv.drawCentredString(400, 550, get_reshaped_text(u'قائمـة المستفيديــن من منحة التمدرس'))
         garant_list = Garant.query.join(Mosque, Mosque.id == Garant.mosque_id) \
             .filter(Mosque.usser_account == current_user.id) \
             .filter(is_concerned_prime_s(Garant.id) is not None)
+    else:
+        canv.drawCentredString(400, 550, get_reshaped_text(u'قائمـة المستفيديــن'))
+        garant_list = Garant.query.join(Mosque, Mosque.id == Garant.mosque_id) \
+            .filter(Mosque.usser_account == current_user.id) \
+            .filter(is_concerned_prime_m(Garant.id) is not None)
     # les données
 
     count = 1

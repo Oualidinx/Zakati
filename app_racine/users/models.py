@@ -1,26 +1,25 @@
-from app_racine import db, app, login
+from app_racine import database, app, login
 from datetime import datetime
 from flask_login import UserMixin
-from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
-from werkzeug.security import check_password_hash
+from itsdangerous import TimedSerializer as Serializer
 
 
-class User(db.Model, UserMixin):
+class User(database.Model, UserMixin):
     __tablename__ = 'user'
-    id = db.Column(db.Integer, primary_key=True, nullable=False)
-    username = db.Column(db.String(50), nullable=False)
-    first_name = db.Column(db.String(50), nullable=False)
-    last_name = db.Column(db.String(50), nullable=False)
-    phone_number = db.Column(db.String(10), nullable=False, index=True)
-    email = db.Column(db.String(100))
-    address = db.Column(db.String(255))
-    password = db.Column(db.String(512), nullable=False)
-    mosques = db.relationship('Mosque', secondary="donate_mosque",
-                              primaryjoin='User.id == foreign(DonateMosque.user_id)',
-                              secondaryjoin="Mosque.id == foreign(DonateMosque.id)", viewonly=True
-                              )
-    create_at = db.Column(db.DateTime, default=datetime.utcnow())
-    role = db.Column(db.String(50))
+    id = database.Column(database.Integer, primary_key=True, nullable=False)
+    username = database.Column(database.String(50), nullable=False)
+    first_name = database.Column(database.String(50), nullable=False)
+    last_name = database.Column(database.String(50), nullable=False)
+    phone_number = database.Column(database.String(10), nullable=False, index=True)
+    email = database.Column(database.String(100))
+    address = database.Column(database.String(255))
+    password = database.Column(database.String(512), nullable=False)
+    mosques = database.relationship('Mosque', secondary="donate_mosque",
+                                    primaryjoin='User.id == foreign(DonateMosque.user_id)',
+                                    secondaryjoin="Mosque.id == foreign(DonateMosque.id)", viewonly=True
+                                    )
+    create_at = database.Column(database.DateTime, default=datetime.utcnow())
+    role = database.Column(database.String(50))
 
     def __repr__(self):
         return super().__repr__()

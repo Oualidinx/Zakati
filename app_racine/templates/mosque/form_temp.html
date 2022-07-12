@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+    <head>
+        <meta charset="UTF-8">
+        <title>استمارة تسجيل الاسر المتعففة مسجد {{ title }}</title>
+        <link href="{{ url_for('static', filename='css/styles.css' )}}" rel="stylesheet" />
+        <link rel="stylesheet" href="{{url_for('static', filename='bootstrap-rtl.css')}}">
+        <style>
+            .border-table{
+                border: solid 1px #000000;
+            }
+            @font-face {
+              font-family: Amiri_font;
+              src: url("{{ url_for('static', filename='fonts/AmiriRegular.ttf') }}");
+            }
+            @page {
+                margin: 2cm;
+                size: A4 landscape;
+            }
+            body{
+                font-family: Amiri_font;
+            }
+        </style>
+    </head>
+    <body>
+        <table style="text-align: center; width: 70%;">
+            <tr>
+                <td>
+                    <img style="width: 30%;height: 50%;" src="{{ url_for('static',filename='image/logo_2.png') }}">
+                </td>
+                <td>
+                    <h3>استمارة تسجيل الأسر المتعففة</h3>
+                    <h3>مسجد {{ title }}</h3>
+                </td>
+            </tr>
+        </table>
+
+        <table style="width: 85%;">
+            <tr>
+                <td> رقم الاستمارة:</td>
+                <td>{{ garant['id'] }}</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+             <tr style="text-align: right;">
+                <td>رقم الحساب الجاري: </td>
+                <td>  {{ garant['ccp'] }} مفتاح {{ garant['cle_ccp'] }}</td>
+                 <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr style="text-align: right;">
+                <td>العنـــوان: </td>
+                <td>{{ garant['address'] }}</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr style="text-align: right;">
+                <td>رقم بطاقة التعريف: </td>
+                <td>{{ garant['id_card_number'] }}</td>
+                <td>تاريخ الاصدار: </td>
+                <td>{{ garant['id_card_release_date'] }}</td>
+                <td>مكان الاصدار: </td>
+                <td>{{ garant['id_card_release_authority'] }}</td>
+            </tr>
+            <tr>
+                <td>رقـم الهـاتـف: </td>
+                <td>{{ garant['phone_number'] }}</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+        <br>
+        <h6 style="text-decoration: underline;font-style: oblique;">1- الكــافـل:</h6>
+        <table class="border-table" style="width: 100%;">
+            <tr class="border-table">
+                <td class="border-table" style="text-align: center;">الاسم و القــب</td>
+                <td class="border-table" style="text-align: center;">تاريخ الميلاد</td>
+                <td class="border-table" style="text-align: center;">وضعية العمل</td>
+                <td class="border-table" style="text-align: center;">قيمة الأجرة</td>
+                <td class="border-table" style="text-align: center;">عاجز</td>
+                <td class="border-table" style="text-align: center;">مريض</td>
+            </tr>
+            <tr class="border-table">
+                <td class="border-table" style="text-align: center;">{{ garant['last_name'] }} {{ garant['name'] }}</td>
+                <td class="border-table" style="text-align: center;">{{ garant['date_nais'] }}</td>
+                {% if garant['work'] %}
+                    <td class="border-table">{{ garant['work'][0].label }}</td>
+                {% else %}
+                    <td class="border-table"></td>
+                {% endif %}
+
+                {% if garant['salary'] %}
+                    <td class="border-table">{{ garant['salary'][0].label }}</td>
+                {% else %}
+                    <td class="border-table"></td>
+                {% endif %}
+
+                {% if garant['decript'] %}
+                    <td class="border-table" style="text-align: center;">X</td>
+                {% else %}
+                    <td class="border-table"></td>
+                {% endif %}
+
+                {% if garant['sick'] %}
+                    <td class="border-table" style="text-align: center;">X</td>
+                {% else %}
+                    <td class="border-table"></td>
+                {% endif %}
+            </tr>
+        </table>
+        <br>
+        <h6 style="text-decoration: underline;font-style: oblique;">2- أفراد تحت الكفالة:</h6>
+        <table class="border-table" style="width: 100%;">
+            <tr class="border-table">
+                <td class="border-table" style="text-align: center;">الاسم و القــب</td>
+                <td class="border-table" style="text-align: center;">تاريخ الميلاد</td>
+                <td class="border-table" style="text-align: center;">صلة القرابة</td>
+                <td class="border-table" style="text-align: center;">بطال</td>
+                <td class="border-table" style="text-align: center;">عزباء</td>
+                <td class="border-table" style="text-align: center;">أرملة</td>
+                <td class="border-table" style="text-align: center;">مطلقة</td>
+                <td class="border-table" style="text-align: center;">معلقة</td>
+                <td class="border-table" style="text-align: center;">يتيم</td>
+                <td class="border-table" style="text-align: center;">متمدرس</td>
+                <td class="border-table" style="text-align: center;">عاجز</td>
+                <td class="border-table" style="text-align: center;">مريض</td>
+            </tr>
+            {% if garant['familly'] %}
+                {% for foo in garant['familly'] %}
+                    <tr class="border-table">
+                        <td class="border-table" style="text-align: center;">{{ foo['last_name']}} {{ foo['first_name'] }}</td>
+                        <td class="border-table" style="text-align: center;">{{ foo['date_naissance'] }}</td>
+                        <td class="border-table" style="text-align: center;">{{ foo['relation_ship'] }}</td>
+
+                        {% if foo['work'] %}
+                            <td class="border-table" style="text-align: center;">X</td>
+                        {% else %}
+                            <td class="border-table"></td>
+                        {% endif %}
+
+                        {% if foo['single'] %}
+                            <td class="border-table" style="text-align: center;">X</td>
+                        {% else %}
+                            <td class="border-table"></td>
+                        {% endif %}
+
+                        {% if foo['widow'] %}
+                            <td class="border-table" style="text-align: center;">X</td>
+                        {% else %}
+                            <td class="border-table"></td>
+                        {% endif %}
+
+                        {% if foo['divorce'] %}
+                            <td class="border-table" style="text-align: center;">X</td>
+                        {% else %}
+                            <td class="border-table"></td>
+                        {% endif %}
+
+                        {% if foo['complicated'] %}
+                            <td class="border-table" style="text-align: center;">X</td>
+                        {% else %}
+                            <td class="border-table"></td>
+                        {% endif %}
+
+                        {% if foo['orphan'] %}
+                            <td class="border-table" style="text-align: center;">X</td>
+                        {% else %}
+                            <td class="border-table"></td>
+                        {% endif %}
+
+                        {% if foo['study'] %}
+                            <td class="border-table" style="text-align: center;">X</td>
+                        {% else %}
+                            <td class="border-table"></td>
+                        {% endif %}
+
+                        {% if foo['decript'] %}
+                            <td class="border-table" style="text-align: center;">X</td>
+                        {% else %}
+                            <td class="border-table"></td>
+                        {% endif %}
+
+                        {% if foo['sick'] %}
+                            <td class="border-table" style="text-align: center;">X</td>
+                        {% else %}
+                            <td class="border-table"></td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+            {% else %}
+                <tr colspan="12">
+                    لا يــوجـــــــــــد
+                </tr>
+            {% endif %}
+        </table>
+        <br>
+        <table style="width: 25%;">
+            <tr>
+                <td>
+                    <h6 style="text-decoration: underline;font-style: oblique;">3- وضعية السكن: </h6>
+                </td>
+                {% if garant['residence_ownership'] %}
+                    <td>
+                        {% for foo in garant['residence_ownership'] %}
+                            {{ foo.label }},
+                        {% endfor %}
+                    </td>
+                {% else %}
+                    <td>ملـك</td>
+                {% endif %}
+            </tr>
+        </table>
+        <br>
+        <table style="width: 25%;">
+        <tr>
+            <td>
+                <h6 style="text-decoration: underline;font-style: oblique;">4- درجة صلاحية السكن للاستغلال:  </h6>
+            </td>
+            <td>
+                <h6>
+                    {% if garant['residence_validity'] %}
+                        غيــر صالح
+                    {% else %}
+                        صالـــح
+                    {% endif %}
+                </h6>
+            </td>
+        </tr>
+
+
+        </table>
+        <br>
+        <table style="width: 25%;">
+            <tr>
+                <td>
+                    <h6 style="text-decoration: underline;font-style: oblique;">5- وضعية التأميــن: </h6>
+                </td>
+                {% if garant['health_assurance'] %}
+                    <td>
+                        غيــر مؤمـن
+                    </td>
+                {% else %}
+                    <td>
+                        مؤمن
+                    </td>
+                {% endif %}
+            </tr>
+        </table>
+    
+        <br>
+        <table style="width: 25%;">
+
+            <tr>
+                <td>
+                    <h6 style="text-decoration: underline;font-style: oblique;">6- الأجهزة الكهرومنزلية: </h6>
+                </td>
+                {% if garant['electrical_appliances'] %}
+                    {% for foo in garant['electrical_appliances'] %}
+                        <td>{{ foo }}</td>
+                    {% endfor %}
+                {% else %}
+                    <td>/</td>
+                {% endif %}
+            </tr>
+        </table>
+    </body>
+</html>

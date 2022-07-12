@@ -182,7 +182,8 @@
                                     <div class="form-group">
                                         {{ form.phone_num.label(class="small mb-1") }}
                                         {% if form.phone_num.errors %}
-                                            {{ form.phone_num(class="form-control form-control-md")}}                                                {% for error in form.manufacturer.errors %}
+                                            {{ form.phone_num(class="form-control form-control-md")}}
+                                            {% for error in form.phone_num.errors %}
                                                 <div class="alert alert-danger">
                                                     {{ error }}
                                                 </div>
@@ -235,21 +236,19 @@
                                     <div class="form-group">
                                         {{ form.username.label(class="small mb-1") }}
                                         {% if form.username.errors %}
-                                            {{ form.username(class="form-control form-control-md", disabled=True)}}
+                                            {{ form.username(class="form-control form-control-md")}}
                                             {% for error in form.username.errors %}
                                                 <div class="alert alert-danger">
                                                     {{ error }}
                                                 </div>
                                             {% endfor %}
                                         {% else %}
-                                                {{ form.username(class="form-control form-control-md", disabled=True)}}
+                                                {{ form.username(class="form-control form-control-md")}}
                                         {% endif %}
                                     </div>
                                 </div>
                             </div>
                             <div class="form-row">
-                                {# Manufacturer #}
-
 
                                 <div class="col-md">
                                     <div class="form-group">
@@ -270,7 +269,8 @@
                                     <div class="form-group">
                                         {{ form.email.label(class="small mb-1") }}
                                         {% if form.email.errors %}
-                                            {{ form.email(class="form-control form-control-md")}}                                                {% for error in form.manufacturer.errors %}
+                                            {{ form.email(class="form-control form-control-md")}}
+                                                {% for error in form.email.errors %}
                                                     <div class="alert alert-danger">
                                                         {{ error }}
                                                     </div>
@@ -304,7 +304,8 @@
                                     <div class="form-group">
                                         {{ form.confirm_password.label(class="small mb-1") }}
                                         {% if form.confirm_password.errors %}
-                                            {{ form.confirm_password(class="form-control form-control-md") }}                                            {% for error in form.description.errors %}
+                                            {{ form.confirm_password(class="form-control form-control-md") }}
+                                            {% for error in form.confirm_password.errors %}
                                                 <div class="alert alert-danger">
                                                     {{ error }}
                                                 </div>

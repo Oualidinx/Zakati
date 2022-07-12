@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+    <head>
+        <meta charset="UTF-8">
+        <title> قائمة الاسر  المتعففة  المسجلة: مسجد {{ title }}</title>
+        <link href="{{ url_for('static', filename='css/styles.css' )}}" rel="stylesheet" />
+        <link rel="stylesheet" href="{{url_for('static', filename='bootstrap-rtl.css')}}">
+        <style>
+            #border-table{
+                border: solid 1px #000000;
+                text-align: center;
+                width: 100%;
+            }
+
+            @font-face {
+              font-family: Amiri_font;
+              src: url("{{ url_for('static', filename='fonts/AmiriRegular.ttf') }}");
+            }
+            @page {
+                margin: 1cm;
+                size: A4 landscape;
+            }
+            body{
+                font-family: Amiri_font;
+            }
+        </style>
+    </head>
+    <body>
+    <table style="width: 100%">
+        <tr>
+            <td>
+                <img style="width: 30%;height: 30%;" src="{{ url_for('static',filename='image/logo_2.png') }}"></td>
+            <td style="text-align: center;">
+                <h2> قائمة الاسر  المتعففة  المسجلة</h2>
+                <h3 >مسجــد {{ data['title'] }}</h3></td>
+            <td></td>
+        </tr>
+    </table>
+    <br>
+    <table>
+        <tr>
+            <td>الولايـــة: </td>
+            <td>{{ data['wilaya'] }} </td>
+        </tr>
+        <tr>
+            <td>التاريـــخ: </td>
+            <td>{{ data['date'] }} </td>
+        </tr>
+    </table>
+
+    <table id="border-table">
+        <tr>
+            <td style="border: solid 1px #000000">الرقـم</td>
+            <td style="border: solid 1px #000000">الاسـم و اللقـب</td>
+            <td style="border: solid 1px #000000">ت.الميـلاد</td>
+            <td style="border: solid 1px #000000">>عدد الأسـهم</td>
+            <td style="border: solid 1px #000000">القيمة (د.ج)</td>
+            <td style="border: solid 1px #000000">بطاقـة الهويـة</td>
+            <td style="border: solid 1px #000000">الإمضاء أو البصمـة</td>
+        </tr>
+        {% if data %}
+            {% for foo in data['items'] %}
+                <tr>
+                    <td style="border: solid 1px #000000">{{ foo['id'] }}</td>
+                    <td style="border: solid 1px #000000">{{ foo['last_name'] }} {{ foo['first_name'] }}</td>
+                    <td style="border: solid 1px #000000">{{ foo['date_nais'] }}</td>
+                    <td style="border: solid 1px #000000">{{ foo['tendancy'] }}</td>
+                    <td style="border: solid 1px #000000">{{ "{:,.2f}".format(foo['solde']) }}</td>
+                    <td style="border: solid 1px #000000">{{ foo['id_card_number'] }}</td>
+                    <td style="border: solid 1px #000000"></td>
+                </tr>
+            {% endfor %}
+        {% else %}
+            <tr>
+                <td colspan="7" style="border: solid 1px #000000" >القائمــة فارغة</td>
+            </tr>
+        {% endif %}
+    </table>
+    <br>
+    <table style="width: 30%">
+        <tr>
+            <td>عدد المستفيـدين: </td>
+            <td>{{ data['number_g'] }}</td>
+        </tr>
+        <tr>
+            <td>المبلغ الإجمالي (د.ج): </td>
+            <td>{{ "{:,.2f}".format(data['total']) }}</td>
+        </tr>
+    </table>
+    <table style="width: 100%;">
+        <tr>
+            <td colspan="5"></td>
+            <td colspan="2" style="text-align: center;">الإمضـاء و الختم</td>
+        </tr>
+
+    </table>
+
+
+    </body>
+</html>

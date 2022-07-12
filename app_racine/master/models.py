@@ -1,13 +1,13 @@
-from app_racine import db
+from app_racine import database
 from app_racine.utilities import PaginationMixin
 
 
-class Critere(PaginationMixin, db.Model):
+class Critere(PaginationMixin, database.Model):
     __tablename__ = "critere"
-    id = db.Column(db.Integer, primary_key=True, nullable=False)
-    label = db.Column(db.String(50), unique=True)
-    category = db.Column(db.String(50))
-    weight = db.Column(db.Float, nullable=False)
+    id = database.Column(database.Integer, primary_key=True, nullable=False)
+    label = database.Column(database.String(50), unique=True)
+    category = database.Column(database.String(50))
+    weight = database.Column(database.Float, nullable=False)
 
     def to_dict(self):
         return dict(
@@ -18,13 +18,13 @@ class Critere(PaginationMixin, db.Model):
         )
 
 
-class Project(PaginationMixin, db.Model):
+class Project(PaginationMixin, database.Model):
     __tablename__ = 'project'
-    id = db.Column(db.Integer, primary_key=True, nullable=False)
-    title = db.Column(db.String(50), nullable=False)
-    Description = db.Column(db.Text)
-    montant_estime = db.Column(db.Float, nullable=False, default=0.0)
-    montant_quantise = db.Column(db.Float, default=0.0)
+    id = database.Column(database.Integer, primary_key=True, nullable=False)
+    title = database.Column(database.String(50), nullable=False)
+    Description = database.Column(database.Text)
+    montant_estime = database.Column(database.Float, nullable=False, default=0.0)
+    montant_quantise = database.Column(database.Float, default=0.0)
 
     def to_dict(self):
         return dict(
@@ -36,12 +36,12 @@ class Project(PaginationMixin, db.Model):
         )
 
 
-class ParameterUtils(PaginationMixin, db.Model):
+class ParameterUtils(PaginationMixin, database.Model):
     __tablename__ = "parameter_utils"
-    id = db.Column(db.Integer, primary_key=True)
-    taux_scolaire = db.Column(db.Integer, default=0)
-    taux_prime_m = db.Column(db.Integer, default=0)
-    salaire_base = db.Column(db.Integer, default=20000)
+    id = database.Column(database.Integer, primary_key=True)
+    taux_scolaire = database.Column(database.Integer, default=0)
+    taux_prime_m = database.Column(database.Integer, default=0)
+    salaire_base = database.Column(database.Integer, default=20000)
 
     def to_dict(self):
         return dict(
@@ -52,12 +52,12 @@ class ParameterUtils(PaginationMixin, db.Model):
         )
 
 
-class Wilaya(PaginationMixin, db.Model):
+class Wilaya(PaginationMixin, database.Model):
     __tablename__ = 'wilaya'
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(50), nullable=False)
-    zip_code = db.Column(db.Integer, default=0)
-    mosques = db.relationship('Mosque', backref="mosques_wilayas", lazy="subquery")
+    id = database.Column(database.Integer, primary_key=True)
+    name = database.Column(database.String(50), nullable=False)
+    zip_code = database.Column(database.Integer, default=0)
+    mosques = database.relationship('Mosque', backref="mosques_wilayas", lazy="subquery")
 
     def to_dict(self):
         return dict(

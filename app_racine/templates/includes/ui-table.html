@@ -26,6 +26,7 @@
                         <tbody>
                             {% if results['items'] %}
                                 {% for line in results['items'] %}
+
                                     <tr>
                                         {% for key in line.keys()%}
                                             {% if key != 'status' %}
@@ -34,6 +35,7 @@
                                         {% endfor %}
                                         <td>
                                             <div class="btn-group-lg">
+
                                                 {% if results['_manage']['view']%}
                                                     <a role="button" class="btn-md"
                                                        href="{{ url_for(results['_manage']['view'],
@@ -45,12 +47,14 @@
                                                                 _id=line['id']) }}"><i class="fa fa-pen"></i></a>
                                                 {% endif %}
                                                 {% if results['_manage']['delete']  %}
-                                                    {% if 'status' not in line.keys() %}
-                                                        <a role="button" class="btn-md btn-outline-danger"
-                                                               href="{{ url_for(results['_manage']['delete'],
-                                                                    _id=line['id']) }}"><i class="fa fa-eye"></i></a>
-                                                    {% endif %}
+{#                                                    {% if 'status' not in line.keys() %}#}
+{#                                                        <a role="button" class="btn-md btn-outline-danger"#}
+{#                                                               href="{{ url_for(results['_manage']['delete'],#}
+{#                                                                    _id=line['id']) }}"><i class="fa fa-eye"></i></a>#}
+{#                                                    {% endif %}#}
+
                                                     {% if 'status' in line.keys() and line['status'] == 1 %}
+
                                                         <a class="btn-sm btn-outline-danger"
                                                        href="{{ url_for(results['_manage']['delete'],
                                                             _id=line['id']) }}">تعطيل</a>
@@ -81,47 +85,32 @@
                         <ul class="pagination justify-content-center">
                             <li class="page-item"><a class="page-link" href="{{ results['_links']['first'] }}"
                                                      data-toggle="tooltip" data-placement="bottom" title="First page">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-double-left" viewBox="0 0 16 16">
-                                    <path fill-rule="evenodd" d="M8.354 1.646a.5.5 0 0 1 0 .708L2.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"></path>
-                                    <path fill-rule="evenodd" d="M12.354 1.646a.5.5 0 0 1 0 .708L6.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"></path>
-                                </svg></a></li>
+                                    <i class="fa fa-angle-double-right"></i>
+                                </a></li>
                             {% if results['_links']['prev'] %}
                                 <li class="page-item" ><a role="button" class="page-link" href="{{ results['_links']['prev'] }}">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
-                                  <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"></path>
-                                </svg></a></li>
+                                <i class="fa fa-angle-right"></i></a></li>
                             {% else %}
-                                <li class="page-item"><a disabled class="page-link" href="#">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
-                                  <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"></path>
-                                </svg></a></li>
+                                <li class="page-item"><a  class="page-link" href="#">
+                                <i class="fa fa-angle-right"></i></a></li>
                             {% endif %}
                             {% if results['_links']['next'] %}
                                 <li class="page-item"><a class="page-link" href="{{ results['_links']['next'] }}">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
-                                  <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"></path>
-                                </svg></a></li>
+                                <i class="fa fa-angle-left"></i></a></li>
                                 {% else %}
                                 <li class="page-item"><a class="page-link" href="#">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
-                                  <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"></path>
-                                </svg></a></li>
+                                <i class="fa fa-angle-left"></i></a></li>
                                 {% endif %}
                             {%if results['_meta']['total_pages'] > 1%}
                                 <li class="page-item"><a class="page-link" href="{{ results['_links']['last'] }}"
                                                          data-toggle="tooltip" data-placement="bottom" title="Last page">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-double-right" viewBox="0 0 16 16">
-                                      <path fill-rule="evenodd" d="M3.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L9.293 8 3.646 2.354a.5.5 0 0 1 0-.708z"></path>
-                                      <path fill-rule="evenodd" d="M7.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L13.293 8 7.646 2.354a.5.5 0 0 1 0-.708z"></path>
-                                    </svg></a>
+                                    <i class="fa fa-angle-double-left"></i></a>
                                 </li>
                             {% else %}
                                 <li class="page-item" >
                                     <a class="page-link" href="{{ results['_links']['last'] }}" data-toggle="tooltip"
-                                       data-placement="bottom" title="Last page"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-double-right" viewBox="0 0 16 16" disabled>
-                                      <path fill-rule="evenodd" d="M3.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L9.293 8 3.646 2.354a.5.5 0 0 1 0-.708z"></path>
-                                      <path fill-rule="evenodd" d="M7.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L13.293 8 7.646 2.354a.5.5 0 0 1 0-.708z"></path>
-                                    </svg>
+                                       data-placement="bottom" title="Last page">
+                                        <i class="fa fa-angle-double-left"></i>
                                     </a>
                                 </li>
                             {% endif %}
