@@ -27,7 +27,7 @@ class Garant(PaginationMixin, database.Model):
     mosque_id = database.Column(database.Integer, database.ForeignKey('mosque.id'), nullable=False)
     prime_mensuelle = database.Column(database.Float, default=0)
     prime_scolaire = database.Column(database.Float, default=0)
-    work = database.relationship('SituationGarant', secondary="situation_garant", viewonly=True,
+    work = database.relationship('Critere', secondary="situation_garant", viewonly=True,
                                  primaryjoin="remote(SituationGarant.garant_id) == Garant.id",
                                  secondaryjoin="and_(remote(Critere.id) == SituationGarant.critere_id,"
                                                "Critere.label=='بطال')"
