@@ -143,8 +143,10 @@ def count_points(garant, persons):
         for situation in status:
             weight = Critere.query.filter_by(id=situation.critere_id).first().weight
             garant.Solde_points += weight
-        for person in persons:
-            garant.Solde_points += count_points_person(person)
+        persons = Personne.query.filter_by(garant_id = garant.id).all()
+        if persons:
+            for person in persons:
+                garant.Solde_points += count_points_person(person)
 
 
 def get_reshaped_text(text):

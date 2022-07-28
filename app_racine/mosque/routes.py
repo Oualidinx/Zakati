@@ -168,7 +168,8 @@ def register_garants():
             if not final_test:
                 flash('لقد تم تسجيل مكفول تم تسجيله من قبل ككفيل', 'danger')
                 return redirect(url_for('mosque_bp.register_garants'))
-        count_points(garant, famille)
+        print(famille)
+        count_points(garant, person)
         database.session.add(garant)
         database.session.commit()
         Mosque.tendance()
