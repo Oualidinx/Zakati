@@ -1,7 +1,0 @@
-FLASK_ENV=production
-FLASK_DEBUG = 0
-FLASK_APP=run.py
-APIFAIRY_TITLE="موقع زكاتي: وقف شلابية بشباش"
-APIFAIRY_VERSION=1.0
-APIFAIRY_UI="redoc"
-password=1091EB5A6c\january___62, username=s5qvNXzemZQ
