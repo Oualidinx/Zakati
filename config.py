@@ -29,8 +29,7 @@ class ProductionConfig(Config):
                  "722f89477d9df17cf42a1411c1a320f7c88b7ec2806ad5885dbbc5173e86d025cc44b348575bdf2a607caf352f0e" \
                  "1690361481199c1fa87b301a5c0041017d2292cc2c37181e69010a20355641baa377a4dd7abab9df5c65419b0afd8" \
                  "fccb4fdc0f413a890380e2f00238a9252b2f"
-    SQLALCHEMY_DATABASE_URI = "postgresql://nwffbrzhznfbpg:91720fd7d04af4f1a97aa9426139fd21da97bed22fee07384e5d50f1c9b"\
-                              "2edf4@ec2-52-48-159-67.eu-west-1.compute.amazonaws.com:5432/d9qmp0cnuou4ju"
+    SQLALCHEMY_DATABASE_URI = "postgresql://wvsnrhcsbuwcgy:584cec029c3988996b0ed760ce2a0221948cda00894c15c3e7792ad32f0162c8@ec2-44-206-214-233.compute-1.amazonaws.com:5432/d86eqlaod5eu4u"
 
 
 config = {
