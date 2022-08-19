@@ -1,6 +1,6 @@
 from app_racine import database
 from app_racine.utilities import PaginationMixin
-
+from arabic_reshaper import reshape
 
 class Critere(PaginationMixin, database.Model):
     __tablename__ = "critere"
@@ -16,6 +16,9 @@ class Critere(PaginationMixin, database.Model):
             category=self.category,
             weight=self.weight
         )
+
+    def __repr__(self):
+        return reshape(f'{self.id},{self.label},{self.category},{self.weight}')
 
 
 class Project(PaginationMixin, database.Model):

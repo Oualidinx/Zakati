@@ -1,10 +1,10 @@
 
 from flask_login import current_user
-from flask_wtf import FlaskForm
+from flask_wtf import FlaskForm, Form
 from werkzeug.security import check_password_hash
 from wtforms.fields.html5 import DateField
-from wtforms import StringField, IntegerField, FloatField, SubmitField, SelectField, BooleanField, \
-    SelectMultipleField, PasswordField
+from wtforms import StringField, IntegerField, FloatField, SubmitField, SelectField, \
+    SelectMultipleField, PasswordField, FieldList, FormField
 from wtforms.validators import Length, DataRequired, ValidationError, EqualTo
 from app_racine.users.models import User
 from app_racine.mosque.models import *
@@ -51,9 +51,9 @@ class PersonPerGarant(FlaskForm):
     p_prenom = StringField("الاســـم", validators=[Length(max=50)])
     p_date_nais = DateField("تاريــخ الميلاد", default=datetime.utcnow().date())
     # malade_cronic = BooleanField('المرض المزمن')
-    situation = SelectMultipleField('حالة المكفـول: ', validate_choice=False)
+    situation = SelectMultipleField('حالة المكفـول: ',coerce=int, validate_choice=False)
     cronic_desease = StringField('نوع المرض: ')
-    p_relation_ship = SelectField("صلة القرابــة ",
+    p_relation_ship = SelectField("صلة القرابــة:",
                                   choices=[("", "اختـــر"), ("ابن(ة)", "ابن(ة)"), ("زوجة", "زوجة"), ("الأب", "الأب"),
                                            ("الأم", "الأم"), ("الجد", "الجد"), ("الجدة", "الجدة"), ("أخ(ت)", "أخ(ت)"),
                                            ("عم(ة)", "عم(ة)"), ("خال(ة)", "خال(ة)")])
@@ -71,7 +71,7 @@ class RegisterGarantForm(FlaskForm):
     release_authority = StringField('مكـان الاصدار: ', validators=[DataRequired()])
     compte_ccp = StringField("الحســـاب البريدي :", validators=[DataRequired(), Length(max=12)])
     cle_ccp = IntegerField("المفتــاح :", validators=[DataRequired()])
-    num_extrait_nais = StringField("رقـم شهادة الميلاد :", validators=[DataRequired()])
+    num_extrait_nais = StringField("رقـم شهادة الميلاد :")
     situation_sante = SelectMultipleField("الحالــة الصحية :", coerce=int, validate_choice=False)
     home_appliance = SelectMultipleField('حالة الأجهزة الكهرومنزلية: ', validate_choice=False)
     situation_sociale = SelectMultipleField("الحالــة الاجتمـــاعيـة :", coerce=int, validate_choice=False)
@@ -141,8 +141,62 @@ class RegisterNewDonationForm(FlaskForm):
 class ReceiptAmountForm(FlaskForm):
     mosque = SelectField('استلام من طرفة', validate_choice=False)
     amount = FloatField('المبلــغ', validators=[DataRequired()])
-    pass
 
 
 class ProjectsSelectForm(FlaskForm):
     projects = SelectField('المحتاجين حسب المشروع: ', validate_choice=False)
+
+
+class UpdateGarantForm(RegisterGarantForm):
+    id = IntegerField('id')
+    submit = SubmitField('تعديـــل')
+
+    def validate_phone_number(self, phone_number):
+        _g = Garant.query.filter_by(phone_number=phone_number.data).first()
+        if _g and _g.id != self.id.data:
+            raise  ValidationError('رقم الهاتف موجود من قبل')
+
+    def validate_num_extrait_nais(self, num_extrait_nais):
+        _g = Garant.query.filter_by(num_extrait_nais=num_extrait_nais.data).first()
+        if _g and _g.id != self.id.data:
+            raise ValidationError('رقم شهادة الميلاد موجود من قبل')
+
+    def validate_cle_ccp(self, cle_ccp):
+        _g = Garant.query.filter_by(cle_CCP=cle_ccp.data).first()
+        if _g and _g.id != self.id.data:
+            raise ValidationError('المفتاح موجود من قبل')
+
+    def validate_compte_ccp(self, compte_ccp):
+        _g = Garant.query.filter_by(ccp = compte_ccp.data).first()
+        if _g and _g.id != self.id.data:
+            raise ValidationError('الحساب البريدي موجود من قبل')
+
+    def validate_nom(self, nom):
+        pass
+
+    def validate_prenom(self, prenom):
+        pass
+
+
+
+class PersonForm(FlaskForm):
+    p_nom = StringField("اللقــــب", validators=[Length(max=50)])
+    p_prenom = StringField("الاســـم", validators=[Length(max=50)])
+    p_date_nais = DateField("تاريــخ الميلاد")
+    # malade_cronic = BooleanField('المرض المزمن')
+    situation = SelectMultipleField('حالة المكفـول: ', choices=[("", "اختـــر"), ("ابن(ة)", "ابن(ة)"), ("زوجة", "زوجة"), ("الأب", "الأب"),
+                                           ("الأم", "الأم"), ("الجد", "الجد"), ("الجدة", "الجدة"), ("أخ(ت)", "أخ(ت)"),
+                                           ("عم(ة)", "عم(ة)"), ("خال(ة)", "خال(ة)")])
+    cronic_desease = StringField('نوع المرض: ')
+    p_relation_ship = SelectField("صلة القرابــة:",
+                                  choices=[("", "اختـــر"), ("ابن(ة)", "ابن(ة)"), ("زوجة", "زوجة"), ("الأب", "الأب"),
+                                           ("الأم", "الأم"), ("الجد", "الجد"), ("الجدة", "الجدة"), ("أخ(ت)", "أخ(ت)"),
+                                           ("عم(ة)", "عم(ة)"), ("خال(ة)", "خال(ة)")])
+
+
+class UpdateFamillyForm(FlaskForm):
+    entities = FieldList(FormField(PersonForm), min_entries=1)
+    submit = SubmitField('تعديل')
+
+    def validate_situation(self, situation):
+        pass

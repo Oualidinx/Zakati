@@ -272,39 +272,39 @@ def list_garants(page):
         query=Garant.query.filter(Garant.mosque_id == Mosque.query.filter_by(user_account=current_user.id).first().id),
         page=page,
         per_page=12,
-        edit_endpoint=None,
+        edit_endpoint="mosque_bp.edit_garant",
         delete_endpoint="mosque_bp.delete_garant",
         view_endpoint="mosque_bp.print_form",
         list_endpoint="mosque_bp.list_garants",
         columns=['الرقم', 'اسم الكفيل', 'لقب الكفيل', 'مبلغ المنحة الشهرية', 'ت. الميلاد']
     )
     # print(f'{[t.to_dict() for t in data.all()]}')
-    if form.validate_on_submit():
-        prj = Project.query.get(int(form.projects.data))
-        if prj and prj.title == 'المنحة الشهرية':
-            session['project_id'] = int(form.projects.data)
-            data = Garant.to_collection_dict(
-                query=data.filter(is_concerned_prime_m(Garant.id) is not None),
-                page=page,
-                per_page=12,
-                edit_endpoint=None,
-                delete_endpoint="mosque_bp.delete_garant",
-                view_endpoint="mosque_bp.PrintForm",
-                list_endpoint="mosque_bp.list_garants",
-                columns=['الرقم', 'اسم الكفيل', 'لقب الكفيل', 'مبلغ المنحة الشهرية', 'ت. الميلاد']
-            )
-        elif prj and prj.title == "منحة التمدرس":
-            session['project_id'] = int(form.projects.data)
-            data = Garant.to_collection_dict(
-                query=data.filter(is_concerned_prime_s(Garant.id) is not None),
-                page=page,
-                per_page=12,
-                edit_endpoint=None,
-                delete_endpoint="mosque_bp.delete_garant",
-                view_endpoint="mosque_bp.PrintForm",
-                list_endpoint="mosque_bp.list_garants",
-                columns=['الرقم', 'اسم الكفيل', 'لقب الكفيل', 'مبلغ منحة التمدرس', 'ت. الميلاد']
-            )
+    # if form.validate_on_submit():
+    #     prj = Project.query.get(int(form.projects.data))
+    #     if prj and prj.title == 'المنحة الشهرية':
+    #         session['project_id'] = int(form.projects.data)
+    #         data = Garant.to_collection_dict(
+    #             query=data.filter(is_concerned_prime_m(Garant.id) is not None),
+    #             page=page,
+    #             per_page=12,
+    #             edit_endpoint=None,
+    #             delete_endpoint="mosque_bp.delete_garant",
+    #             view_endpoint="mosque_bp.PrintForm",
+    #             list_endpoint="mosque_bp.list_garants",
+    #             columns=['الرقم', 'اسم الكفيل', 'لقب الكفيل', 'مبلغ المنحة الشهرية', 'ت. الميلاد']
+    #         )
+    #     elif prj and prj.title == "منحة التمدرس":
+    #         session['project_id'] = int(form.projects.data)
+    #         data = Garant.to_collection_dict(
+    #             query=data.filter(is_concerned_prime_s(Garant.id) is not None),
+    #             page=page,
+    #             per_page=12,
+    #             edit_endpoint=None,
+    #             delete_endpoint="mosque_bp.delete_garant",
+    #             view_endpoint="mosque_bp.PrintForm",
+    #             list_endpoint="mosque_bp.list_garants",
+    #             columns=['الرقم', 'اسم الكفيل', 'لقب الكفيل', 'مبلغ منحة التمدرس', 'ت. الميلاد']
+    #         )
     return render_template('mosque/list_garants.html', results=data, form=form)
 
 
@@ -381,3 +381,118 @@ def filter_by_project(_id):
     else:
         session['project_id'] = project.id
         return redirect(url_for('mosque_bp.list_garants', page=1))
+
+
+@mosque_bp.route('familly/edit/<int:_id>', methods=['GET','POST'])
+@login_required
+def edit_familly(_id):
+    g = Garant.query.get(_id)
+    form = UpdateFamillyForm()
+    # form.re
+    form.situation.choices = [(state.id, state.label) for state in Critere.query.all()]
+    if not g or g.is_active == 0:
+        flash('لا يكمنك تعديل المعلومات الكفيل معطل أو غير موجود','danger')
+        return redirect(url_for('mosque_bp.edit_garant', _id=_id))
+    if form.validate_on_submit():
+        print(request.form.getlist('situation'))
+        flash('تم التعديل بنجاح','success')
+        return redirect(url_for('mosque_bp.edit_familly', _id =_id))
+    return render_template('mosque/update_inf_familly.html', persons = g.familly, garant = g, form=form)
+
+
+@mosque_bp.route('garant/edit/<int:_id>', methods=['GET','POST'])
+@login_required
+def edit_garant(_id):
+    g = Garant.query.get(_id)
+    if not g or g.is_active == 0:
+        flash('لا يمكن تعديل معلومات هذا الكفيل فلقد تم تعطيله من قبل الرجاء تفيعله و الاعادة مرة أخرى','danger')
+        return redirect(url_for("mosque_bp.list_garants", page = 1))
+    form = UpdateGarantForm()
+    form.id.data = _id
+    form.nom.data = g.nom
+    form.prenom.data = g.prenom
+    form.address.data = g.address
+    form.num_extrait_nais.data = g.num_extrait_nais
+    form.phone_number.data = g.phone_number
+    form.compte_ccp.data = g.ccp
+    form.cle_ccp.data = g.cle_CCP
+    form.date_nais.data = g.date_nais
+    form.card_id.data = g.id_card_num
+    form.release_authority.data = g.id_card_release_authority
+    form.release_date.data= g.id_card_release_date
+    form.situation_sociale.choices = [
+        (x.id, x.label) for x in Critere.query.filter_by(category = 'الاجتماعية').all()
+    ]
+    if not form.situation_sociale.choices:
+        form.situation_sociale.choices = []
+    form.situation_familliale.choices = [
+        (x.id, x.label) for x in Critere.query.filter_by(category = 'العائلية').all()
+    ]
+    if not form.situation_familliale.choices:
+        form.situation_familliale.choices = []
+    form.situation_sante.choices = [
+        (x.id, x.label) for x in Critere.query.filter_by(category = 'الصحية').all()
+    ]
+    if not form.situation_sante.choices:
+        form.situation_sante.choices = []
+
+    form.home_appliance.choices = [
+        (x.id, x.label) for x in Critere.query.filter_by(category = "الاجهزة الكهرومنزلية").all()
+    ]
+    if not form.home_appliance.choices:
+        form.home_appliance.choices = []
+
+
+    form.situation_sante.default = [
+        x.id for x in Critere.query.join(SituationGarant, SituationGarant.critere_id == Critere.id) \
+            .filter(and_(SituationGarant.garant_id == _id, Critere.category == "الصحية")).all()
+    ]
+
+    form.situation_sociale.default = [
+        x.id for x in Critere.query.join(SituationGarant, SituationGarant.critere_id == Critere.id) \
+            .filter(and_(SituationGarant.garant_id == _id, Critere.category == "الاجتماعية")).all()
+
+    ]
+    form.situation_familliale.default = [
+        x.id for x in Critere.query.join(SituationGarant, SituationGarant.critere_id == Critere.id) \
+            .filter(and_(SituationGarant.garant_id == _id, Critere.category == "العائلية")).all()
+
+    ]
+    form.home_appliance.default = [
+        x.id for x in Critere.query.join(SituationGarant, SituationGarant.critere_id == Critere.id).filter(and_(
+            SituationGarant.garant_id == _id, Critere.category=="الاجهزة الكهرومنزلية"
+        )).all()
+    ]
+    if form.validate_on_submit():
+        g.nom = form.nom.data
+        g.prenom = form.prenom.data
+        g.num_extrait_nais = form.num_extrait_nais.data
+        g.id_card_num = form.card_id.data
+        g.id_card_release_date = form.release_date.data
+        g.id_card_release_authority = form.release_authority.data
+        g.address = form.address.data
+        g.date_nais = form.date_nais.data
+        g.phone_number = form.phone_number.data
+        form.num_extrait_nais.data = g.num_extrait_nais
+        form.compte_ccp.data = g.ccp
+        form.cle_ccp.data = g.cle_CCP
+        situation = SituationGarant.query.filter_by(garant_id = _id).all()
+        if situation:
+            for x in situation:
+                database.session.delete(x)
+                database.session.commit()
+        liste = request.form.getlist('situation_sociale') + request.form.getlist(
+            'situation_familliale') + request.form.getlist('situation_sante') + request.form.getlist('home_appliance')
+        database.session.add(g)
+        database.session.commit()
+        for case in liste:
+            status = SituationGarant()
+            status.garant_id = g.id
+            status.critere_id = int(case)
+            database.session.add(status)
+            database.session.commit()
+        database.session.add(g)
+        database.session.commit()
+        flash('تم التعديل بنجاح','success')
+        return redirect(url_for('mosque_bp.edit_garant', _id=_id))
+    return render_template('mosque/update_inf_garant.html', form = form)

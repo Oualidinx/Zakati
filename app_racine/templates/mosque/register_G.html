@@ -15,9 +15,15 @@
             {% with messages = get_flashed_messages(with_categories=true) %}
                 {% if messages %}
                     {% for categorie , message in messages %}
-                        <div class="alert alert-{{ categorie }}">
-                            {{ message }}
+                        <div class="toast align-items-center text-white bg-{{ categorie }} border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                              <div class="d-flex">
+                                    <div class="toast-body">
+                                        {{ message }}
+                                    </div>
+                                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                              </div>
                         </div>
+
                     {% endfor %}
                 {% endif %}
             {% endwith %}
@@ -223,21 +229,6 @@
                                         {% endif %}
                                     </div>
                                 </div>
-{#                                <div class="col-md">#}
-{#                                    <div class="form-group">#}
-{#                                        {{ form.cronic_deseases.label(class="form-control-label") }}#}
-{#                                        {% if form.cronic_deseases.errors %}#}
-{#                                            {{ form.cronic_deseases(class="select-cronic-deseases form-control") }}#}
-{#                                            <div class="alert alert-danger">#}
-{#                                                {% for error in form.cronic_deseases.errors %}#}
-{#                                                    <span>{{ error }}</span>#}
-{#                                                {% endfor %}#}
-{#                                            </div>#}
-{#                                        {% else %}#}
-{#                                            {{ form.cronic_deseases(class="select-cronic-deseases form-control ") }}#}
-{#                                        {% endif %}#}
-{#                                    </div>#}
-{#                                </div>#}
                             </div>
                             <div class="form-row">
                                 <div class="col-md">
@@ -337,7 +328,7 @@
                     </div>
                 </div>
             </fieldset>
-            <div class="form-group">
+            <div class="form-row">
                 <div class="form-group">
                     {{ form.submit(class="btn btn-outline-info") }}
                 </div>

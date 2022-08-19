@@ -9,7 +9,8 @@ class Config:
 
 class DevelopmentConfig(Config):
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = "mysql+pymysql://oualid:1091eb5a6c62@localhost/zakati"
+    SQLALCHEMY_DATABASE_URI = "postgresql://postgres:1091eb5a6c62@localhost:5432/zakati"
+    # SQLALCHEMY_DATABASE_URI = "sqlite:///data-test.db"
     SECRET_KEY = '69ae5bd0ce7c457caf8ac853d9484e176e03f0af777158259de72c2fce40ae273a08b76b1aa161591a57b13a36807b'\
                  'fc089b1d08db816aaf32775c79a3eea344d88ff6578e84a48be667097b8ec3d14eff9ce2323cfbc95abbb936db4e'\
                  '651354aef0a43dd60cf0de95678c17908d343cb505bf82abdb41d4661da8ed61187798 '

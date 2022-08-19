@@ -37,12 +37,12 @@
                                             <div class="btn-group-lg">
 
                                                 {% if results['_manage']['view']%}
-                                                    <a role="button" class="btn-md"
+                                                    <a role="button" class="btn-md" style="padding-left: 10px"
                                                        href="{{ url_for(results['_manage']['view'],
                                                             _id=line['id']) }}"><i class="fa fa-print"></i></a>
                                                 {%endif%}
                                                 {% if results['_manage']['edit'] %}
-                                                    <a role ="button" class="btn-md btn-outline-info"
+                                                    <a class="btn-md" style="padding-left: 10px;"
                                                        href="{{ url_for(results['_manage']['edit'],
                                                                 _id=line['id']) }}"><i class="fa fa-pen"></i></a>
                                                 {% endif %}

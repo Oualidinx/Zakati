@@ -197,6 +197,10 @@ class Personne(PaginationMixin, database.Model):
     date_naissance = database.Column(database.DateTime, nullable=False)
     relation_ship = database.Column(database.String(6), nullable=False, default="")
     garant_id = database.Column(database.Integer, database.ForeignKey('garant.id'), nullable=False)  # le compte ccp
+    situation = database.relationship('Critere', secondary='situation_person', viewonly=True,
+                                      primaryjoin='remote(SituationPerson.personne_id) == Personne.id',
+                                      secondaryjoin ='remote(Critere.id)==SituationPerson.critere_id'
+                                      )
     work = database.relationship('Critere', secondary="situation_person", viewonly=True,
                                  primaryjoin="remote(SituationPerson.personne_id) == Personne.id",
                                  secondaryjoin="and_(remote(Critere.id) == SituationPerson.critere_id, "
@@ -253,6 +257,7 @@ class Personne(PaginationMixin, database.Model):
             last_name=self.prenom,
             date_naissance=self.date_naissance.date(),
             relation_ship=self.relation_ship,
+            situation = [int(x.id) for x in self.situation],
             decrepit=self.decript if self.decript or len(self.decript) != 0 else None,
             work=self.work if self.work or len(self.work) != 0 else None,
             sick=self.sick if self.sick or len(self.sick) != 0 else None,

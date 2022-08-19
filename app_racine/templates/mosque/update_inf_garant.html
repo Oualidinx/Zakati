@@ -1,0 +1,330 @@
+{% extends './includes/mosque_layout.html' %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/select2.min.css')}}">
+{% endblock %}
+{% block mosque_content %}
+    <div class="container-fluid">
+
+    <div class="row">
+        <div class="col-md">
+            <h1 class="h2">مسجـــد {{  session['mosque_name']}} </h1>
+        </div>
+        <div class="col-md">
+
+        </div>
+        <div class="col-md">
+            <a class="btn btn-primary" href="{{ url_for('mosque_bp.edit_familly', _id = form.id.data) }}"> تعديل معلومات الافراد تحت الكفالة</a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for categorie , message in messages %}
+                    <div class="alert alert-{{ categorie }} alert-dismissible fade show" role="alert">
+                        {{message}}
+                      <button type="button" class="position-relative text-left close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true" class="text-left">&times;</span>
+                      </button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        </div>
+    </div>
+
+
+
+
+    <form action="" method="post">
+        {{ form.hidden_tag() }}
+        <div class="form-row">
+            <div class="col-md">
+                <div class="form-group">
+                    {{ form.nom.label(class="form-control-label") }}
+                    {% if form.nom.errors %}
+                        {{ form.nom(class="form-control from-control-lg is-invalid") }}
+                        <div class="alert alert-danger">
+                        {% for error in form.nom.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.nom(class="form-control from-control-md") }}
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-md">
+                <div class="form-group">
+                    {{ form.prenom.label(class="form-control-label") }}
+                    {% if form.prenom.errors %}
+                        {{ form.prenom(class="form-control from-control-lg is-invalid") }}
+                        <div class="alert alert-danger">
+                            {% for error in form.prenom.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.prenom(class="form-control from-control-md") }}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-md">
+                <div class="form-group">
+                    {{ form.address.label(class="form-control-label") }}
+                    {% if form.address.errors %}
+                        {{ form.address(class="form-control from-control-lg is-invalid") }}
+                        <div class="alert alert-danger">
+                        {% for error in form.address.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.address(class="form-control from-control-md") }}
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-md">
+                <div class="form-group">
+                    {{ form.phone_number.label(class="form-control-label") }}
+                    {% if form.phone_number.errors %}
+                        {{ form.phone_number(class="form-control from-control-md") }}
+                        {% for error in form.phone_number.errors %}
+                            <div class="alert alert-danger">
+                                <span>{{ error }}</span>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        {{ form.phone_number(class="form-control from-control-md") }}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-md">
+                <div class="form-group">
+                    {{ form.date_nais.label(class="form=control-label") }}
+                    {% if form.date_nais.errors %}
+                        {{ form.date_nais(class="form-control from-control-lg",placeholder="يوم/الشهر/السنة") }}
+                        <div class="alert alert-danger">
+                            {% for error in form.date_nais.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.date_nais(class="form-control from-control-lg") }}
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-md">
+                <div class="form-group">
+                    {{ form.num_extrait_nais.label(class="form-control-label") }}
+                    {% if form.num_extrait_nais.errors %}
+                        {{ form.num_extrait_nais(class="form-control from-control-lg is-invalid") }}
+                        <div class="alert alert-danger">
+                            {% for error in form.num_extrait_nais.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.num_extrait_nais(class="form-control from-control-md") }}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-md">
+                <div class="form-group">
+                    {{ form.card_id.label(class="form-control-label") }}
+                    {% if form.card_id.errors %}
+                        {{ form.card_id(class=" from-control-md") }}
+                         {% for error in form.card_id.errors %}
+                            <div class="alert alert-danger">
+
+                                {{ error }}
+
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        {{ form.card_id(class="form-control from-control-md") }}
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-md">
+                <div class="form-group">
+                    {{ form.release_date.label(class="form-control-label") }}
+                    {% if form.release_date.errors %}
+                        {{ form.release_date(class="form-control from-control-md") }}
+                         {% for error in form.release_date.errors %}
+                            <div class="alert alert-danger">
+                                {{ error }}
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        {{ form.release_date(class="form-control from-control-md") }}
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-md">
+                <div class="form-group">
+                    {{ form.release_authority.label(class="form-control-label") }}
+                    {% if form.release_authority.errors %}
+                        {{ form.release_authority(class="form-control form-control-md") }} {# select-place-issue  #}
+                        <div class="alert alert-danger">
+                            {{ error }}
+                        </div>
+                    {% else %}
+                        {{ form.release_authority(class="form-control form-control-md") }}{# select-place-issue  #}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-md">
+                <div class="form-group">
+                    {{ form.compte_ccp.label(class="form-control-label") }}
+                    {% if form.compte_ccp.errors %}
+                        {{ form.compte_ccp(class="form-control from-control-lg") }}
+                         {% for error in form.compte_ccp.errors %}
+                            <div class="alert alert-danger">
+
+                                {{ error }}
+
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        {{ form.compte_ccp(class="form-control from-control-md") }}
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-md">
+                <div class="form-group">
+                    {{ form.cle_ccp.label(class="form-control-label") }}
+                    {% if form.cle_ccp.errors %}
+                        {{ form.cle_ccp(class="form-control from-control-lg") }}
+                        <div class="alert alert-danger">
+                            {% for error in form.cle_ccp.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.cle_ccp(class="form-control from-control-md") }}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-md">
+                <div class="form-group">
+                    {{ form.situation_sante.label(class="form-control-label") }}
+                    {% if form.situation_sante.errors %}
+                        {{ form.situation_sante(class="select-sante form-control") }}
+                        <div class="alert alert-danger">
+                            {% for error in form.situation_sante.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+{#                        {{ form.situation_sante.data }}#}
+                        {{ form.situation_sante(class="select-sante form-control ") }}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-md">
+                <div class="form-group">
+                    {{ form.situation_familliale.label(class="form-control-label") }}
+                    {% if form.situation_familliale.errors %}
+                    {{ form.situation_familliale(class="select-familliale form-control form-control-md") }}
+                        <div class="alert alert-danger">
+                            {% for error in form.situation_familliale.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.situation_familliale(class="select-familliale form-control form-control-md") }}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-md">
+                <div class="form-group">
+                    {{ form.situation_sociale.label(class="form-control-label") }}
+                    {% if form.situation_sociale.errors %}
+                        {{ form.situation_sociale(class="select-social form-control form-control-md") }}
+                        <div class="alert alert-danger">
+                            {% for error in form.situation_sociale.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.situation_sociale(class="select-social form-control form-control-md") }}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-md">
+                <div class="form-group">
+                    {{ form.home_appliance.label(class="form-control-label") }}
+                    {% if form.home_appliance.errors %}
+                        {{ form.home_appliance(class="select-home-appliance form-control form-control-md") }}
+                        <div class="alert alert-danger">
+                            {% for error in form.home_appliance.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.home_appliance(class="select-home-appliance form-control form-control-md") }}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                {{ form.submit(class="btn btn-outline-primary") }}
+            </div>
+        </div>
+    </form>
+    </div>
+{% endblock %}
+{% block scripts %}
+    <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/select2.min.js') }}"></script>
+    <script !src="">
+        $(document).ready(function(){
+            $('.select-home-appliance').select2(
+                {
+                    width: "50%"
+                }
+            );
+            $('.select-home-appliance').val({{ form.situation_sante.default }}).trigger('change');
+
+            $('.select-sante').select2(
+                {
+                    width: "50%"
+                }
+            );
+            $('.select-sante').val({{ form.situation_sante.default }}).trigger('change');
+
+            $('.select-familliale').select2(
+                {
+                    width: "50%"
+                }
+            );
+            $('.select-familliale').val({{ form.situation_familliale.default }}).trigger("change");
+
+            $('.select-social').select2(
+                {
+                    width: "50%"
+                }
+            );
+            $('.select-social').val({{ form.situation_sociale.default }}).trigger('change');
+        })
+    </script>
+{% endblock %}

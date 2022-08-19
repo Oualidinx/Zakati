@@ -1,0 +1,220 @@
+{% extends './includes/mosque_layout.html' %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/select2.min.css')}}">
+    <style>
+        .form-row{
+            padding-bottom: 10px;
+        }
+    </style>
+{% endblock %}
+{% block mosque_content %}
+    <div class="container-fluid">
+{#        {% if content   %}#}
+        <h1 class="h2">مسجـــد {{  session['mosque_name']}} </h1>
+        <div class="row">
+            <div class="col-md">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for categorie , message in messages %}
+                            <div class="alert alert-{{ categorie }} alert-dismissible fade show" role="alert">
+                                {{message}}
+                              <button type="button" class="position-relative text-left close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true" class="text-left">&times;</span>
+                              </button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+            </div>
+        </div>
+        <form method="post">
+            {{ form.hidden_tag() }}
+            <fieldset id="field-set">
+                <div class="form-row">
+                    <div class="col-md">
+                        {{ form.entities.entries[0].p_nom.label }}
+                    </div>
+                    <div class="col-md">
+                        {{ form.entities.entries[0].p_prenom.label }}
+                    </div>
+                    <div class="col-md">
+                        {{ form.entities.entries[0].p_date_nais.label }}
+                    </div>
+                    <div class="col-md">
+                        {{ form.entities.entries[0].p_relation_ship.label }}
+                    </div>
+                    <div class="col-md">
+{#                        {{ form.entities.entries[0].situation.label }}#}
+                    </div>
+                    <div class="col-md">
+                        Add
+                    </div>
+                </div>
+                {% for entity in form.entities.entries %}
+                    <div class="form-row">
+                        <div class="col-md">
+                            {{ entity.p_nom(class="form-control") }}
+                        </div>
+                        <div class="col-md">
+                            {{ entity.p_prenom(class="form-control") }}
+                        </div>
+                        <div class="col-md">
+                            {{ entity.p_date_nais(class="form-control") }}
+                        </div>
+                        <div class="col-md">
+                            {{ entity.p_relation_ship(class="form-control") }}
+                        </div>
+                        <div class="col-md">
+                            <a role="button" class="btn btn-secondary" onclick="del(this);"><i class="fa fa-trash"></i> </a>
+                        </div>
+{#                        <div class="col-md">#}
+{#                            {{ entity.situation(class="form-control") }}#}
+{#                        </div>#}
+                    </div>
+                {% endfor %}
+
+            </fieldset>
+            <div class="form-row ">
+                <div class="col-md">
+                    {{ form.submit(class="btn btn-primary") }}
+                </div>
+            </div>
+        </form>
+        <div class="row">
+            <div class="col-md" style="position:  sticky; text-align: left;">
+                <button onclick="add();" class="btn btn-primary">
+                    <i class="fa fa-user-plus"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+{% block scripts %}
+    <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/select2.min.js') }}"></script>
+    <script !src="">
+        function del(element){
+            let node = element.parentNode;
+            let form_row = node.parentNode;
+            let root = form_row.parentNode
+            root.removeChild(form_row);
+            console.log('removing');
+
+        }
+        function add(){
+            let node='<div class="form-row">\
+                <div class="col-md">\
+                    {{ form.entities.entries[0].p_nom(class="form-control") }}\
+                </div>\
+                <div class="col-md">\
+                    {{ form.entities.entries[0].p_prenom(class="form-control") }}\
+                </div>\
+                <div class="col-md">\
+                    {{ form.entities.entries[0].p_date_nais(class="form-control") }}\
+                </div>\
+                <div class="col-md">\
+                    {{ form.entities.entries[0].p_relation_ship(class="form-control") }}\
+                </div>\
+                <div class="col-md">\
+                    <a role="button" class="btn btn-secondary" onclick="del(this);"><i class="fa fa-trash"></i> </a>\
+                </div>\
+            </div>';
+            $('#field-set').append(node);
+        };
+
+        $(document).ready(function(){
+
+            {% for person in persons %}
+                let node = '<div class="form-row">\
+                                <div class="col-md">\
+                                    {{ form.p_nom.label(class="form-control-label") }}\
+                                    {% if form.p_nom.errors %}\
+                                        {{ form.p_nom(class="form-control from-control-lg is-invalid", value=person.nom) }}\
+                                        <div class="alert alert-danger">\
+                                            {% for error in form.p_nom.errors %}\
+                                                <span>{{ error }}</span>\
+                                            {% endfor %}\
+                                        </div>\
+                                    {% else %}\
+                                        {{ form.p_nom(class="form-control from-control-md", value=person.nom) }}\
+                                    {% endif %}\
+                                </div>\
+                                <div class="col-md"> \
+                                {{ form.p_prenom.label(class="form-control-label") }}\
+                                {% if form.p_prenom.errors %}\
+                                    {{ form.p_prenom(class="form-control from-control-lg is-invalid", value=person.prenom) }}\
+                                    <div class="alert alert-danger">\
+                                        {% for error in form.p_prenom.errors %}\
+                                            <span>{{ error }}</span>\
+                                        {% endfor %}\
+                                    </div>\
+                                {% else %}\
+                                    {{ form.p_prenom(class="form-control from-control-md", value=person.prenom) }}\
+                                {% endif %}\
+                            </div>\
+                    \
+                            <div class="col-md">\
+                                {{ form.p_date_nais.label(class="form-control-label") }}\
+                                {% if form.p_date_nais.errors %}\
+                                    {{ form.p_date_nais(class="form-control from-control-lg is-invalid", value=peron.date_naissance) }}\
+                                    <div class="alert alert-danger">\
+                                        {% for error in form.p_date_nais.errors %}\
+                                            <span>{{ error }}</span>\
+                                        {% endfor %}\
+                                    </div>\
+                                {% else %}\
+                                    {{ form.p_date_nais(class="form-control from-control-md", value=person.date_naissance.date()) }}\
+                                {% endif %}\
+                            </div>\
+                    \
+                            <div class="col-md">\
+                                {{ form.situation.label(class="form-control-label") }}\
+                                {% if form.situation.errors %}\
+                                    {{ form.situation(class="select-situation form-control from-control-md") }}\
+                                    <div class="alert alert-danger">\
+                                        {% for error in form.situation.errors %}\
+                                            <span>{{ error }}</span>\
+                                        {% endfor %}\
+                                    </div>\
+                                {% else %}\
+                                    {{ form.situation(class="select-situation form-control from-control-md") }}\
+                                {% endif %}\
+                            </div>\
+                    \
+                            <div class="col-md">\
+                                {{ form.p_relation_ship.label(class="form-control-label") }}\
+                                {% if form.p_relation_ship.errors %}\
+                                    {{ form.p_relation_ship(class="select-relation form-control form-control-lg") }}\
+                                    <div class="alert alert-danger">\
+                                        {% for error in form.p_relation_ship.errors %}\
+                                            <span>{{ error }}</span>\
+                                        {% endfor %}\
+                                    </div>\
+                                {% else %}\
+                                    {{ form.p_relation_ship(class="select-relation form-control form-control-lg", value=person.relation_ship) }}\
+                                {% endif %}</div>\
+                            </div>'
+
+                $('#form').append(node);
+                $('.select-relation').select2();
+                $('.select-relation').val("{{ person.relation_ship }}").trigger('change');
+                $('.select-situation').select2();
+                let liste = [];
+                {% for integer in person.to_dict()['situation'] %}
+                    liste.push(parseInt({{integer}}));
+                {% endfor %}
+                $('.select-situation').val(liste).trigger('change');
+            {% endfor %}
+            let submit_btn = '\
+                            <div class="form-row ">\
+                                <div class="col-md" style="position: relative; text-align:left;">\
+                                    {{ form.submit(class="btn btn-primary btn-lg") }}\
+                                </div>\
+                            </div>'
+            $('#form').append(submit_btn);
+            
+        })
+    </script>
+{% endblock %}

@@ -7,3 +7,5 @@
 .idea
 __pycache__
 .vscode
+test_form.py
+/app_racine/templates/test_form.html
